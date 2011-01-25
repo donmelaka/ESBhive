@@ -1,1 +1,1 @@
-Tags of the project
+Tags of the project.
