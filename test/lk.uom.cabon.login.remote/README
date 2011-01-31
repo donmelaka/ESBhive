@@ -1,0 +1,1 @@
+This maven project contains an example which logs into an ESB using the AuthenticationAdmin service and calls an operation in the ProxyServiceAdmin service. In order to test this, in the class App.java change the esb_home, username, password appropriately and start an ESB instance in localhost.
