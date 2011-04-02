@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Export-Package: org.wso2.carbon.esbnode.mgt;uses:="org.wso2.carbon.esb
+ node.mgt.data",org.wso2.carbon.esbnode.mgt.data
+Built-By: Melaka
+Tool: Bnd-0.0.238
+Bundle-Name: org.wso2.carbon.esbnode.mgt
+Created-By: Apache Maven Bundle Plugin
+Bundle-Version: 1.0.0.SNAPSHOT
+Build-Jdk: 1.6.0_11
+Bnd-LastModified: 1301742008702
+Bundle-ManifestVersion: 2
+Bundle-Description: carbon-parent
+Import-Package: org.wso2.carbon.esbnode.mgt,org.wso2.carbon.esbnode.mg
+ t.data
+Bundle-SymbolicName: org.wso2.carbon.esbnode.mgt
+

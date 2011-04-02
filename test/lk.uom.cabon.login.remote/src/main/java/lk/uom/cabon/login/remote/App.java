@@ -23,7 +23,7 @@ public class App
 {
     public static void main( String[] args ) throws RemoteException, AuthenticationExceptionException
     {
-    	String esb_home="/home/pubudu/L4S1/project/wso2esb-3.0.1";
+    	String esb_home="C:/WSO2/wso2esb-3.0.1/wso2esb-3.0.1";
     	
     	System.setProperty("javax.net.ssl.trustStore", 
 				esb_home + File.separator + "resources" + File.separator + "security" + File.separator + "wso2carbon.jks"); 
