@@ -38,44 +38,96 @@
 
        // if(request.getMethod().equalsIgnoreCase("POST")){
 
-        
+
         try {
             client = new NodeManagerClient(configContext, serverURL, cookie);
 
            // nodes=client.getNodes();
-            if(client.getNodes()!=null){
-            nodes=client.getNodes();
-            }
-
-
-
+           if(request.getMethod().equalsIgnoreCase("POST")){
             ESBNode me = new ESBNode();
             me.setIp(request.getParameter("ip1"));
             me.setUsername(request.getParameter("pswd1"));
             me.setPassword(request.getParameter("uname1"));
-            
+
             ESBNode him = new ESBNode();
             him.setIp(request.getParameter("ip2"));
             him.setUsername(request.getParameter("pswd2"));
             him.setPassword(request.getParameter("uname2"));
-
-
-             if(request.getMethod().equalsIgnoreCase("POST")){
             nodes = client.addNodeToHive(me,him);
-      }
-        } catch (Exception e) {
-            CarbonUIMessage.sendCarbonUIMessage(e.getMessage(), CarbonUIMessage.ERROR, request, e);
-%>
-<script type="text/javascript">
-    location.href = "../admin/error.jsp";
-</script>
-<%
-            return;
-    }
-      //  }
-        
 %>
 
+<div id="middle">
+    <h2>Node Management</h2>
+
+    <div id="workArea">
+        <table class="styledLeft" id="moduleTable">
+            <thead>
+                <tr>
+                    <th width="40%">Ip Address</th>
+                    <th width="40%">User Name</th>
+                    <th width="20%">Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                             for(ESBNode node:nodes){
+
+                %>
+                <tr>
+                    <td><%=node.getIp()%></td>
+                    <td><%=node.getUsername()%></td>
+                    <td><%=node.getPassword()%></td>
+
+                </tr>
+
+                <%
+                             }
+                %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<%
+}
+            else {
+            if(client.getNodes()!=null){
+            nodes=client.getNodes();
+%>
+<div id="middle">
+    <h2>Node Management</h2>
+
+    <div id="workArea">
+        <table class="styledLeft" id="moduleTable">
+            <thead>
+                <tr>
+                    <th width="40%">Ip Address</th>
+                    <th width="40%">User Name</th>
+                    <th width="20%">Password</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                             for(ESBNode node:nodes){
+
+                %>
+                <tr>
+                    <td><%=node.getIp()%></td>
+                    <td><%=node.getUsername()%></td>
+                    <td><%=node.getPassword()%></td>
+
+                </tr>
+
+                <%
+                             }
+                %>
+            </tbody>
+        </table>
+    </div>
+</div>
+<%
+}
+            else {
+%>
 <form action="nodemanager.jsp" method="POST" >
     <table width="75%">
         <tr>
@@ -120,36 +172,21 @@
         <input type="reset" name="Reset" value="Reset" />
     </p>
 </form>
+<%
+}}
+} catch (Exception e) {
+CarbonUIMessage.sendCarbonUIMessage(e.getMessage(), CarbonUIMessage.ERROR, request, e);
+%>
+<script type="text/javascript">
+    location.href = "../admin/error.jsp";
+</script>
+<%
+            return;
+    }
+      //  }
+
+%>
 
 
-<div id="middle">
-    <h2>Node Management</h2>
 
-    <div id="workArea">
-        <table class="styledLeft" id="moduleTable">
-            <thead>
-                <tr>
-                    <th width="40%">Ip Address</th>
-                    <th width="40%">User Name</th>
-                    <th width="20%">Password</th>
-                </tr>
-            </thead>
-            <tbody>
-                <%
-                             for(ESBNode node:nodes){
 
-                %>
-                <tr>
-                    <td><%=node.getIp()%></td>
-                    <td><%=node.getUsername()%></td>
-                    <td><%=node.getPassword()%></td>
-
-                </tr>
-
-                <%
-                             }
-                %>
-            </tbody>
-        </table>
-    </div>
-</div>
