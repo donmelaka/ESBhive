@@ -5,8 +5,7 @@
             <displayName>Build Offline</displayName>
             <goals>
                 <goal>-o</goal>
-                <goal>clean</goal>
-                <goal>package</goal>
+                <goal>integration-test</goal>
             </goals>
         </action>
     </actions>
