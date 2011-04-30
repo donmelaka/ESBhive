@@ -1,5 +1,7 @@
 package org.esbhive.node.mgt;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,8 @@ import org.esbhive.node.mgt.authenticator.proxy.AuthenticationExceptionException
  * Hello world!
  *
  */
+
+//TODO after getting list tell everyone
 public class NodeManager {
 
 	private Map<String, ESBNode> nodes;
@@ -29,7 +33,7 @@ public class NodeManager {
 	}
 
 	//this is called by me to add myself to one esb in the hive
-	public ESBNode[] addNode(ESBNode me, ESBNode addto) throws RemoteException, AuthenticationExceptionException {
+	public ESBNode[] addNode(ESBNode me, ESBNode addto) throws RemoteException, AuthenticationExceptionException, UnknownHostException {
 
 		ConfigurationContext ctx =
 						ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
@@ -43,10 +47,10 @@ public class NodeManager {
 		option.setManageSession(true);
 		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
 
-
+		String myIp = InetAddress.getLocalHost().getHostAddress();
 
 		org.esbhive.node.mgt.data.xsd.ESBNode meInOtherFormat = new org.esbhive.node.mgt.data.xsd.ESBNode();
-		meInOtherFormat.setIp(me.getIp());
+		meInOtherFormat.setIp(myIp+":"+me.getIp());
 		meInOtherFormat.setUsername(me.getUsername());
 		meInOtherFormat.setPassword(me.getPassword());
 		org.esbhive.node.mgt.data.xsd.ESBNode[] a = stub4.addNodeAndGetNodes(meInOtherFormat);
