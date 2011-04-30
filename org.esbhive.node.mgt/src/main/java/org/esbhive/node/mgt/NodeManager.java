@@ -1,7 +1,8 @@
 package org.esbhive.node.mgt;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
@@ -19,11 +20,11 @@ import org.esbhive.node.mgt.authenticator.proxy.AuthenticationExceptionException
  */
 public class NodeManager {
 
-	private ArrayList<ESBNode> nodes;
+	private Map<String, ESBNode> nodes;
 
 	public NodeManager() {
 
-		nodes = new ArrayList<ESBNode>();
+		nodes = new HashMap<String,ESBNode>();
 
 	}
 
@@ -51,22 +52,22 @@ public class NodeManager {
 		org.esbhive.node.mgt.data.xsd.ESBNode[] a = stub4.addNodeAndGetNodes(meInOtherFormat);
 		MessageContext currentMessageContext = org.apache.axis2.context.MessageContext.getCurrentMessageContext();
 
-		nodes = new ArrayList<ESBNode>();
+		nodes = new HashMap<String, ESBNode>();
 		currentMessageContext.getConfigurationContext().setProperty("ESBNodeList", nodes);
 		
-		ArrayList property = (ArrayList<ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
+		HashMap property = (HashMap<String, ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
 
 		
 		for (int i = 0; i < a.length; i++) {
 			ESBNode tempNode = new ESBNode(a[i].getIp(), a[i].getUsername(), a[i].getPassword());
-			property.add(tempNode);
+			property.put(tempNode.getIp(), tempNode);
 
 		}
 
 
 		org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().setProperty("ESBNodeList", property);
 		ESBNode[] nodeArray = new ESBNode[property.size()];
-		property.toArray(nodeArray);
+		property.values().toArray(nodeArray);
 
 		logOut(addto, ctx);
 		return nodeArray;
@@ -80,34 +81,34 @@ public class NodeManager {
 		}
 		
 		MessageContext currentMessageContext = org.apache.axis2.context.MessageContext.getCurrentMessageContext();
-		if ((ArrayList) currentMessageContext.getConfigurationContext().getProperty("ESBNodeList") == null) {
-			nodes = new ArrayList<ESBNode>();
+		if ((HashMap) currentMessageContext.getConfigurationContext().getProperty("ESBNodeList") == null) {
+			nodes = new HashMap<String, ESBNode>();
 			currentMessageContext.getConfigurationContext().setProperty("ESBNodeList", nodes);
 		}
 
 
-		ArrayList<ESBNode> property = (ArrayList<ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
+		HashMap<String,ESBNode> property = (HashMap<String,ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
 		if (node != null) {
-			if (!property.contains(node)) {
-				property.add(node);
-				org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().setProperty("ESBNodeList", property);
-			}
+			
+			property.put(node.getIp(),node);
+			org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().setProperty("ESBNodeList", property);
+			
 		}
 		ESBNode[] nodeArray = new ESBNode[property.size()];
-		property.toArray(nodeArray);
+		property.values().toArray(nodeArray);
 		return nodeArray;
 	}
 
 	public ESBNode[] getNodes() {
 		MessageContext currentMessageContext = org.apache.axis2.context.MessageContext.getCurrentMessageContext();
-		if ((ArrayList) currentMessageContext.getConfigurationContext().getProperty("ESBNodeList") == null) {
-			nodes = new ArrayList<ESBNode>();
+		if ((HashMap) currentMessageContext.getConfigurationContext().getProperty("ESBNodeList") == null) {
+			nodes = new HashMap<String, ESBNode>();
 			currentMessageContext.getConfigurationContext().setProperty("ESBNodeList", nodes);
 		}
 
-		ArrayList<ESBNode> property = (ArrayList<ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
+		HashMap<String, ESBNode> property = (HashMap<String, ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
 		ESBNode[] nodeArray = new ESBNode[property.size()];
-		property.toArray(nodeArray);
+		property.values().toArray(nodeArray);
 		return nodeArray;
 	}
 
