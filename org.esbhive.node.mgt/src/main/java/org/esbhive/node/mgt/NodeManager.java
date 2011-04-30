@@ -25,6 +25,7 @@ import org.esbhive.node.mgt.authenticator.proxy.AuthenticationExceptionException
 public class NodeManager {
 
 	private Map<String, ESBNode> nodes;
+	private boolean recurse = true;
 
 	public NodeManager() {
 
@@ -61,11 +62,16 @@ public class NodeManager {
 		
 		HashMap property = (HashMap<String, ESBNode>) org.apache.axis2.context.MessageContext.getCurrentMessageContext().getConfigurationContext().getProperty("ESBNodeList");
 
-		
-		for (int i = 0; i < a.length; i++) {
-			ESBNode tempNode = new ESBNode(a[i].getIp(), a[i].getUsername(), a[i].getPassword());
-			property.put(tempNode.getIp(), tempNode);
+		if(recurse){
+			recurse = false;
+			for (int i = 0; i < a.length; i++) {
+				ESBNode tempNode = new ESBNode(a[i].getIp(), a[i].getUsername(), a[i].getPassword());
+				property.put(tempNode.getIp(), tempNode);
+				addNode(me, tempNode);
 
+			}
+		}else{
+			return null;
 		}
 
 

@@ -75,6 +75,24 @@
 							</resources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>copy-resources-3</id>
+						<phase>integration-test</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>/home/pubudu/L4S1/project/yet-another-wso2esb-3.0.1/repository/components/dropins</outputDirectory>
+							<resources>
+								<resource>
+									<directory>${basedir}/target/</directory>
+									<includes>
+										<include>org.esbhive.node.mgt-1.0-SNAPSHOT.jar</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
