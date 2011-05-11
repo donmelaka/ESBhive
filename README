@@ -1,0 +1,2 @@
+Run maven with an extra parameter to automaitcally copy the jar to the dropins directory. On my machine the command is
+mvn -o clean install -DdropinsDir=/home/pubudu/L4S1/project/wso2esb-3.0.1/repository/components/dropins

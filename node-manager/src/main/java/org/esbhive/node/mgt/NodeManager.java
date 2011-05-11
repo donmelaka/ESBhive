@@ -83,8 +83,8 @@ public class NodeManager
         addNode(me, tempNode);
       }
     }
-
-		return (org.esbhive.node.mgt.ESBNode[]) NodeManager.nodes.values().toArray();
+    
+		return NodeManager.nodes.values().toArray(new org.esbhive.node.mgt.ESBNode[nodes.size()]);
     
 
 	}
@@ -101,11 +101,13 @@ public class NodeManager
     }else{
       return null;
     }
-		return (org.esbhive.node.mgt.ESBNode[]) nodes.values().toArray();	
+    org.esbhive.node.mgt.ESBNode[] nodeArray = new org.esbhive.node.mgt.ESBNode[nodes.size()];
+		return nodes.values().toArray(nodeArray);
 	}
 
 	public org.esbhive.node.mgt.ESBNode[] getNodes() {
-		return (org.esbhive.node.mgt.ESBNode[]) nodes.values().toArray();
+    org.esbhive.node.mgt.ESBNode[] nodeArray = new org.esbhive.node.mgt.ESBNode[nodes.size()];
+		return nodes.values().toArray(nodeArray);
 	}
 
 }
