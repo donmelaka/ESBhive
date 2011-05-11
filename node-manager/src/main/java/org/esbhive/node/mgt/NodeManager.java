@@ -10,11 +10,10 @@ import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.esbhive.login.LoginData;
 import org.esbhive.login.RemoteLogin;
-import org.esbhive.login.client.AuthenticationExceptionException;
-import org.esbhive.node.mgt.client.AuthenticationExceptionExceptionException;
+
+import  org.esbhive.login.client.AuthenticationExceptionException;
 import org.esbhive.node.mgt.client.EsbNodeManagerStub;
-import org.esbhive.node.mgt.client.ESBNode;
-import org.esbhive.node.mgt.client.RemoteExceptionException;
+
 //services (objectClass=org.esbhive.*)
 /**
  * @scr.component name="node.manager" immediate="true"
@@ -42,7 +41,7 @@ public class NodeManager
 
 	//this is called by me to add myself to one esb in the hive
 	public org.esbhive.node.mgt.ESBNode[] addNode(org.esbhive.node.mgt.ESBNode me,
-                           org.esbhive.node.mgt.ESBNode addto) throws AxisFault, RemoteException, AuthenticationExceptionException, AuthenticationExceptionExceptionException, RemoteExceptionException
+                           org.esbhive.node.mgt.ESBNode addto) throws AxisFault, RemoteException, AuthenticationExceptionException
                             {
     LoginData otherNode = new LoginData();
     otherNode.setUserName(addto.getUsername());
@@ -53,7 +52,7 @@ public class NodeManager
 		ConfigurationContext ctx =
 						ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
 
-		
+
 
  		String serviceEPR =
             "https://" + loginData.getHostNameAndPort() + "/services/" + "EsbNodeManager";
@@ -66,7 +65,7 @@ public class NodeManager
                        loginData.getCookie());
 
   	org.esbhive.node.mgt.client.ESBNode meInOtherFormat
-              = new ESBNode();
+              = new org.esbhive.node.mgt.client.ESBNode();
 		meInOtherFormat.setIpAndPort(me.getIpAndPort());
 		meInOtherFormat.setUsername(me.getUsername());
 		meInOtherFormat.setPassword(me.getPassword());
@@ -83,14 +82,15 @@ public class NodeManager
         NodeManager.nodes.put(tempNode.getIpAndPort(), tempNode);
         addNode(me, tempNode);
       }
-    }	
-    
+    }
+
 		return (org.esbhive.node.mgt.ESBNode[]) NodeManager.nodes.values().toArray();
+    
 
 	}
 
 	//this is called by another backend to add him to me(this is called in the addnode method)
-	public org.esbhive.node.mgt.ESBNode[] addNodeAndGetNodes(org.esbhive.node.mgt.ESBNode node) throws AxisFault, RemoteException, AuthenticationExceptionException {
+	public org.esbhive.node.mgt.ESBNode[] addNodeAndGetNodes(org.esbhive.node.mgt.ESBNode node) throws AxisFault, RemoteException, AuthenticationExceptionException   {
     LoginData loginData = new LoginData();
     loginData.setUserName(node.getUsername());
     loginData.setPassWord(node.getPassword());
@@ -101,8 +101,7 @@ public class NodeManager
     }else{
       return null;
     }
-		return (org.esbhive.node.mgt.ESBNode[]) nodes.values().toArray();
-		
+		return (org.esbhive.node.mgt.ESBNode[]) nodes.values().toArray();	
 	}
 
 	public org.esbhive.node.mgt.ESBNode[] getNodes() {
