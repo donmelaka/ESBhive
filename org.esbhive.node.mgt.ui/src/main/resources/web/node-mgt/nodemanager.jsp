@@ -46,13 +46,13 @@
            if(request.getMethod().equalsIgnoreCase("POST")){
             ESBNode me = new ESBNode();           
             me.setIpAndPort(request.getParameter("ip1"));
-            me.setUsername(request.getParameter("pswd1"));
-            me.setPassword(request.getParameter("uname1"));
+            me.setPassword(request.getParameter("pswd1"));
+            me.setUsername(request.getParameter("uname1"));
 
             ESBNode him = new ESBNode();
             him.setIpAndPort(request.getParameter("ip2"));
-            him.setUsername(request.getParameter("pswd2"));
-            him.setPassword(request.getParameter("uname2"));
+            him.setPassword(request.getParameter("pswd2"));
+            him.setUsername(request.getParameter("uname2"));
             nodes = client.addNodeToHive(me,him);
 %>
 
