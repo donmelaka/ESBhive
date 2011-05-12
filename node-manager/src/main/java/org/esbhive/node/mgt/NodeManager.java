@@ -17,10 +17,11 @@ import org.esbhive.node.mgt.client.EsbNodeManagerStub;
 //services (objectClass=org.esbhive.*)
 /**
  * @scr.component name="node.manager" immediate="true"
+ * @scr.service interface="org.esbhive.node.mgt.NodeManagerInterface"
  * @scr.reference name="esbhive.login.service" interface="org.esbhive.login.RemoteLogin"
  * cardinality="1..1" policy="dynamic" bind="setRemoteLogin"  unbind="unSetRemoteLogin"
  */
-public class NodeManager
+public class NodeManager implements NodeManagerInterface
 {
   private static Map<String, org.esbhive.node.mgt.ESBNode> nodes
                                       = new HashMap<String,org.esbhive.node.mgt.ESBNode>();
