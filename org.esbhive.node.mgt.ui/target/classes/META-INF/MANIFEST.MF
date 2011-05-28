@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Export-Package: org.esbhive.node.mgt.ui;uses:="org.apache.axis2.addres
+ sing,org.apache.axis2,org.esbhive.node.mgt,org.apache.axis2.transport
+ ,org.apache.axis2.client,org.apache.axis2.context,org.esbhive.node.mg
+ t.data.xsd,javax.xml.namespace,org.apache.axiom.om,org.apache.axis2.d
+ escription,org.apache.axiom.soap,org.apache.axis2.util,javax.xml.stre
+ am,org.apache.axis2.engine,org.apache.axis2.client.async,org.apache.a
+ xis2.databinding",org.esbhive.node.mgt.ui.i18n
+Private-Package: web.node-mgt,web.node-mgt.docs
+Ignore-Package: javax.xml.namespace
+Built-By: Melaka
+Tool: Bnd-0.0.238
+Bundle-Name: org.esbhive.node.mgt.ui
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.6.0_11
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1306210138641
+Bundle-ManifestVersion: 2
+Bundle-Description: carbon-parent
+Import-Package: javax.xml.namespace;version="0.0.0",javax.xml.stream;r
+ esolution:=optional;version="1.0",org.apache.axiom.om;resolution:=opt
+ ional;version="1.2.9.wso2v1",org.apache.axiom.soap;resolution:=option
+ al;version="1.2.9.wso2v1",org.apache.axis2;resolution:=optional,org.a
+ pache.axis2.addressing;resolution:=optional,org.apache.axis2.client;r
+ esolution:=optional,org.apache.axis2.client.async;resolution:=optiona
+ l,org.apache.axis2.context;resolution:=optional,org.apache.axis2.data
+ binding;resolution:=optional,org.apache.axis2.description;resolution:
+ =optional,org.apache.axis2.engine;resolution:=optional,org.apache.axi
+ s2.transport;resolution:=optional,org.apache.axis2.util;resolution:=o
+ ptional,org.esbhive.node.mgt;resolution:=optional,org.esbhive.node.mg
+ t.data.xsd;resolution:=optional,org.esbhive.node.mgt.ui;resolution:=o
+ ptional,org.esbhive.node.mgt.ui.i18n;resolution:=optional
+Carbon-Component: UIBundle
+Bundle-SymbolicName: org.esbhive.node.mgt.ui
+
