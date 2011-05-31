@@ -1,5 +1,5 @@
 <serviceGroup>
-    <service name="EsbNodeManager" scope="transportsession">
+    <service name="EsbNodeManager" scope="application">
         <transports>
             <transport>https</transport>
         </transports>

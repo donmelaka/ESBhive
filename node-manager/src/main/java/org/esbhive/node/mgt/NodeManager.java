@@ -8,12 +8,16 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
+import org.apache.axis2.context.MessageContext;
+import org.apache.axis2.context.ServiceContext;
 import org.esbhive.login.LoginData;
 import org.esbhive.login.RemoteLogin;
 
 import org.esbhive.login.client.AuthenticationExceptionException;
 import org.esbhive.node.mgt.client.EsbNodeManagerStub;
 import org.wso2.carbon.utils.ServerConstants;
+import org.apache.axis2.service.Lifecycle;
+import org.wso2.carbon.utils.ConfigurationContextService;
 
 //services (objectClass=org.esbhive.*)
 /**
@@ -21,17 +25,31 @@ import org.wso2.carbon.utils.ServerConstants;
  * @scr.service interface="org.esbhive.node.mgt.NodeManagerInterface"
  * @scr.reference name="esbhive.login.service" interface="org.esbhive.login.RemoteLogin"
  * cardinality="1..1" policy="dynamic" bind="setRemoteLogin"  unbind="unSetRemoteLogin"
+ * @scr.reference name="configuration.context.service" interface="org.wso2.carbon.utils.ConfigurationContextService" cardinality="1..1"
+ * policy="dynamic" bind="setConfigurationContextService" unbind="unsetConfigurationContextService"
+ * 
  */
-public class NodeManager implements NodeManagerInterface
+public class NodeManager implements NodeManagerInterface,Lifecycle
 {
-  private static Map<String, org.esbhive.node.mgt.ESBNode> nodes
-                                      = new HashMap<String,org.esbhive.node.mgt.ESBNode>();
+  
 	private boolean recurse = true;
   private static RemoteLogin remoteLogin;
+  private static ConfigurationContextService configurationContextService;
+  private static final String NODES = "nodes";
 
 	public NodeManager() {
 
 	}
+
+  public void init(ServiceContext sc) throws AxisFault {
+    Map<String, org.esbhive.node.mgt.ESBNode> nodes
+                                      = new HashMap<String,org.esbhive.node.mgt.ESBNode>();
+    sc.setProperty(NodeManager.NODES, nodes);
+  }
+
+  public void destroy(ServiceContext sc) {
+    throw new UnsupportedOperationException("Not supported yet.");
+  }
 
   protected void setRemoteLogin(RemoteLogin rl){
     remoteLogin = rl;
@@ -40,6 +58,16 @@ public class NodeManager implements NodeManagerInterface
   protected void unSetRemoteLogin(RemoteLogin rl){
     remoteLogin = null;
   }
+
+    protected void setConfigurationContextService(ConfigurationContextService cfgCtxService) {
+        configurationContextService = cfgCtxService;
+        
+    }
+
+    protected void unsetConfigurationContextService(ConfigurationContextService cfgCtxService) {
+        configurationContextService = null;
+    }
+
 
 	//this is called by me to add myself to one esb in the hive
 	public org.esbhive.node.mgt.ESBNode[] addNode(org.esbhive.node.mgt.ESBNode me,
@@ -50,7 +78,10 @@ public class NodeManager implements NodeManagerInterface
     me.setIp(ipAddress);
     me.setHttpsPort(port);
     me.setIpAndPort(ipAddress+":"+port);
-
+    
+    me.setSynapsePort((String) configurationContextService.getServerConfigContext()
+            .getAxisConfiguration().getTransportIn("http")
+            .getParameter("port").getValue());
     LoginData otherNode = new LoginData();
     otherNode.setUserName(addto.getUsername());
     otherNode.setPassWord(addto.getPassword());
@@ -79,22 +110,32 @@ public class NodeManager implements NodeManagerInterface
 		meInOtherFormat.setPassword(me.getPassword());
     meInOtherFormat.setIp(me.getIp());
     meInOtherFormat.setHttpsPort(me.getHttpsPort());
+    meInOtherFormat.setSynapsePort(me.getSynapsePort());
 		org.esbhive.node.mgt.client.ESBNode[] nodeArray =
             nodeManagerStub.addNodeAndGetNodes(meInOtherFormat);
 
+    ServiceContext serviceContext =
+            MessageContext.getCurrentMessageContext().getServiceContext();
+    Map<String, org.esbhive.node.mgt.ESBNode> nodes
+                = (Map<String, ESBNode>) serviceContext.getProperty(NODES);
     if(recurse){
       recurse = false;
       for(int i=0;i<nodeArray.length;i++){
         org.esbhive.node.mgt.ESBNode tempNode =
                 new org.esbhive.node.mgt.ESBNode(nodeArray[i].getIpAndPort(),
                                                  nodeArray[i].getUsername(),
-                                                 nodeArray[i].getPassword());
-        NodeManager.nodes.put(tempNode.getIpAndPort(), tempNode);
+                                                 nodeArray[i].getPassword(),
+                                                 nodeArray[i].getIp(),
+                                                 nodeArray[i].getHttpsPort(),
+                                                 nodeArray[i].getSynapsePort());
+        
+
+        nodes.put(tempNode.getIpAndPort(), tempNode);
         addNode(me, tempNode);
       }
     }
     
-		return NodeManager.nodes.values().toArray(new org.esbhive.node.mgt.ESBNode[nodes.size()]);
+		return nodes.values().toArray(new org.esbhive.node.mgt.ESBNode[nodes.size()]);
     
 
 	}
@@ -106,6 +147,10 @@ public class NodeManager implements NodeManagerInterface
     loginData.setPassWord(node.getPassword());
     loginData.setHostNameAndPort(node.getIpAndPort());
 		remoteLogin.logIn(loginData);
+    ServiceContext serviceContext =
+            MessageContext.getCurrentMessageContext().getServiceContext();
+    Map<String, org.esbhive.node.mgt.ESBNode> nodes
+                = (Map<String, ESBNode>) serviceContext.getProperty(NODES);
     if(loginData.isLoggedIn()){
       nodes.put(node.getIpAndPort(), node);
     }else{
@@ -116,8 +161,14 @@ public class NodeManager implements NodeManagerInterface
 	}
 
 	public org.esbhive.node.mgt.ESBNode[] getNodes() {
+    ServiceContext serviceContext =
+            MessageContext.getCurrentMessageContext().getServiceContext();
+    Map<String, org.esbhive.node.mgt.ESBNode> nodes
+                = (Map<String, ESBNode>) serviceContext.getProperty(NODES);
     org.esbhive.node.mgt.ESBNode[] nodeArray = new org.esbhive.node.mgt.ESBNode[nodes.size()];
 		return nodes.values().toArray(nodeArray);
 	}
+
+ 
 
 }

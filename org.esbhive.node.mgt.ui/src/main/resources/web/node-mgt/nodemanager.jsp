@@ -64,7 +64,8 @@
                 <tr>
                     <th width="40%">Ip Address</th>                            
                     <th width="40%">Https Post</th>
-                    <th width="40%">User Name</th>  
+                    <th width="40%">Synapse Port</th>
+                    <th width="40%">User Name</th>                    
 
                 </tr>
             </thead>
@@ -78,7 +79,8 @@
                     
                     <td><%=node.getIp()%></td>
                     <td><%=node.getHttpsPort()%></td>
-                    <td><%=node.getUsername()%></td>                   
+                    <td><%=node.getSynapsePort()%></td>
+                    <td><%=node.getUsername()%></td>     
             
                 </tr>
 
@@ -102,9 +104,10 @@
         <table class="styledLeft" id="moduleTable">
             <thead>
                 <tr>
-                    <th width="40%">Ip Address</th>
+                     <th width="40%">Ip Address</th>
+                    <th width="40%">Https Post</th>
+                    <th width="40%">Synapse Port</th>
                     <th width="40%">User Name</th>
-                    <th width="20%">Password</th>
                 </tr>
             </thead>
             <tbody>
@@ -113,9 +116,10 @@
 
                 %>
                 <tr>
-                    <td><%=node.getIpAndPort()%></td>
-                    <td><%=node.getUsername()%></td>
-                    <td><%=node.getPassword()%></td>
+                   <td><%=node.getIp()%></td>
+                    <td><%=node.getHttpsPort()%></td>
+                    <td><%=node.getSynapsePort()%></td>
+                    <td><%=node.getUsername()%></td> 
 
                 </tr>
 

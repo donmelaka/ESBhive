@@ -49,10 +49,13 @@ public class ESBNode {
 
 
 
-  public ESBNode(String ip, String username, String password) {
+  public ESBNode(String ip, String username, String password,String realIp,String httpsPort,String synapsePort) {
     this.ipAndPort = ip;
     this.username = username;
     this.password = password;
+    this.ip = realIp;
+    this.httpsPort = httpsPort;
+    this.synapsePort = synapsePort;
   }
 
 
