@@ -11,8 +11,9 @@ import org.apache.axis2.context.ConfigurationContextFactory;
 import org.esbhive.login.LoginData;
 import org.esbhive.login.RemoteLogin;
 
-import  org.esbhive.login.client.AuthenticationExceptionException;
+import org.esbhive.login.client.AuthenticationExceptionException;
 import org.esbhive.node.mgt.client.EsbNodeManagerStub;
+import org.wso2.carbon.utils.ServerConstants;
 
 //services (objectClass=org.esbhive.*)
 /**
@@ -44,6 +45,12 @@ public class NodeManager implements NodeManagerInterface
 	public org.esbhive.node.mgt.ESBNode[] addNode(org.esbhive.node.mgt.ESBNode me,
                            org.esbhive.node.mgt.ESBNode addto) throws AxisFault, RemoteException, AuthenticationExceptionException
                             {
+    String port = System.getProperty("carbon.https.port");
+    String ipAddress = System.getProperty(ServerConstants.LOCAL_IP_ADDRESS);
+    me.setIp(ipAddress);
+    me.setHttpsPort(port);
+    me.setIpAndPort(ipAddress+":"+port);
+
     LoginData otherNode = new LoginData();
     otherNode.setUserName(addto.getUsername());
     otherNode.setPassWord(addto.getPassword());
@@ -70,6 +77,8 @@ public class NodeManager implements NodeManagerInterface
 		meInOtherFormat.setIpAndPort(me.getIpAndPort());
 		meInOtherFormat.setUsername(me.getUsername());
 		meInOtherFormat.setPassword(me.getPassword());
+    meInOtherFormat.setIp(me.getIp());
+    meInOtherFormat.setHttpsPort(me.getHttpsPort());
 		org.esbhive.node.mgt.client.ESBNode[] nodeArray =
             nodeManagerStub.addNodeAndGetNodes(meInOtherFormat);
 

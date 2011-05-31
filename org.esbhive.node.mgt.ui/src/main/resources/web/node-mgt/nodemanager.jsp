@@ -44,8 +44,7 @@
 
            // nodes=client.getNodes();
            if(request.getMethod().equalsIgnoreCase("POST")){
-            ESBNode me = new ESBNode();           
-            me.setIpAndPort(request.getParameter("ip1"));
+            ESBNode me = new ESBNode();                       
             me.setPassword(request.getParameter("pswd1"));
             me.setUsername(request.getParameter("uname1"));
 
@@ -63,9 +62,10 @@
         <table class="styledLeft" id="moduleTable">
             <thead>
                 <tr>
-                    <th width="40%">Ip Address</th>
-                    <th width="40%">User Name</th>
-                    <th width="20%">Password</th>
+                    <th width="40%">Ip Address</th>                            
+                    <th width="40%">Https Post</th>
+                    <th width="40%">User Name</th>  
+
                 </tr>
             </thead>
             <tbody>
@@ -74,10 +74,12 @@
 
                 %>
                 <tr>
-                    <td><%=node.getIpAndPort()%></td>
-                    <td><%=node.getUsername()%></td>
-                    <td><%=node.getPassword()%></td>
-
+                    
+                    
+                    <td><%=node.getIp()%></td>
+                    <td><%=node.getHttpsPort()%></td>
+                    <td><%=node.getUsername()%></td>                   
+            
                 </tr>
 
                 <%
@@ -129,39 +131,33 @@
             else {
 %>
 <form action="nodemanager.jsp" method="POST" >
-    <table width="75%">
+    <table width="75%">      
         <tr>
-            <td width="48%">IP Address_1 </td>
-            <td width="52%">
-                <input type="text" name="ip1" />
-            </td>
-        </tr>
-        <tr>
-            <td width="48%">User Name_1 </td>
+            <td width="48%">This Nodes's Loign Username</td>
             <td width="52%">
                 <input type="text" name="uname1" />
             </td>
         </tr>
         <tr>
-            <td width="48%">Password_1 </td>
+            <td width="48%">This Nodes's Loign Password</td>
             <td width="52%">
                 <input type="password" name="pswd1" />
             </td>
         </tr>
         <tr>
-            <td width="48%">IP Address_2 </td>
+            <td width="48%">Other Node's ip:port</td>
             <td width="52%">
                 <input type="text" name="ip2" />
             </td>
         </tr>
         <tr>
-            <td width="48%">User Name_2</td>
+            <td width="48%">Other Node's Login Username</td>
             <td width="52%">
                 <input type="text" name="uname2" />
             </td>
         </tr>
         <tr>
-            <td width="48%">Password_2 </td>
+            <td width="48%">Other Node's Login Password</td>
             <td width="52%">
                 <input type="password" name="pswd2" />
             </td>
