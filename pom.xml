@@ -25,7 +25,8 @@
 		<module>node-manager</module>
     <module>remote-login</module>
     <module>org.esbhive.node.mgt.ui</module>
-    <module>list-consumer-sample</module>    
+    <module>list-consumer-sample</module> 
+    <module>org.esbhive.hp.mgt</module>   
   </modules>
   <build>
     <pluginManagement>
