@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"/>
+    <title>Proxy Services - User Guide</title>
+    <link href="../../admin/css/documentation.css" rel="stylesheet" type="text/css" media="all"/>
+</head>
+
+<body>
+<h1>Custom Proxy Services</h1>
+<p><a href="userguide.html">Main Article</a></p>
+<p>
+    When you want to create a proxy service with customized attributes (sequences, endpoints,
+    transport settings, WSDL options, QoS settings) you will have to select the <strong>
+    Custom Proxy</strong> option from the <strong>Create Proxy Service from Template</strong>
+    page. This will launch the proxy service creation wizard which is a simple 3-step process
+    for setting up a fully functional proxy service tailored to meet your exact mediation
+    requirements. You can either use predefined sequences and endpoints in your proxy service,
+    select dynamic sequences and endpoints saved in the registry or create in-line sequences
+    and endpoints while creating the proxy service.
+</p>
+<p>
+    Also note that the same wizard is used to edit existing proxy services. You have the option
+    of first setting up a simple basic proxy service using one of the existing templates and
+    then editing it using the proxy service wizard to customize its attributes.
+</p>
+
+<h2>Proxy Service Creation Wizard</h2>
+<p>
+    When creating a custom proxy service using the proxy service creation wizard
+    you will be first taken to the <strong>Add Proxy Service</strong> page shown
+    below.
+</p>
+<div class="image">
+    <img  alt="add proxy image" src="images/add_proxy.png"/>
+
+    <p>Figure 1: Add Proxy Service</p>
+</div>
+<ol>
+    <li>At the <em><strong>Add Proxy Service</strong></em> page, you will see
+        the <strong>General</strong> and <strong>Transport</strong> tabs.
+    </li>
+    <li>Enter the details on the <strong>General</strong> tab. (Use the Publishing
+    WSDL option to specify a WSDL to be published along with the proxy service.
+    Pinned Servers option can be used to bind the proxy service to a subset of
+    ESB servers in a clustered ESB deployment.)</li>
+    <div class="image">
+        <img alt="General settings" src="images/general_settings.png"/>
+
+        <p>Figure 2: General Settings</p>
+    </div>
+    <li>Next, enter the details on the <em><strong>Transport</strong></em>
+        tab.
+    </li>
+    <div class="image">
+        <img alt="Transport setting" src="images/transport_settings.png"/>
+
+        <p>Figure 3: Transport Options</p>
+    </div>
+    <li>Enter the service parameters and click <strong>Add Parameter</strong>.</li>
+    <li>Click <strong>Next</strong>.You'll be redirected to Insequence and endpoints.</li>
+    <div class="image">
+        <img alt="" src="images/in_end_sequence.png"/>
+
+        <p>Figure 4:In Sequence and endpoints options</p>
+    </div>
+</ol>
+
+
+<ul>
+    <li><h4>Add In-Sequence settings</h4>
+    </li>
+</ul>
+<ol>
+    <li>Click <strong>Next</strong>. The <a
+            href="https://localhost:9443/carbon/sequences/docs/userguide.html">In-sequence</a>
+        options are displayed.
+    </li>
+    <div class="image">
+        <img alt="" src="images/in_sequence_options.png"/>
+
+        <p>Figure 5:In Sequence Options</p>
+    </div>
+    <li>Select the in-sequence you want to add.
+        If you select <strong>Anonymous,</strong>you have to add the <a
+            href="https://localhost:9443/carbon/sequences/docs/userguide.html">sequence.</a>
+        Create your sequence using the <strong>Add Child</strong> option on the
+        <em><strong>Design Sequence</strong></em> page.
+    </li>
+    <div class="image">
+        <img alt="" src="images/ann_sequence.png"/>
+
+        <p>Figure 6: Adding Anonymous Sequence</p>
+    </div>
+    <li>Click <strong>Save,to save the sequence</strong>.</li>
+</ol>
+
+
+<ul>
+    <li><h4>Add Endpoint settings</h4></li>
+</ul>
+<ol>
+    <li>Go to the <strong>Endpoint options</strong> tab.</li>
+    <div class="image">
+        <img alt="" src="images/endpoint_options.png"/>
+
+        <p>Figure 7: Endpoint Options</p>
+    </div>
+    <li>Select the endpoint you want to add.
+        If you select <strong>Anonymous,</strong>you have to add the <a
+            href="https://localhost:9443/carbon/endpoints/docs/userguide.html">Endpoint</a>.
+        On the <em><strong>Manage Endpoints</strong></em> page, select the
+        endpoint you want to add.
+    </li>
+</ol>
+
+
+<ul>
+    <li><h4>Add Out Sequence settings</h4></li>
+</ul>
+<ol>
+    <li>Click <strong>Next</strong>. The <a
+            href="https://localhost:9443/carbon/sequences/docs/userguide.html">Out
+        Sequence</a> and <a
+            href="https://localhost:9443/carbon/sequences/docs/userguide.html">Fault
+        Sequece</a> options are displayed.
+    </li>
+    <div>
+        <img alt="" src="images/out_sequence.png" name="image"/>
+
+        <p>Figure 8: End point options</p>
+    </div>
+    <li>Select the out-sequence you want to add.
+        If you select <strong>Anonymous,</strong>you have to add the <a
+            href="https://localhost:9443/carbon/sequences/docs/userguide.html">sequence</a>
+        . Create your sequence using the <strong>Add Child</strong> option on the
+        <em><strong>Design Sequence</strong></em> page.
+    </li>
+    <div class="image">
+        <img alt="" src="images/out_sequence_options.png" name="image"/>
+
+        <p>Figure 9: Out Sequencce options</p>
+    </div>
+</ol>
+
+
+<ul>
+    <li><h4>Add Fault Sequence settings</h4></li>
+</ul>
+<ol>
+    <li>Go to the Fault-Sequence tab.</li>
+    <div class="image">
+        <img alt="" src="images/fault_sequence_options.png"/>
+
+        <p>Figure 10: Fault Sequence options</p>
+    </div>
+    <li>Select the fault-sequence you want to add.
+        If you select <strong>Anonymous,</strong>you have to add the <a
+            href="https://localhost:9443/carbon/sequences/docs/userguide.html">sequence</a>
+        . Create your sequence using the <strong>Add Child</strong> option on the
+        <em><strong>Design Sequence</strong></em> page.
+    </li>
+    <li>Click <strong>Finish</strong>.</li>
+</ol>
+
+<p>You can view your service on the <em><strong>Deployed
+    Services</strong></em> page.</p>
+
+</body>
+</html>
