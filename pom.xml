@@ -26,7 +26,8 @@
     <module>remote-login</module>
     <module>org.esbhive.node.mgt.ui</module>
     <module>list-consumer-sample</module> 
-    <module>org.esbhive.hp.mgt</module>   
+    <module>org.esbhive.hp.mgt</module>
+    <module>org.wso2.carbon.proxyadmin.ui/3.0.0</module>
   </modules>
   <build>
     <pluginManagement>
