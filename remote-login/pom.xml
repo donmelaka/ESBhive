@@ -27,6 +27,11 @@
       <artifactId>axis2</artifactId>
 			<version>1.6.0-wso2v1</version>
     </dependency>
+    <dependency>
+        <groupId>org.wso2.carbon</groupId>
+        <artifactId>org.wso2.carbon.logging</artifactId>
+        <version>3.0.0</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -65,6 +70,7 @@
               !javax.xml.namespace,
               javax.xml.namespace;version="0.0.0",
               *;resolution:=optional,
+              org.apache.commons.logging
             </Import-Package>
           </instructions>
         </configuration>
