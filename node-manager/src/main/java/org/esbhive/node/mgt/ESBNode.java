@@ -5,11 +5,13 @@
 
 package org.esbhive.node.mgt;
 
+import java.io.Serializable;
+
 /**
  *
  * @author pubudu
  */
-public class ESBNode {
+public class ESBNode implements Serializable{
   private String ipAndPort;
 
   
