@@ -12,6 +12,8 @@ import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
 import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.esbhive.login.LoginData;
 import org.esbhive.login.RemoteLogin;
 import org.esbhive.login.client.AuthenticationAdminStub;
@@ -26,7 +28,9 @@ import org.esbhive.login.client.AuthenticationExceptionException;
  */
 
 public class RemoteLoginImpl implements RemoteLogin{
-
+  //The string passed to getLog should be of the form org.wso2.carbon.NAME
+  private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveRemoteLogin");
+  
   public LoginData logIn(LoginData data) throws AxisFault,
           RemoteException, AuthenticationExceptionException {
     ConfigurationContext ctx =
@@ -48,7 +52,8 @@ public class RemoteLoginImpl implements RemoteLogin{
                             ._getServiceClient()
                             .getServiceContext()
                             .getProperty(HTTPConstants.COOKIE_STRING);
-    data.setCookie(cookie);    
+    data.setCookie(cookie);
+    log.info("Login attempt to "+data.getHostNameAndPort()+" was successful.");
     return data;
     
   }
