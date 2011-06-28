@@ -8,15 +8,13 @@ import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.ConfigurationContextFactory;
-import org.apache.axis2.context.MessageContext;
-import org.apache.axis2.context.ServiceContext;
+
 import org.esbhive.login.LoginData;
 import org.esbhive.login.RemoteLogin;
 
 import org.esbhive.login.client.AuthenticationExceptionException;
 import org.esbhive.node.mgt.client.EsbNodeManagerStub;
 import org.wso2.carbon.utils.ServerConstants;
-import org.apache.axis2.service.Lifecycle;
 import org.wso2.carbon.utils.ConfigurationContextService;
 
 //services (objectClass=org.esbhive.*)
@@ -29,27 +27,22 @@ import org.wso2.carbon.utils.ConfigurationContextService;
  * policy="dynamic" bind="setConfigurationContextService" unbind="unsetConfigurationContextService"
  * 
  */
-public class NodeManager implements NodeManagerInterface,Lifecycle
+public class NodeManager implements NodeManagerInterface
 {
   
 	private boolean recurse = true;
   private static RemoteLogin remoteLogin;
   private static ConfigurationContextService configurationContextService;
-  private static final String NODES = "nodes";
+  private static Map<String, org.esbhive.node.mgt.ESBNode> nodes
+                = new HashMap<String, ESBNode>();
 
 	public NodeManager() {
 
 	}
 
-  public void init(ServiceContext sc) throws AxisFault {
-    Map<String, org.esbhive.node.mgt.ESBNode> nodes
-                                      = new HashMap<String,org.esbhive.node.mgt.ESBNode>();
-    sc.setProperty(NodeManager.NODES, nodes);
-  }
+  
 
-  public void destroy(ServiceContext sc) {
-    throw new UnsupportedOperationException("Not supported yet.");
-  }
+  
 
   protected void setRemoteLogin(RemoteLogin rl){
     remoteLogin = rl;
@@ -114,10 +107,7 @@ public class NodeManager implements NodeManagerInterface,Lifecycle
 		org.esbhive.node.mgt.client.ESBNode[] nodeArray =
             nodeManagerStub.addNodeAndGetNodes(meInOtherFormat);
 
-    ServiceContext serviceContext =
-            MessageContext.getCurrentMessageContext().getServiceContext();
-    Map<String, org.esbhive.node.mgt.ESBNode> nodes
-                = (Map<String, ESBNode>) serviceContext.getProperty(NODES);
+    
     if(recurse){
       recurse = false;
       for(int i=0;i<nodeArray.length;i++){
@@ -147,10 +137,6 @@ public class NodeManager implements NodeManagerInterface,Lifecycle
     loginData.setPassWord(node.getPassword());
     loginData.setHostNameAndPort(node.getIpAndPort());
 		remoteLogin.logIn(loginData);
-    ServiceContext serviceContext =
-            MessageContext.getCurrentMessageContext().getServiceContext();
-    Map<String, org.esbhive.node.mgt.ESBNode> nodes
-                = (Map<String, ESBNode>) serviceContext.getProperty(NODES);
     if(loginData.isLoggedIn()){
       nodes.put(node.getIpAndPort(), node);
     }else{
@@ -161,10 +147,7 @@ public class NodeManager implements NodeManagerInterface,Lifecycle
 	}
 
 	public org.esbhive.node.mgt.ESBNode[] getNodes() {
-    ServiceContext serviceContext =
-            MessageContext.getCurrentMessageContext().getServiceContext();
-    Map<String, org.esbhive.node.mgt.ESBNode> nodes
-                = (Map<String, ESBNode>) serviceContext.getProperty(NODES);
+    
     org.esbhive.node.mgt.ESBNode[] nodeArray = new org.esbhive.node.mgt.ESBNode[nodes.size()];
 		return nodes.values().toArray(nodeArray);
 	}

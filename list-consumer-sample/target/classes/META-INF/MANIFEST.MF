@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Export-Package: org.esbhive.node.consumer;uses:="org.esbhive.node.mgt,
+ org.eclipse.osgi.framework.console"
+Service-Component: OSGI-INF/serviceComponents.xml
+Built-By: Melaka
+Tool: Bnd-0.0.238
+Bundle-Name: list-consumer-sample
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.6.0_11
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1306921629526
+Bundle-ManifestVersion: 2
+Bundle-Description: carbon-parent
+Import-Package: org.eclipse.osgi.framework.console;version="1.0",org.e
+ sbhive.node.mgt
+Bundle-SymbolicName: list-consumer-sample
+

@@ -1030,7 +1030,7 @@ public class HiveProxyServiceAdmin {
         dummyProxy.setOutSeqXML("<outSequence xmlns=\"http://ws.apache.org/ns/synapse\"><send/></outSequence>");
         URL url = null;
         try {
-            String targetURL = "http://"+selectedEsb.getIpAndPort().substring(0, selectedEsb.getIpAndPort().indexOf(':'))+":8280/services/"+pd.getName();
+            String targetURL = "http://"+selectedEsb.getIpAndPort().substring(0, selectedEsb.getIpAndPort().indexOf(':'))+":"+selectedEsb.getSynapsePort()+"/services/"+pd.getName();
             url = new URL(targetURL);
         } catch (MalformedURLException ex) {
             Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);

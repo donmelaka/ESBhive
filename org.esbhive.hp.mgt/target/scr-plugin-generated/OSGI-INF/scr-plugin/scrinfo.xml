@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.0.0">
+    <scr:component enabled="true" immediate="true" name="node.manager">
+        <implementation class="org.esbhive.hp.mgt.HiveProxyServiceAdmin"/>
+        <property name="service.pid" value="node.manager" private="false"/>
+        <reference name="esbhive.node.service" interface="org.esbhive.node.mgt.NodeManagerInterface" cardinality="1..1" policy="dynamic" bind="setNodeManager" unbind="unsetNodeManager" checked="true"/>
+    </scr:component>
+</components>
