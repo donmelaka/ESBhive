@@ -114,7 +114,7 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   }
 
   public org.esbhive.node.mgt.ESBNode[] getNodes() {
-    return (ESBNode[]) nodeMap.values().toArray();
+    return nodeMap.values().toArray(new ESBNode[0]);
   }
 
   public void process(WatchedEvent event) {
