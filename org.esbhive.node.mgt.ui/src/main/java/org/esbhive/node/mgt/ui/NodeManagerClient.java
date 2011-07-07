@@ -41,9 +41,10 @@ public class NodeManagerClient
   }
 
   public ESBNode[] getNodes() throws java.lang.Exception{
-    ESBNode node = new ESBNode();    
+    ESBNode[] nodes;
     try {
-      return stub.getNodes();
+      nodes = stub.getNodes();
+      return nodes;
     } catch (RemoteException ex) {
       String message = "Error  when getting nodes";
       throw new java.lang.Exception(message,ex);

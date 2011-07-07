@@ -50,7 +50,7 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   private static ConfigurationContextService configurationContextService;
   ZooKeeper zk;
   private final String NODES = "/nodes";
-  Map<String, ESBNode> nodeMap = new HashMap<String, ESBNode>();
+  static Map<String, ESBNode> nodeMap = new HashMap<String, ESBNode>();
   private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveNodeManager");
   private ServerConfiguration serverConfig;
 

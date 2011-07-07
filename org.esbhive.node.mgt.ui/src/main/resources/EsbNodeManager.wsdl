@@ -1,4 +1,4 @@
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://mgt.node.esbhive.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http1="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax23="http://mgt.node.esbhive.org/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mgt.node.esbhive.org">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://mgt.node.esbhive.org" xmlns:ax27="http://mgt.node.esbhive.org/xsd" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http1="http://schemas.xmlsoap.org/wsdl/http/" xmlns:ax23="http://zookeeper.apache.org/xsd" xmlns:ax24="http://proto.zookeeper.apache.org/xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mgt.node.esbhive.org">
     <wsdl:documentation>EsbNodeManager</wsdl:documentation>
     <wsdl:types>
         <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.node.esbhive.org/xsd">
@@ -7,89 +7,83 @@
                     <xs:element minOccurs="0" name="httpsPort" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="ip" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="ipAndPort" nillable="true" type="xs:string" />
-
                     <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="synapsePort" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>
-        <xs:schema xmlns:ax24="http://mgt.node.esbhive.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.node.esbhive.org">
+        <xs:schema xmlns:ax28="http://mgt.node.esbhive.org/xsd" xmlns:ax26="http://zookeeper.apache.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.node.esbhive.org">
+            <xs:import namespace="http://zookeeper.apache.org/xsd" />
             <xs:import namespace="http://mgt.node.esbhive.org/xsd" />
+            <xs:element name="process">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="event" nillable="true" type="ax26:WatchedEvent" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="getNodesResponse">
-
                 <xs:complexType>
                     <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:ESBNode" />
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="addNodeAndGetNodes">
-                <xs:complexType>
-                    <xs:sequence>
-
-                        <xs:element minOccurs="0" name="node" nillable="true" type="ax23:ESBNode" />
-                    </xs:sequence>
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="addNodeAndGetNodesResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:ESBNode" />
-                    </xs:sequence>
-
-                </xs:complexType>
-            </xs:element>
-            <xs:element name="addNode">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element minOccurs="0" name="me" nillable="true" type="ax23:ESBNode" />
-                        <xs:element minOccurs="0" name="addto" nillable="true" type="ax23:ESBNode" />
-                    </xs:sequence>
-                </xs:complexType>
-
-            </xs:element>
-            <xs:element name="addNodeResponse">
-                <xs:complexType>
-                    <xs:sequence>
-                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax23:ESBNode" />
+                        <xs:element maxOccurs="unbounded" minOccurs="0" name="return" nillable="true" type="ax27:ESBNode" />
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
         </xs:schema>
-
+        <xs:schema attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://proto.zookeeper.apache.org/xsd">
+            <xs:complexType name="WatcherEvent">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="path" nillable="true" type="xs:string" />
+                    <xs:element minOccurs="0" name="state" type="xs:int" />
+                    <xs:element minOccurs="0" name="type" type="xs:int" />
+                </xs:sequence>
+            </xs:complexType>
+        </xs:schema>
+        <xs:schema xmlns:ax25="http://proto.zookeeper.apache.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://zookeeper.apache.org/xsd">
+            <xs:import namespace="http://proto.zookeeper.apache.org/xsd" />
+            <xs:complexType name="WatchedEvent">
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="path" nillable="true" type="xs:string" />
+                    <xs:element minOccurs="0" name="state" nillable="true" />
+                    <xs:element minOccurs="0" name="type" nillable="true" />
+                    <xs:element minOccurs="0" name="wrapper" nillable="true" type="ax25:WatcherEvent" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="Watcher_Event_KeeperState">
+                <xs:complexContent>
+                    <xs:extension base="xs:Enum">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="intValue" type="xs:int" />
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+            <xs:complexType name="Watcher_Event_EventType">
+                <xs:complexContent>
+                    <xs:extension base="xs:Enum">
+                        <xs:sequence>
+                            <xs:element minOccurs="0" name="intValue" type="xs:int" />
+                        </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+        </xs:schema>
     </wsdl:types>
     <wsdl:message name="getNodesRequest" />
     <wsdl:message name="getNodesResponse">
         <wsdl:part name="parameters" element="ns:getNodesResponse" />
     </wsdl:message>
-    <wsdl:message name="addNodeRequest">
-        <wsdl:part name="parameters" element="ns:addNode" />
-    </wsdl:message>
-    <wsdl:message name="addNodeResponse">
-
-        <wsdl:part name="parameters" element="ns:addNodeResponse" />
-    </wsdl:message>
-    <wsdl:message name="addNodeAndGetNodesRequest">
-        <wsdl:part name="parameters" element="ns:addNodeAndGetNodes" />
-    </wsdl:message>
-    <wsdl:message name="addNodeAndGetNodesResponse">
-        <wsdl:part name="parameters" element="ns:addNodeAndGetNodesResponse" />
+    <wsdl:message name="processRequest">
+        <wsdl:part name="parameters" element="ns:process" />
     </wsdl:message>
     <wsdl:portType name="EsbNodeManagerPortType">
-
         <wsdl:operation name="getNodes">
             <wsdl:input message="ns:getNodesRequest" wsaw:Action="urn:getNodes" />
             <wsdl:output message="ns:getNodesResponse" wsaw:Action="urn:getNodesResponse" />
         </wsdl:operation>
-        <wsdl:operation name="addNode">
-            <wsdl:input message="ns:addNodeRequest" wsaw:Action="urn:addNode" />
-            <wsdl:output message="ns:addNodeResponse" wsaw:Action="urn:addNodeResponse" />
-        </wsdl:operation>
-        <wsdl:operation name="addNodeAndGetNodes">
-
-            <wsdl:input message="ns:addNodeAndGetNodesRequest" wsaw:Action="urn:addNodeAndGetNodes" />
-            <wsdl:output message="ns:addNodeAndGetNodesResponse" wsaw:Action="urn:addNodeAndGetNodesResponse" />
+        <wsdl:operation name="process">
+            <wsdl:input message="ns:processRequest" wsaw:Action="urn:process" />
         </wsdl:operation>
     </wsdl:portType>
     <wsdl:binding name="EsbNodeManagerSoap11Binding" type="ns:EsbNodeManagerPortType">
@@ -97,37 +91,21 @@
         <wsdl:operation name="getNodes">
             <soap:operation soapAction="urn:getNodes" style="document" />
             <wsdl:input>
-
                 <soap:body use="literal" />
             </wsdl:input>
             <wsdl:output>
                 <soap:body use="literal" />
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="addNode">
-            <soap:operation soapAction="urn:addNode" style="document" />
+        <wsdl:operation name="process">
+            <soap:operation soapAction="urn:process" style="document" />
             <wsdl:input>
-
                 <soap:body use="literal" />
             </wsdl:input>
-            <wsdl:output>
-                <soap:body use="literal" />
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="addNodeAndGetNodes">
-            <soap:operation soapAction="urn:addNodeAndGetNodes" style="document" />
-            <wsdl:input>
-
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:body use="literal" />
-            </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
     <wsdl:binding name="EsbNodeManagerSoap12Binding" type="ns:EsbNodeManagerPortType">
         <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
-
         <wsdl:operation name="getNodes">
             <soap12:operation soapAction="urn:getNodes" style="document" />
             <wsdl:input>
@@ -137,27 +115,12 @@
                 <soap12:body use="literal" />
             </wsdl:output>
         </wsdl:operation>
-
-        <wsdl:operation name="addNode">
-            <soap12:operation soapAction="urn:addNode" style="document" />
+        <wsdl:operation name="process">
+            <soap12:operation soapAction="urn:process" style="document" />
             <wsdl:input>
                 <soap12:body use="literal" />
             </wsdl:input>
-            <wsdl:output>
-                <soap12:body use="literal" />
-            </wsdl:output>
         </wsdl:operation>
-
-        <wsdl:operation name="addNodeAndGetNodes">
-            <soap12:operation soapAction="urn:addNodeAndGetNodes" style="document" />
-            <wsdl:input>
-                <soap12:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap12:body use="literal" />
-            </wsdl:output>
-        </wsdl:operation>
-
     </wsdl:binding>
     <wsdl:binding name="EsbNodeManagerHttpBinding" type="ns:EsbNodeManagerPortType">
         <http1:binding verb="POST" />
@@ -167,41 +130,25 @@
                 <mime:content type="text/xml" part="getNodes" />
             </wsdl:input>
             <wsdl:output>
-
                 <mime:content type="text/xml" part="getNodes" />
             </wsdl:output>
         </wsdl:operation>
-        <wsdl:operation name="addNode">
-            <http1:operation location="addNode" />
+        <wsdl:operation name="process">
+            <http1:operation location="process" />
             <wsdl:input>
-                <mime:content type="text/xml" part="addNode" />
+                <mime:content type="text/xml" part="process" />
             </wsdl:input>
-            <wsdl:output>
-
-                <mime:content type="text/xml" part="addNode" />
-            </wsdl:output>
-        </wsdl:operation>
-        <wsdl:operation name="addNodeAndGetNodes">
-            <http1:operation location="addNodeAndGetNodes" />
-            <wsdl:input>
-                <mime:content type="text/xml" part="addNodeAndGetNodes" />
-            </wsdl:input>
-            <wsdl:output>
-
-                <mime:content type="text/xml" part="addNodeAndGetNodes" />
-            </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
     <wsdl:service name="EsbNodeManager">
         <wsdl:port name="EsbNodeManagerHttpsSoap11Endpoint" binding="ns:EsbNodeManagerSoap11Binding">
-            <soap:address location="https://localhost:8243/services/EsbNodeManager.EsbNodeManagerHttpsSoap11Endpoint" />
+            <soap:address location="https://localhost:8244/services/EsbNodeManager.EsbNodeManagerHttpsSoap11Endpoint" />
         </wsdl:port>
         <wsdl:port name="EsbNodeManagerHttpsSoap12Endpoint" binding="ns:EsbNodeManagerSoap12Binding">
-
-            <soap12:address location="https://localhost:8243/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint" />
+            <soap12:address location="https://localhost:8244/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint" />
         </wsdl:port>
         <wsdl:port name="EsbNodeManagerHttpsEndpoint" binding="ns:EsbNodeManagerHttpBinding">
-            <http1:address location="https://localhost:8243/services/EsbNodeManager.EsbNodeManagerHttpsEndpoint" />
+            <http1:address location="https://localhost:8244/services/EsbNodeManager.EsbNodeManagerHttpsEndpoint" />
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
