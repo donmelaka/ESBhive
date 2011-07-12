@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -49,10 +50,12 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
   private static ConfigurationContextService configurationContextService;
   ZooKeeper zk;
-  private final String NODES = "/nodes";
+  final String NODES = "/nodes";
+  private final String FAILURES = "/failures";
   static Map<String, ESBNode> nodeMap = new HashMap<String, ESBNode>();
   private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveNodeManager");
   private ServerConfiguration serverConfig;
+  private Map <String,String> failures = new HashMap<String,String>();
 
   public NodeManager() {
   }
@@ -66,6 +69,11 @@ public class NodeManager implements NodeManagerInterface, Watcher {
       Stat nodesRoot = zk.exists(NODES, false);
       if (nodesRoot == null) {
         zk.create(NODES, new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+      }
+
+      Stat failuresRoot = zk.exists(FAILURES, false);
+      if (failuresRoot == null) {
+        zk.create(FAILURES, new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
       }
 
       ESBNode thisNode = thisNode();
@@ -118,9 +126,13 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   }
 
   public void process(WatchedEvent event) {
+    if(event.getPath().contains(NODES))
+      handleNodeEvent(event);
+  }
+
+  private void handleNodeEvent(WatchedEvent event){
     EventType et = event.getType();
     if (et == EventType.None) {
-      
     } else if (et == EventType.NodeChildrenChanged) {
       try {
         List<String> nodeList = zk.getChildren(NODES, true);
@@ -131,8 +143,6 @@ public class NodeManager implements NodeManagerInterface, Watcher {
             String ip = iter.next();
             nodeMap.put(ip, createESBNodeFromZnode(ip));
             log.info("New node added. Ip : " + ip + ". Current Nodes = " + nodeMap.keySet());
-//            log.info("New node username : " +createESBNodeFromZnode(ip).getUsername());
-//            log.info("New node password : " +createESBNodeFromZnode(ip).getPassword());
           }
         } else if (nodeSet.size() > nodeList.size()) {
           Set nodeSetCopy = new HashSet(nodeSet);
@@ -141,6 +151,7 @@ public class NodeManager implements NodeManagerInterface, Watcher {
             String ip = iter.next();
             nodeMap.remove(ip);
             log.info("Node Failed. Ip : " + ip + ". Current Nodes = " + nodeMap.keySet());
+            this.repairFailure(ip);
           }
         }
       } catch (IOException ex) {
@@ -158,7 +169,7 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
   private ESBNode createESBNodeFromZnode(String zNode) throws IOException, KeeperException,
           ClassNotFoundException, InterruptedException {
-    byte[] bytes = zk.getData(this.NODES+"/"+zNode, false, null);
+    byte[] bytes = zk.getData(this.NODES + "/" + zNode, false, null);
     ESBNode node = toESBNode(bytes);
     node.setIp(zNode);
     return node;
@@ -204,5 +215,42 @@ public class NodeManager implements NodeManagerInterface, Watcher {
     ObjectInputStream ois = new ObjectInputStream(bis);
     obj = ois.readObject();
     return (ESBNode) obj;
+  }
+
+  private void repairFailure(String ip) {
+    String myName = thisNode().getIpAndPort();
+    try {
+      String mainPath = FAILURES + "/" + ip;
+      if(failures.get(mainPath)!=null)return;
+      Stat failure = zk.exists(mainPath, false);
+      if (failure == null) {
+        zk.create(mainPath,new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+      }
+      log.info(myName + ": Running leader election on node " + ip);
+      String path = zk.create(mainPath + "/n_", new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+      log.info(myName +": Created znode "+path+".");
+      failures.put(mainPath, path);
+      amITheLeader(mainPath, path);
+    } catch (Exception ex) {
+      log.error("Error when trying to repair failure of" + ip, ex);
+    }
+
+  }
+  private void amITheLeader(String mainPath, String path){
+    try{
+      List<String> childern = zk.getChildren(mainPath, this);
+      log.info("Checking leader : current znodes are: "+ childern);
+      String[] chidrenArray = childern.toArray(new String[0]);
+      Arrays.sort(chidrenArray);
+      log.info("The smallest child is "+chidrenArray[0]);
+      log.info("The child I created is "+failures.get(mainPath).substring(mainPath.length()+1));
+      if(failures.get(mainPath).substring(mainPath.length()+1).equals(chidrenArray[0])){
+        log.info(thisNode().getIpAndPort()+": I'm the leader.");
+      }
+      //TODO after fixing remove from failures map
+      //TODO listen for leader failure
+    }catch(Exception ex){
+      log.error("Error when trying to check for leadership" + path , ex);
+    }
   }
 }
