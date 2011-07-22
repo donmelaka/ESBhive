@@ -52,7 +52,7 @@
             him.setIpAndPort(request.getParameter("ip2"));
             him.setPassword(request.getParameter("pswd2"));
             him.setUsername(request.getParameter("uname2"));
-            nodes = client.addNodeToHive(me,him);
+            //nodes = client.addNodeToHive(me,him);
 %>
 
 <div id="middle">
