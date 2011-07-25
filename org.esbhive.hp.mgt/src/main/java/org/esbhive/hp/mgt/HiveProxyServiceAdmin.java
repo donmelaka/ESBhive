@@ -337,7 +337,7 @@ public class HiveProxyServiceAdmin {
      * @return <code>successful</code> on success or <code>failed</code> otherwise
      */
     public String deleteProxyService(String proxyName) throws ProxyAdminException {
-         try {
+        try {
             log.debug("Deleting proxy service : " + proxyName);
             SynapseConfiguration synapseConfiguration = ConfigHolder.getInstance().getSynapseConfiguration();
             ProxyService proxy = synapseConfiguration.getProxyService(proxyName);
@@ -377,7 +377,7 @@ public class HiveProxyServiceAdmin {
      * @throws ProxyAdminException if there is an error
      */
     public String[] getAvailableSequences() throws ProxyAdminException {
-       try {
+        try {
             Object[] sequences = ConfigHolder.getInstance().getSynapseConfiguration().getDefinedSequences().keySet().toArray();
             String[] ret = new String[sequences.length];
             for (int i = 0; i < sequences.length; i++) {
@@ -397,7 +397,7 @@ public class HiveProxyServiceAdmin {
      * @throws ProxyAdminException if there is an error
      */
     public String[] getAvailableEndpoints() throws ProxyAdminException {
-      String port = System.getProperty("carbon.https.port");
+        String port = System.getProperty("carbon.https.port");
 
         String ipAddress = System.getProperty(ServerConstants.LOCAL_IP_ADDRESS);
         try {
@@ -1027,10 +1027,11 @@ public class HiveProxyServiceAdmin {
 
 
         dummyProxy.setName(pd.getName());
+        //        dummyProxy.setInSeqXML("<inSequence xmlns=\"http://ws.apache.org/ns/synapse\"><class name=mediatorPath></class></inSequence>");
         dummyProxy.setOutSeqXML("<outSequence xmlns=\"http://ws.apache.org/ns/synapse\"><send/></outSequence>");
         URL url = null;
         try {
-            String targetURL = "http://"+selectedEsb.getIpAndPort().substring(0, selectedEsb.getIpAndPort().indexOf(':'))+":8280/services/"+pd.getName();
+            String targetURL = "http://" + selectedEsb.getIpAndPort().substring(0, selectedEsb.getIpAndPort().indexOf(':')) + ":8280/services/" + pd.getName();
             url = new URL(targetURL);
         } catch (MalformedURLException ex) {
             Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
