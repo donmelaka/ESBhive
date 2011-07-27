@@ -43,6 +43,11 @@
       <version>3.2.0.v20090520-1800</version>
       <type>jar</type>
     </dependency>
+    <dependency>
+      <groupId>org.esbhive</groupId>
+      <artifactId>Fault_Handler</artifactId>
+      <version>1.0-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
 
@@ -77,6 +82,7 @@
                org.apache.axis2.description,
                org.apache.axis2.engine, org.apache.zookeeper,
                org.apache.zookeeper.data, org.wso2.carbon.utils,
+              org.esbhive.fault_handler,
                org.osgi.service.component
             </Import-Package>
           </instructions>

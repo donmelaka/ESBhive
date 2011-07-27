@@ -21,6 +21,7 @@ import org.apache.zookeeper.Watcher;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.utils.ServerConfiguration;
+import org.esbhive.fault_handler.FaultHandlerInterface;
 
 //services (objectClass=org.esbhive.*)
 /**
@@ -30,6 +31,8 @@ import org.wso2.carbon.utils.ServerConfiguration;
  * policy="dynamic" bind="setConfigurationContextService" unbind="unsetConfigurationContextService"
  * @scr.reference name="org.wso2.carbon.serverConfig" interface="org.wso2.carbon.utils.ServerConfiguration"
  * cardinality="1..1" policy="dynamic" bind="setServerConfiguration" unbind="unsetServerConfiguration
+ * @scr.reference name="Fault_Handler" interface="org.esbhive.fault_handler.FaultHandlerInterface"
+ * cardinality="1..1" policy="dynamic" bind="setFaultHandler" unbind="unSetFaultHandler"
  *
  */
 //Test the code
@@ -58,6 +61,7 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   static Map<String, ESBNode> nodeMap = new HashMap<String, ESBNode>();
   private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveNodeManager");
   private ServerConfiguration serverConfig;
+  private FaultHandlerInterface fh;
   private String myElectionString;
 
   public NodeManager() {
@@ -168,6 +172,8 @@ public class NodeManager implements NodeManagerInterface, Watcher {
       for (Iterator<String> iter = failures.iterator(); iter.hasNext();) {
         String ip = iter.next();
         //TODO failure correction code
+        String[] params = ip.split(":");
+        fh.fixNode(params[0], params[1]);
         zk.delete(FAILURES + "/" + ip, -1);
         log.info("Deleted znode " + FAILURES + "/" + ip);
       }
@@ -266,5 +272,13 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
   public org.esbhive.node.mgt.ESBNode[] getNodes() {
     return nodeMap.values().toArray(new ESBNode[0]);
+  }
+
+  protected void setFaultHandler(FaultHandlerInterface fh) {
+    this.fh = fh;
+  }
+
+  protected void unSetFaultHandler(FaultHandlerInterface fh) {
+    this.fh = null;
   }
 }
