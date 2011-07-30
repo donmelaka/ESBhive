@@ -164,11 +164,11 @@
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${pom.artifactId}</Bundle-Name>
                         <Export-Package>
-                            org.esbhive.proconf.mgt.*,
-                            org.wso2.carbon.proxyadmin.*
+                            org.esbhive.proconf.mgt.*
                         </Export-Package>
                         <Private-Package>
-                            org.esbhive.node.mgt.*
+                            org.esbhive.node.mgt.*,
+                            org.wso2.carbon.proxyadmin.*
                         </Private-Package>
                         <Import-Package>
                   !javax.xml.namespace,
