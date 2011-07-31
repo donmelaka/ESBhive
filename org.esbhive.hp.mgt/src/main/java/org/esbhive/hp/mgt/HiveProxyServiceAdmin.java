@@ -80,7 +80,7 @@ import org.esbhive.proxyconf.mgt.ProxyConfManagerStub;
 
 import org.wso2.carbon.proxyadmin.service.ProxyServiceAdmin;
 
-/**import org.wso2.carbon.utils.ServerConstants;
+/**
  * @scr.component name="node.manager" immediate="true"
  * @scr.reference name="esbhive.node.service" interface="org.esbhive.node.mgt.NodeManagerInterface"
  * cardinality="1..1" policy="dynamic" bind="setNodeManager"  unbind="unsetNodeManager"
@@ -179,7 +179,7 @@ public class HiveProxyServiceAdmin {
 				handleException(log, "A service named "
 					+ proxyName + " already exists", null);
 			} else {
-				ProxyService proxy = ProxyServiceFactory.createProxy(proxyServiceElement, null);
+				ProxyService proxy = ProxyServiceFactory.createProxy(proxyServiceElement);
 
 				try {
 					ConfigHolder.getInstance().getSynapseConfiguration().addProxyService(

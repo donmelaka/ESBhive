@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<parent>
-		<groupId>org.wso2.carbon</groupId>
-		<artifactId>carbon-parent</artifactId>
-		<version>3.0.1</version>
+ <parent>
+    <groupId>org.esbhive</groupId>
+    <artifactId>super-pom</artifactId>
+    <version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -50,83 +50,32 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-  <!--<dependencies>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>3.8.1</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>-->
-
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.axis2.wso2</groupId>
-			<artifactId>axis2</artifactId>
-			<version>1.6.0-wso2v1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.esbhive</groupId>
 			<artifactId>org.esbhive.proxyconf.mgt</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.wso2.carbon</groupId>
-			<artifactId>org.wso2.carbon.core</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.wso2.carbon</groupId>
-			<artifactId>org.wso2.carbon.mediation.initializer</artifactId>
-			<version>3.0.0</version>
-		</dependency>
-		<dependency>
+    <dependency>
 			<groupId>org.wso2.carbon</groupId>
 			<artifactId>org.wso2.carbon.proxyadmin</artifactId>
-			<version>3.0.1</version>
-		</dependency>
-		<dependency>
-
-			<groupId>org.wso2.carbon</groupId>
-
-			<artifactId>org.wso2.carbon.logging</artifactId>
-
 			<version>3.0.0</version>
-
 		</dependency>
-
 		<dependency>
-			<groupId>org.apache.synapse</groupId>
-			<artifactId>synapse-core</artifactId>
-			<version>2.0.0</version>
+			<groupId>org.wso2.carbon</groupId>
+			<artifactId>org.wso2.carbon.logging</artifactId>
+			<version>3.0.0</version>
 		</dependency>
-
-		<dependency>
-			<groupId>org.apache.synapse</groupId>
-			<artifactId>synapse-securevault</artifactId>
-			<version>2.0.0</version>
-		</dependency>
-
-
 		<dependency>
 			<groupId>org.esbhive</groupId>
 			<artifactId>node-manager</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.esbhive</groupId>
 			<artifactId>remote-login</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-
-		
-
-		<dependency>
-			<groupId>org.eclipse.osgi</groupId>
-			<artifactId>org.eclipse.osgi</artifactId>
-		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -142,7 +91,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
-				<version>1.4.2</version>
+        <version>1.4.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
