@@ -80,7 +80,7 @@
                     <Export-Package>
                             org.esbhive.proxyconf.mgt.*,
                         </Export-Package>
-                                               <Import-Package>
+                                   <Import-Package>
                   !javax.xml.namespace,
                   javax.xml.namespace;version="0.0.0",
                   *;resolution:=optional,
