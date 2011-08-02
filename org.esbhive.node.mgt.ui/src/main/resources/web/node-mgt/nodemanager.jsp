@@ -63,7 +63,7 @@
             <thead>
                 <tr>
                     <th width="40%">Ip Address</th>                            
-                    <th width="40%">Https Post</th>
+                    <th width="40%">Https Port</th>
                     <th width="40%">Synapse Port</th>
                     <th width="40%">User Name</th>                    
 
@@ -105,7 +105,7 @@
             <thead>
                 <tr>
                      <th width="40%">Ip Address</th>
-                    <th width="40%">Https Post</th>
+                    <th width="40%">Https Port</th>
                     <th width="40%">Synapse Port</th>
                     <th width="40%">User Name</th>
                 </tr>
