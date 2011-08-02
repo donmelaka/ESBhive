@@ -916,29 +916,76 @@ public class HiveProxyServiceAdmin {
 			option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
 
 			stub4.addProxy(changeProxyDataType(pd));
+			////////////////////////////////////////
 
-			String serviceEPR5 = "https://" + tempEsbNode.getIpAndPort() + "/services/" + "ProxyConfManager";
-
-			ProxyConfManagerStub stub5 = new ProxyConfManagerStub(ctx, serviceEPR5);
-			ServiceClient client5 = stub5._getServiceClient();
-			Options option2 = client5.getOptions();
-			option2.setManageSession(true);
-			option2.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-
-
+			String serviceEPRAuthentication = "";
+			AuthenticationAdminStub authenticationStub2 = null;
+			ServiceClient authenticatoinClient = null;
+			Options authenticationOptions = null;
+			boolean isLogged2 = false;
+			String cookie2 = null;
+			String serviceEPRProxyConf = "";
+			ProxyConfManagerStub proxyConfstub = null;
+			ServiceClient proxyConfClient = null;
+			Options proxyConfOption = null;
 			org.wso2.carbon.proxyadmin.xsd.ProxyData newProxyData = setNewProxyData(pd);
-			org.esbhive.node.mgt.xsd.ESBNode newEsbNode = setNewEsbNode(tempEsbNode);
-			try {
-				stub5.addNodeToMap(newProxyData, newEsbNode);
-				stub5.toString();
-				ProEsb[] list = stub5.getlist();
-				for (ProEsb esb : list) {
-					System.out.println(esb.toString());
+				org.esbhive.node.mgt.xsd.ESBNode newEsbNode = setNewEsbNode(tempEsbNode);
+
+			for (ESBNode tempNode : nodeList) {
+
+
+
+					serviceEPRAuthentication = "https://" + tempNode.getIpAndPort() + "/services/" + "AuthenticationAdmin";
+					authenticationStub2 = new AuthenticationAdminStub(ctx, serviceEPRAuthentication);
+
+					authenticatoinClient = authenticationStub2._getServiceClient();
+					authenticationOptions = authenticatoinClient.getOptions();
+					authenticationOptions.setManageSession(true);
+
+					isLogged2 = authenticationStub2.login(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
+
+					cookie2 = (String) authenticationStub2._getServiceClient().getServiceContext().getProperty(
+						HTTPConstants.COOKIE_STRING);
+
+					serviceEPRProxyConf = "https://" + tempNode.getIpAndPort() + "/services/" + "ProxyConfManager";
+
+					proxyConfstub = new org.esbhive.proxyconf.mgt.ProxyConfManagerStub(ctx, serviceEPRProxyConf);
+					proxyConfClient = proxyConfstub._getServiceClient();
+					proxyConfOption = proxyConfClient.getOptions();
+					proxyConfOption.setManageSession(true);
+					proxyConfOption.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie2);
+
+					proxyConfstub.addNodeToMap(newProxyData, newEsbNode);
+
+
 				}
-				org.wso2.carbon.proxyadmin.xsd.ProxyData[] proxyDataList = stub5.getProxyDataList();
-			} catch (Exception e) {
-				log2.error("error while adding nodeToMap in ProxyConfManager HiveProxyServiceAdmin", e);
-			}
+
+
+
+
+			////////////////////////////////////
+//			String serviceEPR5 = "";
+//			ProxyConfManagerStub stub5 = null;
+//			ServiceClient client5 = null;
+//			Options options2 = null;
+//
+//
+//			for (ESBNode tempNode2 : nodeList) {
+//				serviceEPR5 = "https://" + tempNode2.getIpAndPort() + "/services/" + "ProxyConfManager";
+//				stub5 = new ProxyConfManagerStub(ctx, serviceEPR5);
+//				client5 = stub._getServiceClient();
+//				options2 = client5.getOptions();
+//				options2.setManageSession(true);
+//				options2.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
+//				org.wso2.carbon.proxyadmin.xsd.ProxyData newProxyData = setNewProxyData(pd);
+//				org.esbhive.node.mgt.xsd.ESBNode newEsbNode = setNewEsbNode(tempEsbNode);
+//				try {
+//					stub5.addNodeToMap(newProxyData, newEsbNode);
+//
+//				} catch (Exception e) {
+//					log2.error("error while adding nodeToMap in ProxyConfManager HiveProxyServiceAdmin", e);
+//				}
+//			}
 
 			createDummyProxies(pd, tempEsbNode);
 
