@@ -13,30 +13,32 @@
 	<packaging>bundle</packaging>
 	<name>Fault_Handler OSGi Bundle</name>
   <dependencies>
-		<dependency>
-			<groupId>org.esbhive</groupId>
-			<artifactId>org.esbhive.proxyconf.mgt</artifactId>
-			<version>1.0-SNAPSHOT</version>
-		</dependency>
+                
     <dependency>
 			<groupId>org.apache.axis2.wso2</groupId>
 			<artifactId>axis2</artifactId>
 			<version>1.6.0-wso2v1</version>
 			<type>bundle</type>
 		</dependency>
-		<dependency>
+<!--		<dependency>
 			<groupId>org.esbhive</groupId>
 			<artifactId>node-manager</artifactId>
 			<version>1.0-SNAPSHOT</version>
 			<type>bundle</type>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.wso2.carbon</groupId>
 			<artifactId>org.wso2.carbon.proxyadmin</artifactId>
 			<version>3.0.0</version>
 			<type>bundle</type>
 		</dependency>
-    	</dependencies>
+    <dependency>
+      <artifactId>org.wso2.carbon.utils</artifactId>
+      <groupId>org.wso2.carbon</groupId>
+      <type>jar</type>
+      <version>3.0.0</version>
+    </dependency>
+  </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -72,9 +74,17 @@
               org.esbhive.fault_handler.*
             </Export-Package>            
             <Import-Package>
-              org.esbhive.hp.mgt.*,org.esbhive.proxyconf.mgt.*,org.esbhive.node.mgt.*,org.wso2.carbon.proxyadmin.*,org.apache.axis2.*,
-              org.eclipse.osgi.framework.console
+
+             org.esbhive.proxyconf.mgt.*,org.wso2.carbon.proxyadmin.*,org.apache.axis2.*,
+<!--             javax.xml.namespace, javax.xml.stream, org.apache.axiom.om, org.apache.axiom.om.impl.llom-->
+ !javax.xml.namespace,
+                  javax.xml.namespace;version="0.0.0",
+                  *;resolution:=optional
             </Import-Package>
+            <Private-Package>org.esbhive.node.mgt.xsd,org.esbhive.proxyconf.mgt,
+            org.esbhive.proxyconf.mgt.xsd,
+            org.wso2.carbon.proxyadmin.xsd,synapse.apache.org.xsd,org.esbhive.hp.mgt
+            </Private-Package>
           </instructions>
         </configuration>
       </plugin>     
@@ -99,7 +109,7 @@
 									<classpath refid="maven.compile.classpath"/>
 									<classpath refid="maven.runtime.classpath"/>
 								</java>
-								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+							<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
 									<arg
                                     line="-uri src/main/resources/HiveProxyServiceAdmin.wsdl
                                     -u -uw -o target/generated-code " />
@@ -107,7 +117,7 @@
 									<classpath refid="maven.compile.classpath" />
 									<classpath refid="maven.runtime.classpath" />
 								</java>
-								 
+								
 
 							</tasks>
 						</configuration>

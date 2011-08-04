@@ -276,13 +276,13 @@
     </wsdl:binding>
     <wsdl:service name="ProxyConfManager">
         <wsdl:port name="ProxyConfManagerHttpsSoap11Endpoint" binding="ns:ProxyConfManagerSoap11Binding">
-            <soap:address location="https://localhost:8243/services/ProxyConfManager.ProxyConfManagerHttpsSoap11Endpoint" />
+            <soap:address location="https://localhost:8244/services/ProxyConfManager.ProxyConfManagerHttpsSoap11Endpoint" />
         </wsdl:port>
         <wsdl:port name="ProxyConfManagerHttpsSoap12Endpoint" binding="ns:ProxyConfManagerSoap12Binding">
-            <soap12:address location="https://localhost:8243/services/ProxyConfManager.ProxyConfManagerHttpsSoap12Endpoint" />
+            <soap12:address location="https://localhost:8244/services/ProxyConfManager.ProxyConfManagerHttpsSoap12Endpoint" />
         </wsdl:port>
         <wsdl:port name="ProxyConfManagerHttpsEndpoint" binding="ns:ProxyConfManagerHttpBinding">
-            <http1:address location="https://localhost:8243/services/ProxyConfManager.ProxyConfManagerHttpsEndpoint" />
+            <http1:address location="https://localhost:8244/services/ProxyConfManager.ProxyConfManagerHttpsEndpoint" />
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
