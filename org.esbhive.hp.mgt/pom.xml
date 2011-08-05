@@ -107,7 +107,7 @@
                             org.wso2.carbon.proxyadmin.*,org.esbhive.hp.mgt.*
                            
 						</Export-Package>
-						<Private-Package>org.esbhive.proxyconf.mgt.*</Private-Package>
+						<Private-Package>org.esbhive.proxyconf.mgt.*,org.wso2.carbon.mediation.statistics.*</Private-Package>
 
 						<Import-Package>
                   !javax.xml.namespace,
@@ -158,7 +158,13 @@
 									<classpath refid="maven.compile.classpath"/>
 									<classpath refid="maven.runtime.classpath"/>
 								</java>
-								
+							<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+									<arg line="-uri src/main/resources/MediationStatisticsAdmin.wsdl -u -uw -o target/generated-code
+                                   "/>
+									<classpath refid="maven.dependency.classpath"/>
+									<classpath refid="maven.compile.classpath"/>
+									<classpath refid="maven.runtime.classpath"/>
+								</java>
 
 							</tasks>
 						</configuration>
