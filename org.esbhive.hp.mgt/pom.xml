@@ -72,11 +72,7 @@
 			<artifactId>remote-login</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.esbhive</groupId>
-			<artifactId>org.esbhive.statistics</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		
 		
 	</dependencies>
 
@@ -115,7 +111,7 @@
                   javax.xml.namespace;version="0.0.0",
                   *;resolution:=optional,org.esbhive.login.*,
                   org.esbhive.node.mgt.*,
-              org.apache.commons.logging,,org.esbhive.statistics.*
+              org.apache.commons.logging
 						</Import-Package>
 						
 					</instructions>
