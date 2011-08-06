@@ -10,7 +10,6 @@ package org.esbhive.demoapp;
  * @author pubudu
  */
 public class MyClientData {
-  static int totalResponded = 0;
   Long curTime;
   int requestNumber;
   int numRequestsPerClient;

@@ -21,14 +21,32 @@ public class App {
   static String[] url_list = null;
 
   public static void main(String[] args) {
+    CodeSource src = App.class.getProtectionDomain().getCodeSource();
+    if (args.length == 0) {
+      new App().runClients(src);
+    } else {
+      File data = new File(args[0]);
+      if (data.exists() && data.isDirectory()) {
+        new App().processData(data);
+      }
+    }
+  }
+
+  public void processData(File data) {
+      JSONBuilder jb = new JSONBuilder();
+      jb.generateJSON(data);
+      System.out.println(data);
+      //TODO grab the data and create the necessary output format
+  }
+
+  public void runClients(CodeSource src) {
     String esb_home = null;
     int numReqestsPerClient = 0;
     int numTotalClients = 0;
     int numClientMachines = 0;
     URL url = null;
-    CodeSource src = null;
+
     try {
-      src = App.class.getProtectionDomain().getCodeSource();
       if (src != null) {
         url = new URL(src.getLocation(), "options.properties");
       }
@@ -50,8 +68,8 @@ public class App {
     CountDownLatch doneSignal = new CountDownLatch(numTotalClients / numClientMachines * numReqestsPerClient);
     File dir = null;
     try {
-      String dirName = "numesbs-"+url_list.length+".totalclients-"+numTotalClients+
-              ".requestsperclient-"+numReqestsPerClient;
+      String dirName = "numesbs-" + url_list.length + ".totalclients-" + numTotalClients
+              + ".requestsperclient-" + numReqestsPerClient;
       url = new URL(src.getLocation(), "data");
       dir = new File(new File(url.toURI()), dirName);
       System.out.println(dir.getAbsolutePath());
@@ -62,7 +80,7 @@ public class App {
       Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
     }
     for (int i = 0; i < numTotalClients / numClientMachines; i++) {
-      new Client(numReqestsPerClient, doneSignal, dir ).start();
+      new Client(numReqestsPerClient, doneSignal, dir).start();
     }
     try {
       doneSignal.await();
