@@ -1,17 +1,21 @@
 
-<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax214="http://mgt.proxyconf.esbhive.org/xsd" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://mgt.proxyconf.esbhive.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http1="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ax216="http://mgt.node.esbhive.org/xsd" xmlns:ax218="http://proxyadmin.carbon.wso2.org/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mgt.proxyconf.esbhive.org">
+<wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax214="http://mgt.proxyconf.esbhive.org/xsd" xmlns:ax215="http://proxyadmin.carbon.wso2.org/xsd" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://mgt.proxyconf.esbhive.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http1="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ax218="http://mgt.node.esbhive.org/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mgt.proxyconf.esbhive.org">
     <wsdl:documentation>ProxyConfManager</wsdl:documentation>
     <wsdl:types>
-        <xs:schema xmlns:ax217="http://mgt.node.esbhive.org/xsd" xmlns:ax219="http://proxyadmin.carbon.wso2.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.proxyconf.esbhive.org/xsd">
-            <xs:import namespace="http://mgt.node.esbhive.org/xsd" />
+        <xs:schema xmlns:ax216="http://proxyadmin.carbon.wso2.org/xsd" xmlns:ax219="http://mgt.node.esbhive.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.proxyconf.esbhive.org/xsd">
             <xs:import namespace="http://proxyadmin.carbon.wso2.org/xsd" />
+            <xs:import namespace="http://mgt.node.esbhive.org/xsd" />
             <xs:complexType name="ProxyDataList">
-                <xs:sequence />
+                <xs:sequence>
+                    <xs:element minOccurs="0" name="proxyDataArrayList" nillable="true" type="xs:anyType" />
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="proxyDataList" nillable="true" type="ax215:ProxyData" />
+                </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ProEsb">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="ESBNode" nillable="true" type="ax217:ESBNode" />
-                    <xs:element minOccurs="0" name="proxyData" nillable="true" type="ax219:ProxyData" />
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="ESBNodes" nillable="true" type="ax219:ESBNode" />
+                    <xs:element minOccurs="0" name="ESBNodesArrayList" nillable="true" type="xs:anyType" />
+                    <xs:element minOccurs="0" name="proxyData" nillable="true" type="ax215:ProxyData" />
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>
@@ -31,16 +35,16 @@
                     <xs:element minOccurs="0" name="outSeqKey" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="outSeqXML" nillable="true" type="xs:string" />
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="pinnedServers" nillable="true" type="xs:string" />
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="policies" nillable="true" type="ax218:ProxyServicePolicyInfo" />
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="policies" nillable="true" type="ax215:ProxyServicePolicyInfo" />
                     <xs:element minOccurs="0" name="running" type="xs:boolean" />
                     <xs:element minOccurs="0" name="serviceGroup" nillable="true" type="xs:string" />
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceParams" nillable="true" type="ax218:Entry" />
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="serviceParams" nillable="true" type="ax215:Entry" />
                     <xs:element minOccurs="0" name="startOnLoad" type="xs:boolean" />
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="transports" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="wsdlAvailable" type="xs:boolean" />
                     <xs:element minOccurs="0" name="wsdlDef" nillable="true" type="xs:string" />
                     <xs:element minOccurs="0" name="wsdlKey" nillable="true" type="xs:string" />
-                    <xs:element maxOccurs="unbounded" minOccurs="0" name="wsdlResources" nillable="true" type="ax218:Entry" />
+                    <xs:element maxOccurs="unbounded" minOccurs="0" name="wsdlResources" nillable="true" type="ax215:Entry" />
                     <xs:element minOccurs="0" name="wsdlURI" nillable="true" type="xs:string" />
                 </xs:sequence>
             </xs:complexType>
@@ -71,7 +75,7 @@
                 </xs:sequence>
             </xs:complexType>
         </xs:schema>
-        <xs:schema xmlns:ax220="http://proxyadmin.carbon.wso2.org/xsd" xmlns:ax215="http://mgt.proxyconf.esbhive.org/xsd" xmlns:ax221="http://mgt.node.esbhive.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.proxyconf.esbhive.org">
+        <xs:schema xmlns:ax217="http://mgt.proxyconf.esbhive.org/xsd" xmlns:ax220="http://proxyadmin.carbon.wso2.org/xsd" xmlns:ax221="http://mgt.node.esbhive.org/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://mgt.proxyconf.esbhive.org">
             <xs:import namespace="http://mgt.proxyconf.esbhive.org/xsd" />
             <xs:import namespace="http://proxyadmin.carbon.wso2.org/xsd" />
             <xs:import namespace="http://mgt.node.esbhive.org/xsd" />
@@ -103,6 +107,20 @@
                     </xs:sequence>
                 </xs:complexType>
             </xs:element>
+            <xs:element name="deleteProxy">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="proxyname" nillable="true" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="deleteESB">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element minOccurs="0" name="ipandport" nillable="true" type="xs:string" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
             <xs:element name="addProxyConf">
                 <xs:complexType>
                     <xs:sequence>
@@ -113,6 +131,12 @@
             </xs:element>
         </xs:schema>
     </wsdl:types>
+    <wsdl:message name="deleteESBRequest">
+        <wsdl:part name="parameters" element="ns:deleteESB" />
+    </wsdl:message>
+    <wsdl:message name="deleteProxyRequest">
+        <wsdl:part name="parameters" element="ns:deleteProxy" />
+    </wsdl:message>
     <wsdl:message name="getProEsbRequest">
         <wsdl:part name="parameters" element="ns:getProEsb" />
     </wsdl:message>
@@ -129,6 +153,12 @@
         <wsdl:part name="parameters" element="ns:getProxyDataListResponse" />
     </wsdl:message>
     <wsdl:portType name="ProxyConfManagerPortType">
+        <wsdl:operation name="deleteESB">
+            <wsdl:input message="ns:deleteESBRequest" wsaw:Action="urn:deleteESB" />
+        </wsdl:operation>
+        <wsdl:operation name="deleteProxy">
+            <wsdl:input message="ns:deleteProxyRequest" wsaw:Action="urn:deleteProxy" />
+        </wsdl:operation>
         <wsdl:operation name="getProEsb">
             <wsdl:input message="ns:getProEsbRequest" wsaw:Action="urn:getProEsb" />
             <wsdl:output message="ns:getProEsbResponse" wsaw:Action="urn:getProEsbResponse" />
@@ -143,6 +173,18 @@
     </wsdl:portType>
     <wsdl:binding name="ProxyConfManagerSoap11Binding" type="ns:ProxyConfManagerPortType">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="deleteESB">
+            <soap:operation soapAction="urn:deleteESB" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="deleteProxy">
+            <soap:operation soapAction="urn:deleteProxy" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+        </wsdl:operation>
         <wsdl:operation name="getProEsb">
             <soap:operation soapAction="urn:getProEsb" style="document" />
             <wsdl:input>
@@ -170,6 +212,18 @@
     </wsdl:binding>
     <wsdl:binding name="ProxyConfManagerSoap12Binding" type="ns:ProxyConfManagerPortType">
         <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="deleteESB">
+            <soap12:operation soapAction="urn:deleteESB" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="deleteProxy">
+            <soap12:operation soapAction="urn:deleteProxy" style="document" />
+            <wsdl:input>
+                <soap12:body use="literal" />
+            </wsdl:input>
+        </wsdl:operation>
         <wsdl:operation name="getProEsb">
             <soap12:operation soapAction="urn:getProEsb" style="document" />
             <wsdl:input>
@@ -197,6 +251,18 @@
     </wsdl:binding>
     <wsdl:binding name="ProxyConfManagerHttpBinding" type="ns:ProxyConfManagerPortType">
         <http1:binding verb="POST" />
+        <wsdl:operation name="deleteESB">
+            <http1:operation location="deleteESB" />
+            <wsdl:input>
+                <mime:content type="text/xml" part="deleteESB" />
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="deleteProxy">
+            <http1:operation location="deleteProxy" />
+            <wsdl:input>
+                <mime:content type="text/xml" part="deleteProxy" />
+            </wsdl:input>
+        </wsdl:operation>
         <wsdl:operation name="getProEsb">
             <http1:operation location="getProEsb" />
             <wsdl:input>

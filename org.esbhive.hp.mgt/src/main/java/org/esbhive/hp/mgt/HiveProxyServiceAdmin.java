@@ -73,6 +73,7 @@ import org.apache.commons.logging.LogFactory;
 import org.esbhive.login.LoginData;
 import org.esbhive.proxyconf.mgt.ProxyConfManagerStub;
 import org.esbhive.login.RemoteLogin;
+import org.esbhive.statistics.*;
 
 /**
  * @scr.component name="hp.manager" immediate="true"
@@ -89,7 +90,9 @@ public class HiveProxyServiceAdmin {
 	private static NodeManagerInterface nodeManager;
 	private static final Log log2 = LogFactory.getLog("org.wso2.carbon.HiveProxyServiceAdmin");
 	private static RemoteLogin remoteLogin;
+	
 	private static String ipAddress = System.getProperty(ServerConstants.LOCAL_IP_ADDRESS);
+
 
 	public synchronized void setNodeManager(NodeManagerInterface r) {
 		nodeManager = r;
@@ -107,6 +110,8 @@ public class HiveProxyServiceAdmin {
 	protected void unSetRemoteLogin(RemoteLogin rl) {
 		remoteLogin = null;
 	}
+
+	
 
 	/**
 	 * Enables statistics for the specified proxy service
@@ -699,7 +704,7 @@ public class HiveProxyServiceAdmin {
 			metaData.setTransportsAvailable(metaData1.getTransportsAvailable());
 
 		} catch (Exception ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+			log2.error("HiveProxyService admin getMetaData", ex);
 		}
 
 		return metaData;
@@ -938,7 +943,9 @@ public class HiveProxyServiceAdmin {
 			int[] selectedNodesIndexes = selectEsbNodes(nodeList.length, 0.5);
 
 
-			ESBNode[] selectedNodes = new ESBNode[selectedNodesIndexes.length];
+			 ESBNode[] selectedNodes = new ESBNode[selectedNodesIndexes.length];
+//			ESBNode[] selectedNodes=stat.selectBestNodes();
+
 			//	ESBNode[] notselectedNodes = new ESBNode[notSelectedNodesIndexes.size()];
 
 			ProxyServiceAdminStub proxyServiceAdminStub;
@@ -997,10 +1004,9 @@ public class HiveProxyServiceAdmin {
 
 
 				proxyConfstub.addProxyConf(newProxyData, newEsbNodeList);
-
+				
 			}
-			ProEsb proEsb = proxyConfstub.getProEsb(pd.getName());
-			ProxyDataList proxyDataList = proxyConfstub.getProxyDataList(ipAddress + ":" + "9443");
+			
 			deployDummyProxies(pd, selectedNodes);
 
 		} catch (Exception ex) {
