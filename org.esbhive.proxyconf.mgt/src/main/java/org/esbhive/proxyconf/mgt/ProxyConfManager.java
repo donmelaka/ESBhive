@@ -11,14 +11,16 @@ import org.wso2.carbon.proxyadmin.ProxyData;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+
+
 /**
- * scr.component name="proxyconf.manager" immediate="true"
- * scr.service interface="org.esbhive.proxyconf.mgt.ProxyConfManagerInterface"
+ * @scr.component name="proxyconf.manager" immediate="true"
+ * @scr.service interface="org.esbhive.proxyconf.mgt.ProxyConfManagerInterface"
  */
 
 public class ProxyConfManager implements ProxyConfManagerInterface{
 
-   private static HashMap<ProxyData, ESBNode>   nodes = new HashMap<ProxyData, ESBNode>();
+   
    private static HashMap<String, ProEsb>   ProESBs = new HashMap<String, ProEsb>();
    private static HashMap<String, ProxyDataList>   PDlist = new HashMap<String, ProxyDataList>();
 
@@ -78,7 +80,7 @@ public class ProxyConfManager implements ProxyConfManagerInterface{
         ProEsb[] proesb = new ProEsb[ProESBs.size()];
         proesb=ProESBs.values().toArray(proesb);
         for(int i=0;i<proesb.length;i++){
-            ArrayList<ESBNode> arraylist=proesb[i].getESBNodes();
+            ArrayList<ESBNode> arraylist=proesb[i].getESBNodesArrayList();
             ESBNode[] esbnodes= new ESBNode[arraylist.size()];
             esbnodes=arraylist.toArray(esbnodes);
             for(int j=0;j<esbnodes.length;j++){
@@ -95,7 +97,7 @@ public class ProxyConfManager implements ProxyConfManagerInterface{
         ProxyDataList[] pdatalist= new ProxyDataList[PDlist.size()];
         pdatalist=PDlist.values().toArray(pdatalist);
         for(int i=0;i<pdatalist.length;i++){
-            ArrayList<ProxyData> arraylist=pdatalist[i].getProxyDataList();
+            ArrayList<ProxyData> arraylist=pdatalist[i].getProxyDataArrayList();
             ProxyData[] proxydatas= new ProxyData[arraylist.size()];
             proxydatas=arraylist.toArray(proxydatas);
             for(int j=0;j<proxydatas.length;j++){
