@@ -4,6 +4,7 @@
  */
 package org.esbhive.proxyconf.mgt;
 
+import java.util.ArrayList;
 import org.esbhive.node.mgt.ESBNode;
 import org.wso2.carbon.proxyadmin.ProxyData;
 
@@ -15,11 +16,19 @@ public class ProEsb {
 
     private ProxyData pdata;
     private ESBNode node;
+    ArrayList<ESBNode> esbnodes = new ArrayList<ESBNode>();
 
     public ProEsb() {
     
     }
 
+    public void addArrayToList(ESBNode[] list){ //can have duplicate entries
+        for(int i=0;i<list.length;i++){
+            esbnodes.add(list[i]);
+        }
+
+    }
+    
     public ProEsb(ProxyData pd, ESBNode esbnode) {
     pdata=pd;
     node=esbnode;
@@ -37,8 +46,8 @@ public class ProEsb {
         return pdata;
     }
 
-    public ESBNode getESBNode() {
-        return node;
+    public ArrayList<ESBNode> getESBNodes() {
+        return esbnodes;
     }
     
 }

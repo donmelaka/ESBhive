@@ -2,10 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
- <parent>
-    <groupId>org.esbhive</groupId>
-    <artifactId>super-pom</artifactId>
-    <version>1.0-SNAPSHOT</version>
+	<parent>
+		<groupId>org.esbhive</groupId>
+		<artifactId>super-pom</artifactId>
+		<version>1.0-SNAPSHOT</version>
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
@@ -52,7 +52,7 @@
 
 	<dependencies>
 		
-    <dependency>
+		<dependency>
 			<groupId>org.wso2.carbon</groupId>
 			<artifactId>org.wso2.carbon.proxyadmin</artifactId>
 			<version>3.0.0</version>
@@ -65,6 +65,11 @@
 		<dependency>
 			<groupId>org.esbhive</groupId>
 			<artifactId>node-manager</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.esbhive</groupId>
+			<artifactId>remote-login</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -87,7 +92,7 @@
 			<plugin>
 				<groupId>org.apache.felix</groupId>
 				<artifactId>maven-scr-plugin</artifactId>
-        <version>1.4.2</version>
+				<version>1.4.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.felix</groupId>
@@ -102,13 +107,13 @@
                             org.wso2.carbon.proxyadmin.*,org.esbhive.hp.mgt.*
                            
 						</Export-Package>
-						<Private-Package>org.esbhive.proxyconf.mgt.*</Private-Package>
+						<Private-Package>org.esbhive.proxyconf.mgt.*,org.wso2.carbon.mediation.statistics.*</Private-Package>
 
 						<Import-Package>
                   !javax.xml.namespace,
                   javax.xml.namespace;version="0.0.0",
                   *;resolution:=optional,
-                  org.esbhive.node.mgt.*,
+                  org.esbhive.node.mgt.*,org.esbhive.login.*,
               org.apache.commons.logging
 						</Import-Package>
 						
@@ -153,7 +158,13 @@
 									<classpath refid="maven.compile.classpath"/>
 									<classpath refid="maven.runtime.classpath"/>
 								</java>
-								
+							<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+									<arg line="-uri src/main/resources/MediationStatisticsAdmin.wsdl -u -uw -o target/generated-code
+                                   "/>
+									<classpath refid="maven.dependency.classpath"/>
+									<classpath refid="maven.compile.classpath"/>
+									<classpath refid="maven.runtime.classpath"/>
+								</java>
 
 							</tasks>
 						</configuration>
