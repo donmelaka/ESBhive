@@ -1,6 +1,7 @@
 package org.esbhive.demoapp;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -20,7 +21,7 @@ public class App {
 
   static String[] url_list = null;
 
-  public static void main(String[] args) throws InvalidDataException {
+  public static void main(String[] args) throws InvalidDataException, MalformedURLException, IOException {
     CodeSource src = App.class.getProtectionDomain().getCodeSource();
     if (args.length == 0) {
       new App().runClients(src);
@@ -32,14 +33,14 @@ public class App {
     }
   }
 
-  public void processData(File data) throws InvalidDataException {
+  public void processData(File data) throws InvalidDataException, MalformedURLException, IOException {
     ChartBuilder jb = new ChartBuilder();
     File[] files = data.listFiles();
     for(int i=0;i<files.length;i++){
       ResponseDataCalculator rdc = new ResponseDataCalculator(files[i]);
       jb.addCalculatedDataItem(rdc);
     }
-    jb.writeJSON();
+    jb.createChart();
   }
 
   public void runClients(CodeSource src) {
