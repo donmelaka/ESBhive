@@ -23,7 +23,17 @@ public void addToList(ProxyData pd){
     PDArr.add(pd);
 }
 
-    public ArrayList<ProxyData> getProxyDataList() {
-        return PDArr;
+    public ProxyData[] getProxyDataList() {
+        ProxyData [] prxyData=new ProxyData[0];
+	    
+	   prxyData= PDArr.toArray(prxyData);
+	   return prxyData;
     }
+    
+    
+    public ArrayList<ProxyData> getProxyDataArrayList(){
+    return PDArr;
+    }
+
+    
 }

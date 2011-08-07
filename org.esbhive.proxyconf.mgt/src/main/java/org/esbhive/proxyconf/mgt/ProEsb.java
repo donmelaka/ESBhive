@@ -15,7 +15,7 @@ import org.wso2.carbon.proxyadmin.ProxyData;
 public class ProEsb {
 
     private ProxyData pdata;
-    private ESBNode node;
+    
     ArrayList<ESBNode> esbnodes = new ArrayList<ESBNode>();
 
     public ProEsb() {
@@ -29,25 +29,29 @@ public class ProEsb {
 
     }
     
-    public ProEsb(ProxyData pd, ESBNode esbnode) {
+    public ProEsb(ProxyData pd) {
     pdata=pd;
-    node=esbnode;
+    
     }
 
     public void setProxyData(ProxyData data) {
         this.pdata = data;
     }
 
-    public void setESBNode(ESBNode enode) {
-        this.node = enode;
-    }
+   
 
     public ProxyData getProxyData() {
         return pdata;
     }
 
-    public ArrayList<ESBNode> getESBNodes() {
-        return esbnodes;
+    public ESBNode[] getESBNodes() {
+        ESBNode [] esbNodes=new ESBNode[0];
+	esbNodes  =  esbnodes.toArray(esbNodes);
+	return esbNodes;
+    }
+
+    public ArrayList<ESBNode> getESBNodesArrayList(){
+    return esbnodes;
     }
     
 }
