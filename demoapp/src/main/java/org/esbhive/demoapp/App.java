@@ -20,7 +20,7 @@ public class App {
 
   static String[] url_list = null;
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws InvalidDataException {
     CodeSource src = App.class.getProtectionDomain().getCodeSource();
     if (args.length == 0) {
       new App().runClients(src);
@@ -32,11 +32,14 @@ public class App {
     }
   }
 
-  public void processData(File data) {
-      JSONBuilder jb = new JSONBuilder();
-      jb.generateJSON(data);
-      System.out.println(data);
-      //TODO grab the data and create the necessary output format
+  public void processData(File data) throws InvalidDataException {
+    ChartBuilder jb = new ChartBuilder();
+    File[] files = data.listFiles();
+    for(int i=0;i<files.length;i++){
+      ResponseDataCalculator rdc = new ResponseDataCalculator(files[i]);
+      jb.addCalculatedDataItem(rdc);
+    }
+    jb.writeJSON();
   }
 
   public void runClients(CodeSource src) {
