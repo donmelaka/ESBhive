@@ -25,7 +25,8 @@ public void addToList(ProxyData pd){
 
     public ProxyData[] getProxyDataList() {
         ProxyData [] prxyData=new ProxyData[0];
-	    	   prxyData= PDArr.toArray(prxyData);
+	    
+	   prxyData= PDArr.toArray(prxyData);
 	   return prxyData;
     }
     
