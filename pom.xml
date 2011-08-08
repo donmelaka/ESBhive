@@ -28,34 +28,8 @@
     <module>list-consumer-sample</module> 
     <module>org.esbhive.hp.mgt</module>
     <module>org.wso2.carbon.proxyadmin.ui/3.0.0</module>
+    <module>FaultHandler</module>
+    <module>org.esbhive.proxyconf.mgt</module>
+    <module>zookeeper</module>
   </modules>
-  <build>
-    <pluginManagement>
-      <plugins>
-      <plugin>
-				<artifactId>maven-resources-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>copy-resources-2</id>
-            <phase>integration-test</phase>
-            <goals>
-              <goal>copy-resources</goal>
-            </goals>
-            <configuration>
-              <outputDirectory>/home/pubudu/L4S1/project/wso2esb-3.0.1/repository/components/dropins</outputDirectory>
-              <resources>
-                <resource>
-                  <directory>${basedir}/target/</directory>
-                  <includes>
-                    <include>*.jar</include>
-                  </includes>
-                </resource>
-              </resources>
-            </configuration>
-          </execution>
-        </executions>
-			</plugin>
-      </plugins>
-    </pluginManagement>
-  </build>
-</project>
+  </project>

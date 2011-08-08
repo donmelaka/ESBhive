@@ -100,13 +100,18 @@
 					<instructions>
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Export-Package>
-                  org.esbhive.node.mgt.ui.*
+                  org.esbhive.node.mgt.ui.*,
+                  org.esbhive.node.mgt.client
 						</Export-Package>
 						<Import-Package>
                   !javax.xml.namespace,
                   javax.xml.namespace;version="0.0.0",
                   *;resolution:=optional,
 						</Import-Package>
+            <Private-Package>                
+                org.apache.zookeeper.xsd,
+                org.apache.zookeeper.proto.xsd
+            </Private-Package>
 						<Carbon-Component>UIBundle</Carbon-Component>
 					</instructions>
 				</configuration>

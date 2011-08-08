@@ -3,7 +3,7 @@
  * GetNodesResponse.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 05, 2010 (06:40:53 UTC)
+ * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 03, 2010 (02:59:46 IST)
  */
 
             
@@ -20,7 +20,7 @@
                 public static final javax.xml.namespace.QName MY_QNAME = new javax.xml.namespace.QName(
                 "http://mgt.node.esbhive.org",
                 "getNodesResponse",
-                "ns2");
+                "ns4");
 
             
 
@@ -199,7 +199,7 @@
 
         private static java.lang.String generatePrefix(java.lang.String namespace) {
             if(namespace.equals("http://mgt.node.esbhive.org")){
-                return "ns2";
+                return "ns4";
             }
             return org.apache.axis2.databinding.utils.BeanUtil.getUniquePrefix();
         }

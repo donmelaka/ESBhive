@@ -3,7 +3,7 @@
  * EsbNodeManagerCallbackHandler.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 05, 2010 (06:40:41 UTC)
+ * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 03, 2010 (02:59:42 IST)
  */
 
     package org.esbhive.node.mgt.client;
@@ -44,37 +44,7 @@
      }
 
         
-           /**
-            * auto generated Axis2 call back method for addNodeAndGetNodes method
-            * override this method for handling normal response from addNodeAndGetNodes operation
-            */
-           public void receiveResultaddNodeAndGetNodes(
-                    org.esbhive.node.mgt.client.ESBNode[] result
-                        ) {
-           }
-
-          /**
-           * auto generated Axis2 Error handler
-           * override this method for handling error response from addNodeAndGetNodes operation
-           */
-            public void receiveErroraddNodeAndGetNodes(java.lang.Exception e) {
-            }
-                
-           /**
-            * auto generated Axis2 call back method for addNode method
-            * override this method for handling normal response from addNode operation
-            */
-           public void receiveResultaddNode(
-                    org.esbhive.node.mgt.client.ESBNode[] result
-                        ) {
-           }
-
-          /**
-           * auto generated Axis2 Error handler
-           * override this method for handling error response from addNode operation
-           */
-            public void receiveErroraddNode(java.lang.Exception e) {
-            }
+               // No methods generated for meps other than in-out
                 
            /**
             * auto generated Axis2 call back method for getNodes method

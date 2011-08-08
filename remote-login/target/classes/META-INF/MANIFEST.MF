@@ -19,7 +19,7 @@ Bundle-Name: remote-login
 Created-By: Apache Maven Bundle Plugin
 Build-Jdk: 1.6.0_19
 Bundle-Version: 1.0.0.SNAPSHOT
-Bnd-LastModified: 1307808092191
+Bnd-LastModified: 1312133697596
 Bundle-ManifestVersion: 2
 Bundle-Description: carbon-parent
 Import-Package: javax.xml.namespace;version="0.0.0",javax.xml.stream;r

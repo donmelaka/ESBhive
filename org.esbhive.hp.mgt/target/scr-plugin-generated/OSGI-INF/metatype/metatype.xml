@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
-    <OCD id="node.manager" name="%node.manager.name" description="%node.manager.description"/>
-    <Designate pid="node.manager">
-        <Object ocdref="node.manager"/>
+    <OCD id="hp.manager" name="%hp.manager.name" description="%hp.manager.description"/>
+    <Designate pid="hp.manager">
+        <Object ocdref="hp.manager"/>
     </Designate>
 </metatype:MetaData>

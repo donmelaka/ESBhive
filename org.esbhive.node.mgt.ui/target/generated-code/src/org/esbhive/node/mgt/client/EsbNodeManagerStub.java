@@ -3,7 +3,7 @@
  * EsbNodeManagerStub.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 05, 2010 (06:40:41 UTC)
+ * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 03, 2010 (02:59:42 IST)
  */
         package org.esbhive.node.mgt.client;
 
@@ -44,12 +44,12 @@
         //creating the operations
         org.apache.axis2.description.AxisOperation __operation;
 
-        _operations = new org.apache.axis2.description.AxisOperation[3];
+        _operations = new org.apache.axis2.description.AxisOperation[2];
         
-                   __operation = new org.apache.axis2.description.OutInAxisOperation();
+                    __operation = new org.apache.axis2.description.OutOnlyAxisOperation();
                 
 
-            __operation.setName(new javax.xml.namespace.QName("http://mgt.node.esbhive.org", "addNodeAndGetNodes"));
+            __operation.setName(new javax.xml.namespace.QName("http://mgt.node.esbhive.org", "process"));
 	    _service.addOperation(__operation);
 	    
 
@@ -61,25 +61,13 @@
                    __operation = new org.apache.axis2.description.OutInAxisOperation();
                 
 
-            __operation.setName(new javax.xml.namespace.QName("http://mgt.node.esbhive.org", "addNode"));
-	    _service.addOperation(__operation);
-	    
-
-	    
-	    
-            _operations[1]=__operation;
-            
-        
-                   __operation = new org.apache.axis2.description.OutInAxisOperation();
-                
-
             __operation.setName(new javax.xml.namespace.QName("http://mgt.node.esbhive.org", "getNodes"));
 	    _service.addOperation(__operation);
 	    
 
 	    
 	    
-            _operations[2]=__operation;
+            _operations[1]=__operation;
             
         
         }
@@ -130,7 +118,7 @@
      */
     public EsbNodeManagerStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
         
-                    this(configurationContext,"https://localhost:8243/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint" );
+                    this(configurationContext,"https://localhost:8244/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint" );
                 
     }
 
@@ -139,7 +127,7 @@
      */
     public EsbNodeManagerStub() throws org.apache.axis2.AxisFault {
         
-                    this("https://localhost:8243/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint" );
+                    this("https://localhost:8244/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint" );
                 
     }
 
@@ -152,535 +140,60 @@
 
 
 
-        
-                    /**
-                     * Auto generated method signature
-                     * 
-                     * @see org.esbhive.node.mgt.client.EsbNodeManager#addNodeAndGetNodes
-                     * @param addNodeAndGetNodes15
-                    
-                     */
-
-                    
-
-                            public  org.esbhive.node.mgt.client.ESBNode[] addNodeAndGetNodes(
-
-                            org.esbhive.node.mgt.client.ESBNode node16)
-                        
-
-                    throws java.rmi.RemoteException
-                    
-                    {
-              org.apache.axis2.context.MessageContext _messageContext = null;
-              try{
-               org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[0].getName());
-              _operationClient.getOptions().setAction("urn:addNodeAndGetNodes");
-              _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
-
-              
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
-              
-
-              // create a message context
-              _messageContext = new org.apache.axis2.context.MessageContext();
-
-              
-
-              // create SOAP envelope with that payload
-              org.apache.axiom.soap.SOAPEnvelope env = null;
-                    org.esbhive.node.mgt.client.AddNodeAndGetNodes dummyWrappedType = null;
-                                                    env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
-                                                    node16,
-                                                    dummyWrappedType,
-                                                    optimizeContent(new javax.xml.namespace.QName("http://mgt.node.esbhive.org",
-                                                    "addNodeAndGetNodes")));
-                                                
-        //adding SOAP soap_headers
-         _serviceClient.addHeadersToEnvelope(env);
-        // set the message context with that soap envelope
-        _messageContext.setEnvelope(env);
-
-        // add the message contxt to the operation client
-        _operationClient.addMessageContext(_messageContext);
-
-        //execute the operation client
-        _operationClient.execute(true);
-
          
-               org.apache.axis2.context.MessageContext _returnMessageContext = _operationClient.getMessageContext(
-                                           org.apache.axis2.wsdl.WSDLConstants.MESSAGE_LABEL_IN_VALUE);
-                org.apache.axiom.soap.SOAPEnvelope _returnEnv = _returnMessageContext.getEnvelope();
                 
-                
-                                java.lang.Object object = fromOM(
-                                             _returnEnv.getBody().getFirstElement() ,
-                                             org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse.class,
-                                              getEnvelopeNamespaces(_returnEnv));
-
-                               
-                                        return getAddNodeAndGetNodesResponse_return((org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse)object);
-                                   
-         }catch(org.apache.axis2.AxisFault f){
-
-            org.apache.axiom.om.OMElement faultElt = f.getDetail();
-            if (faultElt!=null){
-                if (faultExceptionNameMap.containsKey(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNodeAndGetNodes"))){
-                    //make the fault by reflection
-                    try{
-                        java.lang.String exceptionClassName = (java.lang.String)faultExceptionClassNameMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNodeAndGetNodes"));
-                        java.lang.Class exceptionClass = java.lang.Class.forName(exceptionClassName);
-                        java.lang.Exception ex = (java.lang.Exception) exceptionClass.newInstance();
-                        //message class
-                        java.lang.String messageClassName = (java.lang.String)faultMessageMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNodeAndGetNodes"));
-                        java.lang.Class messageClass = java.lang.Class.forName(messageClassName);
-                        java.lang.Object messageObject = fromOM(faultElt,messageClass,null);
-                        java.lang.reflect.Method m = exceptionClass.getMethod("setFaultMessage",
-                                   new java.lang.Class[]{messageClass});
-                        m.invoke(ex,new java.lang.Object[]{messageObject});
-                        
-
-                        throw new java.rmi.RemoteException(ex.getMessage(), ex);
-                    }catch(java.lang.ClassCastException e){
-                       // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    } catch (java.lang.ClassNotFoundException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }catch (java.lang.NoSuchMethodException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    } catch (java.lang.reflect.InvocationTargetException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }  catch (java.lang.IllegalAccessException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }   catch (java.lang.InstantiationException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }
-                }else{
-                    throw f;
-                }
-            }else{
-                throw f;
-            }
-            } finally {
-                _messageContext.getTransportOut().getSender().cleanup(_messageContext);
-            }
-        }
-            
                 /**
-                * Auto generated method signature for Asynchronous Invocations
-                * 
-                * @see org.esbhive.node.mgt.client.EsbNodeManager#startaddNodeAndGetNodes
-                    * @param addNodeAndGetNodes15
+                  * Auto generated method signature
+                  * 
+                  */
+                public void  process(
+                 org.apache.zookeeper.xsd.WatchedEvent event7
+
+                ) throws java.rmi.RemoteException
                 
-                */
-                public  void startaddNodeAndGetNodes(
+                
+                {
+                org.apache.axis2.context.MessageContext _messageContext = null;
 
-                 org.esbhive.node.mgt.client.ESBNode node16,
+                
+                org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[0].getName());
+                _operationClient.getOptions().setAction("urn:process");
+                _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
-                  final org.esbhive.node.mgt.client.EsbNodeManagerCallbackHandler callback)
-
-                throws java.rmi.RemoteException{
-
-              org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[0].getName());
-             _operationClient.getOptions().setAction("urn:addNodeAndGetNodes");
-             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
-
-              
+                
               
                   addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
               
+                org.apache.axiom.soap.SOAPEnvelope env = null;
+                 _messageContext = new org.apache.axis2.context.MessageContext();
 
+                
+                                                    //Style is Doc.
+                                                    org.esbhive.node.mgt.client.Process dummyWrappedType = null;
+                                                                    env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
+                                                                    event7,
+                                                                    dummyWrappedType,
+                                                                    optimizeContent(new javax.xml.namespace.QName("http://mgt.node.esbhive.org",
+                                                                    "process")));
+                                                                
 
-              // create SOAP envelope with that payload
-              org.apache.axiom.soap.SOAPEnvelope env=null;
-              final org.apache.axis2.context.MessageContext _messageContext = new org.apache.axis2.context.MessageContext();
-
-                    
-                                    //Style is Doc.
-                                    org.esbhive.node.mgt.client.AddNodeAndGetNodes dummyWrappedType = null;
-                                                    env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
-                                                    node16,
-                                                     dummyWrappedType,
-                                                    optimizeContent(new javax.xml.namespace.QName("http://mgt.node.esbhive.org",
-                                                    "addNodeAndGetNodes")));
-                                                
-        // adding SOAP soap_headers
+              //adding SOAP soap_headers
          _serviceClient.addHeadersToEnvelope(env);
-        // create message context with that soap envelope
-        _messageContext.setEnvelope(env);
+                // create message context with that soap envelope
 
-        // add the message context to the operation client
-        _operationClient.addMessageContext(_messageContext);
+            _messageContext.setEnvelope(env);
 
+            // add the message contxt to the operation client
+            _operationClient.addMessageContext(_messageContext);
 
-                    
-                        _operationClient.setCallback(new org.apache.axis2.client.async.AxisCallback() {
-                            public void onMessage(org.apache.axis2.context.MessageContext resultContext) {
-                            try {
-                                org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
-                                
-                                        java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse.class,
-                                                                         getEnvelopeNamespaces(resultEnv));
-                                        callback.receiveResultaddNodeAndGetNodes(
-                                            getAddNodeAndGetNodesResponse_return((org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse)object));
-                                        
-                            } catch (org.apache.axis2.AxisFault e) {
-                                callback.receiveErroraddNodeAndGetNodes(e);
-                            }
-                            }
+             _operationClient.execute(true);
 
-                            public void onError(java.lang.Exception error) {
-								if (error instanceof org.apache.axis2.AxisFault) {
-									org.apache.axis2.AxisFault f = (org.apache.axis2.AxisFault) error;
-									org.apache.axiom.om.OMElement faultElt = f.getDetail();
-									if (faultElt!=null){
-										if (faultExceptionNameMap.containsKey(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNodeAndGetNodes"))){
-											//make the fault by reflection
-											try{
-													java.lang.String exceptionClassName = (java.lang.String)faultExceptionClassNameMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNodeAndGetNodes"));
-													java.lang.Class exceptionClass = java.lang.Class.forName(exceptionClassName);
-													java.lang.Exception ex = (java.lang.Exception) exceptionClass.newInstance();
-													//message class
-													java.lang.String messageClassName = (java.lang.String)faultMessageMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNodeAndGetNodes"));
-														java.lang.Class messageClass = java.lang.Class.forName(messageClassName);
-													java.lang.Object messageObject = fromOM(faultElt,messageClass,null);
-													java.lang.reflect.Method m = exceptionClass.getMethod("setFaultMessage",
-															new java.lang.Class[]{messageClass});
-													m.invoke(ex,new java.lang.Object[]{messageObject});
-													
-					
-										            callback.receiveErroraddNodeAndGetNodes(new java.rmi.RemoteException(ex.getMessage(), ex));
-                                            } catch(java.lang.ClassCastException e){
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            } catch (java.lang.ClassNotFoundException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            } catch (java.lang.NoSuchMethodException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            } catch (java.lang.reflect.InvocationTargetException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            } catch (java.lang.IllegalAccessException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            } catch (java.lang.InstantiationException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            } catch (org.apache.axis2.AxisFault e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNodeAndGetNodes(f);
-                                            }
-									    } else {
-										    callback.receiveErroraddNodeAndGetNodes(f);
-									    }
-									} else {
-									    callback.receiveErroraddNodeAndGetNodes(f);
-									}
-								} else {
-								    callback.receiveErroraddNodeAndGetNodes(error);
-								}
-                            }
-
-                            public void onFault(org.apache.axis2.context.MessageContext faultContext) {
-                                org.apache.axis2.AxisFault fault = org.apache.axis2.util.Utils.getInboundFaultFromMessageContext(faultContext);
-                                onError(fault);
-                            }
-
-                            public void onComplete() {
-                                try {
-                                    _messageContext.getTransportOut().getSender().cleanup(_messageContext);
-                                } catch (org.apache.axis2.AxisFault axisFault) {
-                                    callback.receiveErroraddNodeAndGetNodes(axisFault);
-                                }
-                            }
-                });
-                        
-
-          org.apache.axis2.util.CallbackReceiver _callbackReceiver = null;
-        if ( _operations[0].getMessageReceiver()==null &&  _operationClient.getOptions().isUseSeparateListener()) {
-           _callbackReceiver = new org.apache.axis2.util.CallbackReceiver();
-          _operations[0].setMessageReceiver(
-                    _callbackReceiver);
-        }
-
-           //execute the operation client
-           _operationClient.execute(false);
-
-                    }
-                
-                    /**
-                     * Auto generated method signature
-                     * 
-                     * @see org.esbhive.node.mgt.client.EsbNodeManager#addNode
-                     * @param addNode19
-                    
-                     */
-
-                    
-
-                            public  org.esbhive.node.mgt.client.ESBNode[] addNode(
-
-                            org.esbhive.node.mgt.client.ESBNode me20,org.esbhive.node.mgt.client.ESBNode addto21)
-                        
-
-                    throws java.rmi.RemoteException
-                    
-                    {
-              org.apache.axis2.context.MessageContext _messageContext = null;
-              try{
-               org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[1].getName());
-              _operationClient.getOptions().setAction("urn:addNode");
-              _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
-
-              
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
-              
-
-              // create a message context
-              _messageContext = new org.apache.axis2.context.MessageContext();
-
-              
-
-              // create SOAP envelope with that payload
-              org.apache.axiom.soap.SOAPEnvelope env = null;
-                    org.esbhive.node.mgt.client.AddNode dummyWrappedType = null;
-                                                    env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
-                                                    me20,
-                                                    addto21,
-                                                    dummyWrappedType,
-                                                    optimizeContent(new javax.xml.namespace.QName("http://mgt.node.esbhive.org",
-                                                    "addNode")));
-                                                
-        //adding SOAP soap_headers
-         _serviceClient.addHeadersToEnvelope(env);
-        // set the message context with that soap envelope
-        _messageContext.setEnvelope(env);
-
-        // add the message contxt to the operation client
-        _operationClient.addMessageContext(_messageContext);
-
-        //execute the operation client
-        _operationClient.execute(true);
-
-         
-               org.apache.axis2.context.MessageContext _returnMessageContext = _operationClient.getMessageContext(
-                                           org.apache.axis2.wsdl.WSDLConstants.MESSAGE_LABEL_IN_VALUE);
-                org.apache.axiom.soap.SOAPEnvelope _returnEnv = _returnMessageContext.getEnvelope();
-                
-                
-                                java.lang.Object object = fromOM(
-                                             _returnEnv.getBody().getFirstElement() ,
-                                             org.esbhive.node.mgt.client.AddNodeResponse.class,
-                                              getEnvelopeNamespaces(_returnEnv));
-
-                               
-                                        return getAddNodeResponse_return((org.esbhive.node.mgt.client.AddNodeResponse)object);
-                                   
-         }catch(org.apache.axis2.AxisFault f){
-
-            org.apache.axiom.om.OMElement faultElt = f.getDetail();
-            if (faultElt!=null){
-                if (faultExceptionNameMap.containsKey(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNode"))){
-                    //make the fault by reflection
-                    try{
-                        java.lang.String exceptionClassName = (java.lang.String)faultExceptionClassNameMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNode"));
-                        java.lang.Class exceptionClass = java.lang.Class.forName(exceptionClassName);
-                        java.lang.Exception ex = (java.lang.Exception) exceptionClass.newInstance();
-                        //message class
-                        java.lang.String messageClassName = (java.lang.String)faultMessageMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNode"));
-                        java.lang.Class messageClass = java.lang.Class.forName(messageClassName);
-                        java.lang.Object messageObject = fromOM(faultElt,messageClass,null);
-                        java.lang.reflect.Method m = exceptionClass.getMethod("setFaultMessage",
-                                   new java.lang.Class[]{messageClass});
-                        m.invoke(ex,new java.lang.Object[]{messageObject});
-                        
-
-                        throw new java.rmi.RemoteException(ex.getMessage(), ex);
-                    }catch(java.lang.ClassCastException e){
-                       // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    } catch (java.lang.ClassNotFoundException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }catch (java.lang.NoSuchMethodException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    } catch (java.lang.reflect.InvocationTargetException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }  catch (java.lang.IllegalAccessException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }   catch (java.lang.InstantiationException e) {
-                        // we cannot intantiate the class - throw the original Axis fault
-                        throw f;
-                    }
-                }else{
-                    throw f;
-                }
-            }else{
-                throw f;
-            }
-            } finally {
-                _messageContext.getTransportOut().getSender().cleanup(_messageContext);
-            }
-        }
+           
+              _messageContext.getTransportOut().getSender().cleanup(_messageContext); 
+           
+             return;
+           }
             
-                /**
-                * Auto generated method signature for Asynchronous Invocations
-                * 
-                * @see org.esbhive.node.mgt.client.EsbNodeManager#startaddNode
-                    * @param addNode19
-                
-                */
-                public  void startaddNode(
-
-                 org.esbhive.node.mgt.client.ESBNode me20,org.esbhive.node.mgt.client.ESBNode addto21,
-
-                  final org.esbhive.node.mgt.client.EsbNodeManagerCallbackHandler callback)
-
-                throws java.rmi.RemoteException{
-
-              org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[1].getName());
-             _operationClient.getOptions().setAction("urn:addNode");
-             _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
-
-              
-              
-                  addPropertyToOperationClient(_operationClient,org.apache.axis2.description.WSDL2Constants.ATTR_WHTTP_QUERY_PARAMETER_SEPARATOR,"&");
-              
-
-
-              // create SOAP envelope with that payload
-              org.apache.axiom.soap.SOAPEnvelope env=null;
-              final org.apache.axis2.context.MessageContext _messageContext = new org.apache.axis2.context.MessageContext();
-
-                    
-                                    //Style is Doc.
-                                    org.esbhive.node.mgt.client.AddNode dummyWrappedType = null;
-                                                    env = toEnvelope(getFactory(_operationClient.getOptions().getSoapVersionURI()),
-                                                    me20,
-                                                    addto21,
-                                                     dummyWrappedType,
-                                                    optimizeContent(new javax.xml.namespace.QName("http://mgt.node.esbhive.org",
-                                                    "addNode")));
-                                                
-        // adding SOAP soap_headers
-         _serviceClient.addHeadersToEnvelope(env);
-        // create message context with that soap envelope
-        _messageContext.setEnvelope(env);
-
-        // add the message context to the operation client
-        _operationClient.addMessageContext(_messageContext);
-
-
-                    
-                        _operationClient.setCallback(new org.apache.axis2.client.async.AxisCallback() {
-                            public void onMessage(org.apache.axis2.context.MessageContext resultContext) {
-                            try {
-                                org.apache.axiom.soap.SOAPEnvelope resultEnv = resultContext.getEnvelope();
-                                
-                                        java.lang.Object object = fromOM(resultEnv.getBody().getFirstElement(),
-                                                                         org.esbhive.node.mgt.client.AddNodeResponse.class,
-                                                                         getEnvelopeNamespaces(resultEnv));
-                                        callback.receiveResultaddNode(
-                                            getAddNodeResponse_return((org.esbhive.node.mgt.client.AddNodeResponse)object));
-                                        
-                            } catch (org.apache.axis2.AxisFault e) {
-                                callback.receiveErroraddNode(e);
-                            }
-                            }
-
-                            public void onError(java.lang.Exception error) {
-								if (error instanceof org.apache.axis2.AxisFault) {
-									org.apache.axis2.AxisFault f = (org.apache.axis2.AxisFault) error;
-									org.apache.axiom.om.OMElement faultElt = f.getDetail();
-									if (faultElt!=null){
-										if (faultExceptionNameMap.containsKey(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNode"))){
-											//make the fault by reflection
-											try{
-													java.lang.String exceptionClassName = (java.lang.String)faultExceptionClassNameMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNode"));
-													java.lang.Class exceptionClass = java.lang.Class.forName(exceptionClassName);
-													java.lang.Exception ex = (java.lang.Exception) exceptionClass.newInstance();
-													//message class
-													java.lang.String messageClassName = (java.lang.String)faultMessageMap.get(new org.apache.axis2.client.FaultMapKey(faultElt.getQName(),"addNode"));
-														java.lang.Class messageClass = java.lang.Class.forName(messageClassName);
-													java.lang.Object messageObject = fromOM(faultElt,messageClass,null);
-													java.lang.reflect.Method m = exceptionClass.getMethod("setFaultMessage",
-															new java.lang.Class[]{messageClass});
-													m.invoke(ex,new java.lang.Object[]{messageObject});
-													
-					
-										            callback.receiveErroraddNode(new java.rmi.RemoteException(ex.getMessage(), ex));
-                                            } catch(java.lang.ClassCastException e){
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            } catch (java.lang.ClassNotFoundException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            } catch (java.lang.NoSuchMethodException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            } catch (java.lang.reflect.InvocationTargetException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            } catch (java.lang.IllegalAccessException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            } catch (java.lang.InstantiationException e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            } catch (org.apache.axis2.AxisFault e) {
-                                                // we cannot intantiate the class - throw the original Axis fault
-                                                callback.receiveErroraddNode(f);
-                                            }
-									    } else {
-										    callback.receiveErroraddNode(f);
-									    }
-									} else {
-									    callback.receiveErroraddNode(f);
-									}
-								} else {
-								    callback.receiveErroraddNode(error);
-								}
-                            }
-
-                            public void onFault(org.apache.axis2.context.MessageContext faultContext) {
-                                org.apache.axis2.AxisFault fault = org.apache.axis2.util.Utils.getInboundFaultFromMessageContext(faultContext);
-                                onError(fault);
-                            }
-
-                            public void onComplete() {
-                                try {
-                                    _messageContext.getTransportOut().getSender().cleanup(_messageContext);
-                                } catch (org.apache.axis2.AxisFault axisFault) {
-                                    callback.receiveErroraddNode(axisFault);
-                                }
-                            }
-                });
-                        
-
-          org.apache.axis2.util.CallbackReceiver _callbackReceiver = null;
-        if ( _operations[1].getMessageReceiver()==null &&  _operationClient.getOptions().isUseSeparateListener()) {
-           _callbackReceiver = new org.apache.axis2.util.CallbackReceiver();
-          _operations[1].setMessageReceiver(
-                    _callbackReceiver);
-        }
-
-           //execute the operation client
-           _operationClient.execute(false);
-
-                    }
-                
                     /**
                      * Auto generated method signature
                      * 
@@ -699,7 +212,7 @@
                     {
               org.apache.axis2.context.MessageContext _messageContext = null;
               try{
-               org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[2].getName());
+               org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[1].getName());
               _operationClient.getOptions().setAction("urn:getNodes");
               _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
@@ -809,7 +322,7 @@
 
                 throws java.rmi.RemoteException{
 
-              org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[2].getName());
+              org.apache.axis2.client.OperationClient _operationClient = _serviceClient.createClient(_operations[1].getName());
              _operationClient.getOptions().setAction("urn:getNodes");
              _operationClient.getOptions().setExceptionToBeThrownOnSOAPFault(true);
 
@@ -925,9 +438,9 @@
                         
 
           org.apache.axis2.util.CallbackReceiver _callbackReceiver = null;
-        if ( _operations[2].getMessageReceiver()==null &&  _operationClient.getOptions().isUseSeparateListener()) {
+        if ( _operations[1].getMessageReceiver()==null &&  _operationClient.getOptions().isUseSeparateListener()) {
            _callbackReceiver = new org.apache.axis2.util.CallbackReceiver();
-          _operations[2].setMessageReceiver(
+          _operations[1].setMessageReceiver(
                     _callbackReceiver);
         }
 
@@ -967,55 +480,13 @@
         }
         return false;
     }
-     //https://localhost:8243/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint
-            private  org.apache.axiom.om.OMElement  toOM(org.esbhive.node.mgt.client.AddNodeAndGetNodes param, boolean optimizeContent)
+     //https://localhost:8244/services/EsbNodeManager.EsbNodeManagerHttpsSoap12Endpoint
+            private  org.apache.axiom.om.OMElement  toOM(org.esbhive.node.mgt.client.Process param, boolean optimizeContent)
             throws org.apache.axis2.AxisFault {
 
             
                         try{
-                             return param.getOMElement(org.esbhive.node.mgt.client.AddNodeAndGetNodes.MY_QNAME,
-                                          org.apache.axiom.om.OMAbstractFactory.getOMFactory());
-                        } catch(org.apache.axis2.databinding.ADBException e){
-                            throw org.apache.axis2.AxisFault.makeFault(e);
-                        }
-                    
-
-            }
-        
-            private  org.apache.axiom.om.OMElement  toOM(org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse param, boolean optimizeContent)
-            throws org.apache.axis2.AxisFault {
-
-            
-                        try{
-                             return param.getOMElement(org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse.MY_QNAME,
-                                          org.apache.axiom.om.OMAbstractFactory.getOMFactory());
-                        } catch(org.apache.axis2.databinding.ADBException e){
-                            throw org.apache.axis2.AxisFault.makeFault(e);
-                        }
-                    
-
-            }
-        
-            private  org.apache.axiom.om.OMElement  toOM(org.esbhive.node.mgt.client.AddNode param, boolean optimizeContent)
-            throws org.apache.axis2.AxisFault {
-
-            
-                        try{
-                             return param.getOMElement(org.esbhive.node.mgt.client.AddNode.MY_QNAME,
-                                          org.apache.axiom.om.OMAbstractFactory.getOMFactory());
-                        } catch(org.apache.axis2.databinding.ADBException e){
-                            throw org.apache.axis2.AxisFault.makeFault(e);
-                        }
-                    
-
-            }
-        
-            private  org.apache.axiom.om.OMElement  toOM(org.esbhive.node.mgt.client.AddNodeResponse param, boolean optimizeContent)
-            throws org.apache.axis2.AxisFault {
-
-            
-                        try{
-                             return param.getOMElement(org.esbhive.node.mgt.client.AddNodeResponse.MY_QNAME,
+                             return param.getOMElement(org.esbhive.node.mgt.client.Process.MY_QNAME,
                                           org.apache.axiom.om.OMAbstractFactory.getOMFactory());
                         } catch(org.apache.axis2.databinding.ADBException e){
                             throw org.apache.axis2.AxisFault.makeFault(e);
@@ -1040,20 +511,20 @@
         
                                     
                                 private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory,
-                                    org.esbhive.node.mgt.client.ESBNode param1,
-                                    org.esbhive.node.mgt.client.AddNodeAndGetNodes dummyWrappedType,
+                                    org.apache.zookeeper.xsd.WatchedEvent param1,
+                                    org.esbhive.node.mgt.client.Process dummyWrappedType,
                                  boolean optimizeContent) throws org.apache.axis2.AxisFault{
 
                                 try{
-                                org.esbhive.node.mgt.client.AddNodeAndGetNodes wrappedType = new org.esbhive.node.mgt.client.AddNodeAndGetNodes();
+                                org.esbhive.node.mgt.client.Process wrappedType = new org.esbhive.node.mgt.client.Process();
 
                                  
-                                              wrappedType.setNode(param1);
+                                              wrappedType.setEvent(param1);
                                          
 
                                org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
                                   
-                                        emptyEnvelope.getBody().addChild(wrappedType.getOMElement(org.esbhive.node.mgt.client.AddNodeAndGetNodes.MY_QNAME,factory));
+                                        emptyEnvelope.getBody().addChild(wrappedType.getOMElement(org.esbhive.node.mgt.client.Process.MY_QNAME,factory));
                                     
 
                                 return emptyEnvelope;
@@ -1068,58 +539,6 @@
                              
                              /* methods to provide back word compatibility */
 
-                             
-
-                                
-                                private org.esbhive.node.mgt.client.ESBNode[] getAddNodeAndGetNodesResponse_return(
-                                org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse wrappedType){
-                                
-                                        return wrappedType.get_return();
-                                    
-                                }
-                             
-                                    
-                                private  org.apache.axiom.soap.SOAPEnvelope toEnvelope(org.apache.axiom.soap.SOAPFactory factory,
-                                    org.esbhive.node.mgt.client.ESBNode param1,
-                                    org.esbhive.node.mgt.client.ESBNode param2,
-                                    org.esbhive.node.mgt.client.AddNode dummyWrappedType,
-                                 boolean optimizeContent) throws org.apache.axis2.AxisFault{
-
-                                try{
-                                org.esbhive.node.mgt.client.AddNode wrappedType = new org.esbhive.node.mgt.client.AddNode();
-
-                                 
-                                              wrappedType.setMe(param1);
-                                         
-                                              wrappedType.setAddto(param2);
-                                         
-
-                               org.apache.axiom.soap.SOAPEnvelope emptyEnvelope = factory.getDefaultEnvelope();
-                                  
-                                        emptyEnvelope.getBody().addChild(wrappedType.getOMElement(org.esbhive.node.mgt.client.AddNode.MY_QNAME,factory));
-                                    
-
-                                return emptyEnvelope;
-                               } catch(org.apache.axis2.databinding.ADBException e){
-                                    throw org.apache.axis2.AxisFault.makeFault(e);
-                               }
-                               }
-
-
-
-                                
-                             
-                             /* methods to provide back word compatibility */
-
-                             
-
-                                
-                                private org.esbhive.node.mgt.client.ESBNode[] getAddNodeResponse_return(
-                                org.esbhive.node.mgt.client.AddNodeResponse wrappedType){
-                                
-                                        return wrappedType.get_return();
-                                    
-                                }
                              
 
                                 
@@ -1147,30 +566,9 @@
 
         try {
         
-                if (org.esbhive.node.mgt.client.AddNodeAndGetNodes.class.equals(type)){
+                if (org.esbhive.node.mgt.client.Process.class.equals(type)){
                 
-                           return org.esbhive.node.mgt.client.AddNodeAndGetNodes.Factory.parse(param.getXMLStreamReaderWithoutCaching());
-                    
-
-                }
-           
-                if (org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse.class.equals(type)){
-                
-                           return org.esbhive.node.mgt.client.AddNodeAndGetNodesResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
-                    
-
-                }
-           
-                if (org.esbhive.node.mgt.client.AddNode.class.equals(type)){
-                
-                           return org.esbhive.node.mgt.client.AddNode.Factory.parse(param.getXMLStreamReaderWithoutCaching());
-                    
-
-                }
-           
-                if (org.esbhive.node.mgt.client.AddNodeResponse.class.equals(type)){
-                
-                           return org.esbhive.node.mgt.client.AddNodeResponse.Factory.parse(param.getXMLStreamReaderWithoutCaching());
+                           return org.esbhive.node.mgt.client.Process.Factory.parse(param.getXMLStreamReaderWithoutCaching());
                     
 
                 }

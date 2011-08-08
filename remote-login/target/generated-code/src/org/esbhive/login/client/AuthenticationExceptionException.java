@@ -3,14 +3,14 @@
  * AuthenticationExceptionException.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 05, 2010 (06:40:41 UTC)
+ * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 03, 2010 (02:59:42 IST)
  */
 
 package org.esbhive.login.client;
 
 public class AuthenticationExceptionException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1307804380243L;
+    private static final long serialVersionUID = 1312133689335L;
     
     private org.esbhive.login.client.AuthenticationExceptionE faultMessage;
 

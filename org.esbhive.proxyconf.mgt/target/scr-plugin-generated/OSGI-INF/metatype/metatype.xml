@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
+    <OCD id="proxyconf.manager" name="%proxyconf.manager.name" description="%proxyconf.manager.description"/>
+    <Designate pid="proxyconf.manager">
+        <Object ocdref="proxyconf.manager"/>
+    </Designate>
+</metatype:MetaData>

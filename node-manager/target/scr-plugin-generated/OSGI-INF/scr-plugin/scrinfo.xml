@@ -6,7 +6,8 @@
             <provide interface="org.esbhive.node.mgt.NodeManagerInterface"/>
         </service>
         <property name="service.pid" value="node.manager" private="false"/>
+        <reference name="Fault_Handler" interface="org.esbhive.fault_handler.FaultHandlerInterface" cardinality="1..1" policy="dynamic" bind="setFaultHandler" unbind="unSetFaultHandler" checked="true"/>
+        <reference name="org.wso2.carbon.serverConfig" interface="org.wso2.carbon.utils.ServerConfiguration" cardinality="1..1" policy="dynamic" bind="setServerConfiguration" unbind="unsetServerConfiguration" checked="true"/>
         <reference name="configuration.context.service" interface="org.wso2.carbon.utils.ConfigurationContextService" cardinality="1..1" policy="dynamic" bind="setConfigurationContextService" unbind="unsetConfigurationContextService" checked="true"/>
-        <reference name="esbhive.login.service" interface="org.esbhive.login.RemoteLogin" cardinality="1..1" policy="dynamic" bind="setRemoteLogin" unbind="unSetRemoteLogin" checked="true"/>
     </scr:component>
 </components>

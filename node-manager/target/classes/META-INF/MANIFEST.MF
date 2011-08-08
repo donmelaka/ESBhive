@@ -1,15 +1,12 @@
 Manifest-Version: 1.0
-Export-Package: org.esbhive.node.mgt;uses:="org.apache.axis2,org.apach
- e.axis2.service,org.esbhive.login.client,org.apache.axis2.client,org.
- apache.axis2.context,org.apache.axis2.description,org.apache.axis2.en
- gine,org.esbhive.login,org.wso2.carbon.utils,org.esbhive.node.mgt.cli
- ent",org.esbhive.node.mgt.client;uses:="org.apache.axis2.addressing,o
- rg.apache.axis2,org.apache.axis2.databinding.utils,org.apache.axis2.t
- ransport,org.apache.axis2.client,org.apache.axis2.context,javax.xml.n
- amespace,org.apache.axiom.om,org.apache.axiom.soap,org.apache.axis2.d
- escription,org.apache.axis2.util,javax.xml.stream,org.apache.axis2.en
- gine,org.apache.axis2.databinding.utils.reader,org.apache.axis2.clien
- t.async,org.apache.axis2.databinding,org.apache.axiom.om.impl.llom"
+Export-Package: org.esbhive.node.mgt;uses:="org.apache.zookeeper,org.a
+ pache.commons.logging,org.esbhive.fault_handler,org.apache.axis2.cont
+ ext,org.osgi.service.component,org.apache.axis2.description,org.apach
+ e.axis2.engine,org.wso2.carbon.utils,org.apache.zookeeper.data",org.e
+ sbhive.node.mgt.xsd;uses:="javax.xml.stream,org.wso2.carbon.proxyadmi
+ n.xsd,org.apache.axis2.databinding.utils,org.apache.axis2.databinding
+ .utils.reader,org.apache.axis2.databinding,org.apache.axiom.om.impl.l
+ lom,org.apache.axiom.om,javax.xml.namespace"
 Service-Component: OSGI-INF/serviceComponents.xml
 Ignore-Package: javax.xml.namespace
 Built-By: PC
@@ -18,24 +15,22 @@ Bundle-Name: node-manager
 Created-By: Apache Maven Bundle Plugin
 Build-Jdk: 1.6.0_19
 Bundle-Version: 1.0.0.SNAPSHOT
-Bnd-LastModified: 1307808143104
+Bnd-LastModified: 1312296554691
 Bundle-ManifestVersion: 2
 Bundle-Description: carbon-parent
 Import-Package: javax.xml.namespace;version="0.0.0",javax.xml.stream;r
  esolution:=optional;version="1.0",org.apache.axiom.om;resolution:=opt
  ional,org.apache.axiom.om.impl.llom;resolution:=optional,org.apache.a
- xiom.soap;resolution:=optional,org.apache.axis2;resolution:=optional,
- org.apache.axis2.addressing;resolution:=optional,org.apache.axis2.cli
- ent;resolution:=optional,org.apache.axis2.client.async;resolution:=op
- tional,org.apache.axis2.context;resolution:=optional,org.apache.axis2
- .databinding;resolution:=optional,org.apache.axis2.databinding.utils;
- resolution:=optional,org.apache.axis2.databinding.utils.reader;resolu
- tion:=optional,org.apache.axis2.description;resolution:=optional,org.
- apache.axis2.engine;resolution:=optional,org.apache.axis2.service;res
- olution:=optional,org.apache.axis2.transport;resolution:=optional,org
- .apache.axis2.util;resolution:=optional,org.esbhive.login,org.esbhive
- .login.client,org.esbhive.node.mgt;resolution:=optional,org.esbhive.n
- ode.mgt.client;resolution:=optional,org.wso2.carbon.utils;resolution:
- =optional
+ xis2.context;version="1.6.0.wso2v1",org.apache.axis2.databinding;reso
+ lution:=optional;version="1.6.0.wso2v1",org.apache.axis2.databinding.
+ utils;resolution:=optional;version="1.6.0.wso2v1",org.apache.axis2.da
+ tabinding.utils.reader;resolution:=optional;version="1.6.0.wso2v1",or
+ g.apache.axis2.description;version="1.6.0.wso2v1",org.apache.axis2.en
+ gine;version="1.6.0.wso2v1",org.apache.commons.logging;version="1.1",
+ org.apache.zookeeper,org.apache.zookeeper.data,org.esbhive.fault_hand
+ ler,org.esbhive.node.mgt;resolution:=optional,org.esbhive.node.mgt.xs
+ d;resolution:=optional,org.osgi.service.component;resolution:=optiona
+ l;version="1.1",org.wso2.carbon.proxyadmin.xsd;resolution:=optional,o
+ rg.wso2.carbon.utils
 Bundle-SymbolicName: node-manager
 
