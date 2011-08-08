@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/service-mgt/org.wso2.carbon.service.mgt.ui/3.0.0/src/main/resources/web/service-mgt/docs
+END
+userguide.html
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/service-mgt/org.wso2.carbon.service.mgt.ui/3.0.0/src/main/resources/web/service-mgt/docs/userguide.html
+END
+faultyservices_userguide.html
+K 25
+svn:wc:ra_dav:version-url
+V 176
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/service-mgt/org.wso2.carbon.service.mgt.ui/3.0.0/src/main/resources/web/service-mgt/docs/faultyservices_userguide.html
+END

@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin
+END
+MetaData.java
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/MetaData.java
+END
+Entry.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/Entry.java
+END
+ProxyServiceDeployer.java
+K 25
+svn:wc:ra_dav:version-url
+V 169
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/ProxyServiceDeployer.java
+END
+ProxyAdminException.java
+K 25
+svn:wc:ra_dav:version-url
+V 168
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/ProxyAdminException.java
+END
+ProxyData.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/ProxyData.java
+END
+ProxyAdminServiceComponent.java
+K 25
+svn:wc:ra_dav:version-url
+V 175
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/ProxyAdminServiceComponent.java
+END
+ProxyServicePolicyInfo.java
+K 25
+svn:wc:ra_dav:version-url
+V 171
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/proxy-admin/org.wso2.carbon.proxyadmin/3.0.1/src/main/java/org/wso2/carbon/proxyadmin/ProxyServicePolicyInfo.java
+END

@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 125
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/service-mgt/org.wso2.carbon.service.mgt.ui/3.0.0/src/main/resources
+END
+ServiceAdmin.wsdl
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/service-mgt/org.wso2.carbon.service.mgt.ui/3.0.0/src/main/resources/ServiceAdmin.wsdl
+END
+ServiceGroupAdmin.wsdl
+K 25
+svn:wc:ra_dav:version-url
+V 148
+/repos/wso2/!svn/ver/73794/tags/esb/java/3.0.1/components/service-mgt/org.wso2.carbon.service.mgt.ui/3.0.0/src/main/resources/ServiceGroupAdmin.wsdl
+END

@@ -74,6 +74,9 @@ import org.esbhive.login.LoginData;
 import org.esbhive.proxyconf.mgt.ProxyConfManagerStub;
 import org.esbhive.login.RemoteLogin;
 
+import org.wso2.carbon.service.mgt.ui.ServiceAdminStub;
+
+
 
 /**
  * @scr.component name="hp.manager" immediate="true"
@@ -456,74 +459,24 @@ public class HiveProxyServiceAdmin {
 	 * @return <code>successful</code> on success or <code>failed</code> otherwise
 	 */
 	public String deleteProxyService(String proxyName) throws ProxyAdminException {
-		ConfigurationContext ctx = null;
-		try {
-			ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-		} catch (AxisFault ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+		String [] serviceNames=new String[1];
+		serviceNames[0]=proxyName;
+		ESBNode[] nodes = null;
+		if (nodeManager!=null) {
+		 nodes = nodeManager.getNodes();
 		}
-		String serviceEPR = "";
-		AuthenticationAdminStub stub = null;
-		ServiceClient client = null;
-		Options options = null;
-		boolean isLogged = false;
-		String cookie = null;
-		String serviceEPR4 = "";
-		ProxyServiceAdminStub stub4 = null;
-		ServiceClient client4 = null;
-		Options option = null;
-		ESBNode[] nodeList = null;
-		if (nodeManager != null) {
-			nodeList = nodeManager.getNodes();
-		} else {
-			if (log2.isDebugEnabled()) {
-				log2.debug("Error:: NodeManager is not set ");
-			}
-		}
-		for (ESBNode tempNode : nodeList) {
 
-			serviceEPR = "https://" + tempNode.getIpAndPort() + "/services/" + "AuthenticationAdmin";
+		
+			for (ESBNode esbNode :nodes ) {
+				ServiceAdminStub serviceAdminStub = this.createServiceAdminStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
 			try {
-				stub = new AuthenticationAdminStub(ctx, serviceEPR);
-			} catch (AxisFault ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			}
-
-			client = stub._getServiceClient();
-			options = client.getOptions();
-			options.setManageSession(true);
-			try {
-				isLogged = stub.login(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
+				serviceAdminStub.deleteServiceGroups(serviceNames);
 			} catch (RemoteException ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			} catch (AuthenticationExceptionException ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+				log2.error("HiveProxyServiceAdmin RemoteException while deleting service groups", ex);
 			}
-
-			cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-				HTTPConstants.COOKIE_STRING);
-
-			serviceEPR4 = "https://" + tempNode.getIpAndPort() + "/services/" + "ProxyServiceAdmin";
-			try {
-				stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
-			} catch (AxisFault ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
 			}
-			client4 = stub4._getServiceClient();
-			option = client4.getOptions();
-			option.setManageSession(true);
-			option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-			try {
-				stub4.deleteProxyService(proxyName);
-			} catch (RemoteException ex) {
+			//stub.deleteServiceGroups(serviceGroups);
 
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-
-			} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
-
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
 
 		return FAILED;
 	}
@@ -1598,9 +1551,52 @@ public class HiveProxyServiceAdmin {
 			}
 
 		} catch (Exception ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+			log2.error("Error in HiveProxyServiceAdmin", ex);
 		}
 
 
+	}
+	private ServiceAdminStub createServiceAdminStub(String username, String password, String ipAndPort) {
+
+		LoginData otherNode = new LoginData();
+		otherNode.setUserName(username);
+		otherNode.setPassWord(password);
+		otherNode.setHostNameAndPort(ipAndPort);
+		LoginData loginData = null;
+		try {
+			loginData = remoteLogin.logIn(otherNode);
+		} catch (AxisFault ex) {
+			log2.error("HiveProxyServiceAdmin AxisFault when trying to login ", ex);
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException when trying to login ", ex);
+		} catch (org.esbhive.login.client.AuthenticationExceptionException ex) {
+			log2.error("HiveProxyServiceAdmin AuthenticationExceptionException when trying to login ", ex);
+		}
+		
+
+
+
+		ConfigurationContext ctx = null;
+		try {
+			ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
+		} catch (AxisFault ex) {
+			log2.error("AxisFault in ServiceAdminClient when login ", ex);
+		}
+
+
+
+		String serviceEPR4 = "https://" + ipAndPort + "/services/" + "ServiceAdmin";
+
+		ServiceAdminStub stub4 = null;
+		try {
+			stub4 = new ServiceAdminStub(ctx, serviceEPR4);
+		} catch (AxisFault ex2) {
+			log2.error("AxisFault in ServiceAdminClient", ex2);
+		}
+		ServiceClient client4 = stub4._getServiceClient();
+		Options option = client4.getOptions();
+		option.setManageSession(true);
+		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
+		return stub4;
 	}
 }
