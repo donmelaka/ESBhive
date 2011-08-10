@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.WatchedEvent;
 import org.wso2.carbon.utils.ConfigurationContextService;
@@ -56,13 +54,11 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   private static ConfigurationContextService configurationContextService;
   ZooKeeper zk;
   final String NODES = "/nodes";
-  private final String ELECTION = "/election";
   private final String FAILURES = "/failures";
   static Map<String, ESBNode> nodeMap = new HashMap<String, ESBNode>();
   private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveNodeManager");
   private ServerConfiguration serverConfig;
   private FaultHandlerInterface fh;
-  private String myElectionString;
 
   public NodeManager() {
   }
@@ -77,13 +73,6 @@ public class NodeManager implements NodeManagerInterface, Watcher {
       if (nodesRoot == null) {
         zk.create(NODES, new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
       }
-
-      Stat electionRoot = zk.exists(ELECTION, false);
-      if (electionRoot == null) {
-        zk.create(ELECTION, new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-      }
-
-      myElectionString = zk.create(ELECTION + "/n_", new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 
       Stat failuresRoot = zk.exists(FAILURES, false);
       if (failuresRoot == null) {
@@ -184,14 +173,15 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
   private boolean amITheLeader() {
     try {
-      List<String> childern = zk.getChildren(ELECTION, false);
+      List<String> childern = zk.getChildren(NODES, false);
       log.info("Checking leader : current znodes are: " + childern);
       String[] chidrenArray = childern.toArray(new String[0]);
       Arrays.sort(chidrenArray);
       log.info("The smallest child is " + chidrenArray[0]);
+      String myElectionString = thisNode().getIpAndPort();
       log.info("The child I created is " + myElectionString);
-      zk.exists(ELECTION + "/" + chidrenArray[0], this);
-      if (myElectionString.substring(myElectionString.lastIndexOf("/") + 1).equals(chidrenArray[0])) {
+      zk.exists(NODES + "/" + chidrenArray[0], this);
+      if (myElectionString.equals(chidrenArray[0])) {
         log.info(thisNode().getIpAndPort() + ": I'm the leader.");
         return true;
       } else {
