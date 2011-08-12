@@ -19,77 +19,101 @@ import org.apache.commons.configuration.PropertiesConfiguration;
  */
 public class App {
 
-  static String[] url_list = null;
+	static String[] url_list = null;
 
-  public static void main(String[] args) throws InvalidDataException, MalformedURLException, IOException {
-    CodeSource src = App.class.getProtectionDomain().getCodeSource();
-    if (args.length == 0) {
-      new App().runClients(src);
-    } else {
-      File data = new File(args[0]);
-      if (data.exists() && data.isDirectory()) {
-        new App().processData(data);
-      }
-    }
-  }
+	public static void main(String[] args) throws InvalidDataException, MalformedURLException, IOException {
+		CodeSource src = App.class.getProtectionDomain().getCodeSource();
+		if (args.length == 0) {
+			new App().runClients(src);
+		} else {
+			File data = new File(args[0]);
+			if (data.exists() && data.isDirectory()) {
+				new App().processData(data, src);
+			}
+		}
+	}
 
-  public void processData(File data) throws InvalidDataException, MalformedURLException, IOException {
-    ChartBuilder jb = new ChartBuilder();
-    File[] files = data.listFiles();
-    for(int i=0;i<files.length;i++){
-      ResponseDataCalculator rdc = new ResponseDataCalculator(files[i]);
-      jb.addCalculatedDataItem(rdc);
-    }
-    jb.createChart();
-  }
+	public void processData(File data, CodeSource src) throws InvalidDataException, MalformedURLException, IOException {
+		URL url = null;
+		Configuration config = null;
+		if (src != null) {
+			url = new URL(src.getLocation(), "chart.properties");
+		}
+		try {
+			config = new PropertiesConfiguration(url);
+		} catch (ConfigurationException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+		}
 
-  public void runClients(CodeSource src) {
-    String esb_home = null;
-    int numReqestsPerClient = 0;
-    int numTotalClients = 0;
-    int numClientMachines = 0;
-    URL url = null;
+		 
+		ChartBuilder jb = new ChartBuilder(config.getInt("throuhgput.multiply"),
+			config.getInt("throuhgput.divide"),
+			config.getStringArray("throuhgput.labels"),
+			config.getInt("response.multiply"),
+			config.getInt("response.divide"),
+			config.getStringArray("response.labels"));
+		File[] files = data.listFiles();
+		for (int i = 0; i < files.length; i++) {
+			ResponseDataCalculator rdc = new ResponseDataCalculator(files[i]);
+			jb.addCalculatedDataItem(rdc);
+		}
+		jb.createChart();
+	}
 
-    try {
-      if (src != null) {
-        url = new URL(src.getLocation(), "options.properties");
-      }
-      Configuration config = new PropertiesConfiguration(url);
-      esb_home = config.getString("esb.home");
-      url_list = config.getStringArray("url.list");
-      numTotalClients = config.getInt("num.total.clients");
-      numClientMachines = config.getInt("num.client.machines");
-      numReqestsPerClient = config.getInt("requests.perclient");
-    } catch (ConfigurationException ex) {
-      Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (MalformedURLException ex) {
-      Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
-            + "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");
-    System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+	public void runClients(CodeSource src) {
+		String esb_home = null;
+		int numReqestsPerClient = 0;
+		int numTotalClients = 0;
+		int numClientMachines = 0;
+		URL url = null;
 
-    CountDownLatch doneSignal = new CountDownLatch(numTotalClients / numClientMachines * numReqestsPerClient);
-    File dir = null;
-    try {
-      String dirName = "numesbs-" + url_list.length + ".totalclients-" + numTotalClients
-              + ".requestsperclient-" + numReqestsPerClient;
-      url = new URL(src.getLocation(), "data");
-      dir = new File(new File(url.toURI()), dirName);
-      System.out.println(dir.getAbsolutePath());
-      dir.mkdirs();
-    } catch (URISyntaxException ex) {
-      Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (MalformedURLException ex) {
-      Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    for (int i = 0; i < numTotalClients / numClientMachines; i++) {
-      new Client(numReqestsPerClient, doneSignal, dir).start();
-    }
-    try {
-      doneSignal.await();
-    } catch (InterruptedException ex) {
-      Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
-    }
-  }
+		try {
+			if (src != null) {
+				url = new URL(src.getLocation(), "options.properties");
+			}
+			Configuration config = new PropertiesConfiguration(url);
+			esb_home = config.getString("esb.home");
+			url_list = config.getStringArray("url.list");
+			numTotalClients = config.getInt("num.total.clients");
+			numClientMachines = config.getInt("num.client.machines");
+			numReqestsPerClient = config.getInt("requests.perclient");
+		} catch (ConfigurationException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (MalformedURLException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
+			+ "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+
+		CountDownLatch doneSignal = new CountDownLatch(numTotalClients / numClientMachines * numReqestsPerClient);
+		File dir = null;
+		try {
+			String dirName = "numesbs-" + url_list.length + ".totalclients-" + numTotalClients
+				+ ".requestsperclient-" + numReqestsPerClient;
+			url = new URL(src.getLocation(), "data");
+			dir = new File(new File(url.toURI()), dirName);
+			if (dir.exists()) {
+				File[] listFiles = dir.listFiles();
+				for (int i = 0; i < listFiles.length; i++) {
+					listFiles[i].delete();
+				}
+			}
+
+			System.out.println(dir.getAbsolutePath());
+			dir.mkdirs();
+		} catch (URISyntaxException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (MalformedURLException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		for (int i = 0; i < numTotalClients / numClientMachines; i++) {
+			new Client(numReqestsPerClient, doneSignal, dir).start();
+		}
+		try {
+			doneSignal.await();
+		} catch (InterruptedException ex) {
+			Logger.getLogger(App.class.getName()).log(Level.SEVERE, null, ex);
+		}
+	}
 }

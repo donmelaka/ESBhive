@@ -31,6 +31,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,8 +40,23 @@ import java.util.TreeMap;
  */
 public class ChartBuilder {
 
+	private int throughputChartMultiplyBy = 0;
+	private int throughputChartDivideBy = 0;
+	private String[] throughputChartLabels = null;
+	private int rtChartMultiplyBy = 0;
+	private int rtChartDivideBy = 0;
+	private String[] rtChartLabels = null;
 	HashMap<Integer, HashMap<Integer, ArrayList<ResponseDataCalculator>>> dataMap =
 		new HashMap<Integer, HashMap<Integer, ArrayList<ResponseDataCalculator>>>();
+
+	public ChartBuilder(int tcmb, int tcdb, String[] tcl, int rcmb, int rcdb, String[] rcl) {
+		this.throughputChartDivideBy = tcdb;
+		this.throughputChartMultiplyBy = tcmb;
+		this.throughputChartLabels = tcl;
+		this.rtChartDivideBy = rcdb;
+		this.rtChartMultiplyBy = rcmb;
+		this.rtChartLabels = rcl;
+	}
 
 	void addCalculatedDataItem(ResponseDataCalculator rdc) {
 		if (dataMap.containsKey(rdc.getRequestsPerClient())) {
@@ -66,8 +83,18 @@ public class ChartBuilder {
 	public void createChart() throws MalformedURLException, IOException {
 		for (Iterator<Integer> iter = dataMap.keySet().iterator(); iter.hasNext();) {
 			Integer requestPerClient = iter.next();
-			saveChart(createThroughputChartString(requestPerClient, dataMap.get(requestPerClient)),
-				"Requests-" + requestPerClient + "-Throughput.png");
+			try {
+				saveChart(createThroughputChartString(requestPerClient, dataMap.get(requestPerClient)),
+					"Requests-" + requestPerClient + "-Throughput.png");
+			} catch (NullPointerException ex) {
+				Logger.getLogger(ChartBuilder.class.getName()).log(Level.SEVERE, null, ex);
+			}
+			try {
+				saveChart(createResponseTimeChartString(requestPerClient, dataMap.get(requestPerClient)),
+					"Requests-" + requestPerClient + "-ResponseTime.png");
+			} catch (NullPointerException ex) {
+				Logger.getLogger(ChartBuilder.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
 	}
 
@@ -87,8 +114,11 @@ public class ChartBuilder {
 			}
 			double[] points = new double[linePoints.values().size()];
 			int i = 0;
+			System.out.println("Throughput Chart Data");
+
 			for (Iterator<Double> pointIter = linePoints.values().iterator(); pointIter.hasNext();) {
-				points[i] = pointIter.next().doubleValue();
+				points[i] = pointIter.next().doubleValue() * throughputChartMultiplyBy / throughputChartDivideBy;
+				System.out.println(points[i]);
 				i++;
 			}
 			for (Iterator xAxisValIter = linePoints.keySet().iterator(); xAxisValIter.hasNext() && firstRun;) {
@@ -109,15 +139,83 @@ public class ChartBuilder {
 		LineChart chart = GCharts.newLineChart(lines);
 		chart.setSize(600, 450);
 		chart.setTitle("Throughput with " + requestPerClient + " requests per client.", Color.WHITE, 14);
-		chart.setGrid(1, 25, 3, 2);
 
 		AxisStyle axisStyle = AxisStyle.newAxisStyle(Color.WHITE, 12, AxisTextAlignment.CENTER);
 		AxisLabels xAxis = AxisLabelsFactory.newAxisLabels(xAxisValues);
 		xAxis.setAxisStyle(axisStyle);
-		AxisLabels yAxis = AxisLabelsFactory.newAxisLabels("", "25", "50", "75", "100");
+		AxisLabels yAxis = AxisLabelsFactory.newAxisLabels(throughputChartLabels);
 		yAxis.setAxisStyle(axisStyle);
-		AxisLabels yAxis2 = AxisLabelsFactory.newAxisLabels("Number of Clients", 50.0);
-		AxisLabels xAxis3 = AxisLabelsFactory.newAxisLabels("Throughput", 50.0);
+		AxisLabels yAxis2 = AxisLabelsFactory.newAxisLabels("Throughput", 50.0);
+		AxisLabels xAxis3 = AxisLabelsFactory.newAxisLabels("Number of Clients", 50.0);
+
+
+
+		// Adding axis info to chart.
+		chart.addXAxisLabels(xAxis);
+		chart.addYAxisLabels(yAxis);
+		chart.addYAxisLabels(yAxis2);
+		chart.addXAxisLabels(xAxis3);
+
+		// Defining background and chart fills.
+		chart.setBackgroundFill(Fills.newSolidFill(Color.newColor("1F1D1D")));
+		LinearGradientFill fill = Fills.newLinearGradientFill(0, Color.newColor("363433"), 100);
+		fill.addColorAndOffset(Color.newColor("2E2B2A"), 0);
+		chart.setAreaFill(fill);
+		String url = chart.toURLString();
+
+		System.out.println(url);
+		return url;
+	}
+
+	private String createResponseTimeChartString(Integer requestPerClient, HashMap<Integer, ArrayList<ResponseDataCalculator>> chartData) {
+		// Defining lines
+		List<Line> lines = new ArrayList<Line>();
+		List<String> xAxisValues = new ArrayList<String>();
+		boolean firstRun = true;
+		for (Iterator<Integer> iter = chartData.keySet().iterator(); iter.hasNext();) {
+			Integer numESBs = iter.next();
+			ArrayList<ResponseDataCalculator> lineData = chartData.get(numESBs);
+			TreeMap<Integer, Double> linePoints = new TreeMap<Integer, Double>();
+			for (Iterator<ResponseDataCalculator> rdcIter = lineData.iterator(); rdcIter.hasNext();) {
+				ResponseDataCalculator rdc = rdcIter.next();
+				linePoints.put(rdc.getNumClients(), (double) rdc.getResponseTime());
+
+			}
+			double[] points = new double[linePoints.values().size()];
+			int i = 0;
+
+			System.out.println("Response Time Chart Data");
+			for (Iterator<Double> pointIter = linePoints.values().iterator(); pointIter.hasNext();) {
+				points[i] = pointIter.next().doubleValue() * rtChartMultiplyBy / rtChartDivideBy;
+				System.out.println(points[i]);
+				i++;
+			}
+			for (Iterator xAxisValIter = linePoints.keySet().iterator(); xAxisValIter.hasNext() && firstRun;) {
+				xAxisValues.add(xAxisValIter.next().toString());
+			}
+			firstRun = false;
+			Random numGen = new Random();
+			Line line = Plots.newLine(Data.newData(points),
+				Color.newColor("" + numGen.nextInt(10) + "" + numGen.nextInt(10) + "" + numGen.nextInt(10) + "" + numGen.nextInt(10) + "" + numGen.nextInt(10) + "" + numGen.nextInt(10)),
+				"For " + numESBs + " ESB(s)");
+			line.setLineStyle(LineStyle.newLineStyle(3, 1, 0));
+			line.addShapeMarkers(Shape.DIAMOND, Color.newColor("CA3D05"), 12);
+			line.addShapeMarkers(Shape.DIAMOND, Color.WHITE, 8);
+			lines.add(line);
+
+		}
+
+		LineChart chart = GCharts.newLineChart(lines);
+		chart.setSize(600, 450);
+		chart.setTitle("Response Time with " + requestPerClient + " requests per client.", Color.WHITE, 14);
+
+		AxisStyle axisStyle = AxisStyle.newAxisStyle(Color.WHITE, 12, AxisTextAlignment.CENTER);
+		AxisLabels xAxis = AxisLabelsFactory.newAxisLabels(xAxisValues);
+		xAxis.setAxisStyle(axisStyle);
+		AxisLabels yAxis = AxisLabelsFactory.newAxisLabels(rtChartLabels);
+		yAxis.setAxisStyle(axisStyle);
+		AxisLabels yAxis2 = AxisLabelsFactory.newAxisLabels("ResponseTime", 50.0);
+		AxisLabels xAxis3 = AxisLabelsFactory.newAxisLabels("Number of Clients", 50.0);
 
 
 
