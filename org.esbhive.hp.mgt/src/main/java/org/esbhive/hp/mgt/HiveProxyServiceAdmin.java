@@ -55,6 +55,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContextFactory;
@@ -68,17 +69,17 @@ import org.apache.commons.logging.LogFactory;
 import org.esbhive.login.LoginData;
 import org.esbhive.proxyconf.mgt.ProxyConfManagerStub;
 import org.esbhive.login.RemoteLogin;
-//import org.esbhive.statistics.*;
+import org.esbhive.hivestat.HiveStatInterface;
 
 import org.wso2.carbon.service.mgt.ui.ServiceAdminStub;
-
 /**
  * @scr.component name="hp.manager" immediate="true"
  * @scr.reference name="esbhive.node.service" interface="org.esbhive.node.mgt.NodeManagerInterface"
  * cardinality="1..1" policy="dynamic" bind="setNodeManager"  unbind="unsetNodeManager"
  * @scr.reference name="esbhive.login.service" interface="org.esbhive.login.RemoteLogin"
  * cardinality="1..1" policy="dynamic" bind="setRemoteLogin"  unbind="unSetRemoteLogin"
- * 
+ * @scr.reference name="HiveStat" interface="org.esbhive.hivestat.HiveStatInterface"
+ * cardinality="1..1" policy="dynamic" bind="setHiveStat"  unbind="unSetHiveStat"
  */
 @SuppressWarnings({"UnusedDeclaration"})
 public class HiveProxyServiceAdmin {
@@ -86,11 +87,12 @@ public class HiveProxyServiceAdmin {
 	private static String SUCCESSFUL = "successful";
 	private static String FAILED = "failed";
 	private static NodeManagerInterface nodeManager;
+	private static HiveStatInterface stat;
 	private static final Log log2 = LogFactory.getLog("org.wso2.carbon.HiveProxyServiceAdmin");
 	private static RemoteLogin remoteLogin;
 	private static String ipAddress = System.getProperty(ServerConstants.LOCAL_IP_ADDRESS);
-	//private static HiveStatisticsServiceInterface stat;
 
+	//private static HiveStatisticsServiceInterface stat;
 	public synchronized void setNodeManager(NodeManagerInterface r) {
 		nodeManager = r;
 
@@ -108,13 +110,14 @@ public class HiveProxyServiceAdmin {
 		remoteLogin = null;
 	}
 
-//	protected void setStatistics(HiveStatisticsServiceInterface st1) {
-//		stat = st1;
-//	}
-//
-//	protected void unSetStatistics(HiveStatisticsServiceInterface stl) {
-//		stat = null;
-//	}
+	protected void setHiveStat(HiveStatInterface hl) {
+		stat = hl;
+	}
+
+	protected void unSetHiveStat(HiveStatInterface hl) {
+		stat = null;
+	}
+
 	/**
 	 * Enables statistics for the specified proxy service
 	 *
@@ -124,6 +127,7 @@ public class HiveProxyServiceAdmin {
 	 */
 	public String enableStatistics(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
+		//(ipAddress + port);
 		String enableStatics = "";
 		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
@@ -287,6 +291,24 @@ public class HiveProxyServiceAdmin {
 		option.setManageSession(true);
 		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
 		return stub4;
+	}
+
+	private String[] getCredentials(String ipAndPort) {
+		ESBNode[] nodes = null;
+		String[] credentials = new String[2];
+		if (nodeManager != null) {
+			nodes = nodeManager.getNodes();
+		}
+		for (ESBNode tempNode : nodes) {
+			if (tempNode.getIpAndPort().equals(ipAndPort)) {
+				credentials[0] = tempNode.getUsername();
+				credentials[1] = tempNode.getPassword();
+				break;
+			}
+		}
+
+		return credentials;
+
 	}
 
 	private void addProxyService(OMElement proxyServiceElement,
@@ -474,7 +496,7 @@ public class HiveProxyServiceAdmin {
 	 * @return <code>successful</code> on success or <code>failed</code> otherwise
 	 */
 	public String deleteProxyService(String proxyName) throws ProxyAdminException {
-		String[] serviceNames = new String[1];
+ 	String[] serviceNames = new String[1];
 		serviceNames[0] = proxyName;
 		ESBNode[] nodes = null;
 		if (nodeManager != null) {
@@ -501,7 +523,7 @@ public class HiveProxyServiceAdmin {
 		}
 
 
-		//stub.deleteServiceGroups(serviceGroups);
+
 
 
 		return FAILED;
@@ -624,6 +646,7 @@ public class HiveProxyServiceAdmin {
 	 */
 	public MetaData getMetaData() throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
+		//String[] credentials = getCredentials(ipAddress + port);
 		org.esbhive.hp.mgt.types.carbon.MetaData metaData1 = null;
 		MetaData metaData = new MetaData();
 		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
@@ -816,36 +839,55 @@ public class HiveProxyServiceAdmin {
 		return cproxy;
 	}
 
-	private static int[] selectEsbNodes(int length, double percentage) {
-		if (length != 1) {
-			double realProxyCount = length * percentage;
-			int count = (int) Math.floor(realProxyCount);
-
-			List<Integer> list = new ArrayList<Integer>();
-			int[] temArray = new int[count];
-			for (int a = 0; a < length; a++) {
-				list.add(a);
+//	private  int[] selectEsbNodes(int length, double percentage) {
+//		if (length != 1) {
+//			double realProxyCount = length * percentage;
+//			int count = (int) Math.floor(realProxyCount);
+//
+//			List<Integer> list = new ArrayList<Integer>();
+//			int[] temArray = new int[count];
+//			for (int a = 0; a < length; a++) {
+//				list.add(a);
+//			}
+//
+//			for (int j = 0; j < count; j++) {
+//				Collections.shuffle(list);
+//				temArray[j] = list.get(0);
+//				list.remove(new Integer(temArray[j]));
+//
+//			}
+//
+//
+//			return temArray;
+//		} else {
+//			int[] array = {0};
+//			return array;
+//		}
+//
+//	}
+	private ESBNode[] selectEsbNodes(double percentage) {
+		org.esbhive.node.mgt.ESBNode[] sortedNodes = null;
+		int count = 0;
+		if (stat != null) {
+			sortedNodes = stat.selectBestNodes();
+			for (org.esbhive.node.mgt.ESBNode node : sortedNodes) {
+				System.out.println(node.toString());
 			}
-
-			for (int j = 0; j < count; j++) {
-				Collections.shuffle(list);
-				temArray[j] = list.get(0);
-				list.remove(new Integer(temArray[j]));
-
-			}
-
-
-			return temArray;
 		} else {
-			int[] array = {0};
-			return array;
+			log2.error("HiveStat not set ");
 		}
-
+		count = (int) Math.floor(sortedNodes.length * percentage);
+		ESBNode[] selectedNodes = new ESBNode[count];
+		for (int i = 0; i < count; i++) {
+			selectedNodes[i] = sortedNodes[i];
+		}
+		return selectedNodes;
 	}
 
 	public String addProxy(ProxyData pd) throws ProxyAdminException {
 
 		try {
+
 			ConfigurationContext ctx =
 				ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
 			ESBNode[] nodeList = null;
@@ -857,26 +899,21 @@ public class HiveProxyServiceAdmin {
 					log2.debug("Error:: NodeManager is not set ");
 				}
 			}
-			///////////////////////////////////
-//			if (stat != null) {
-//				ESBNode[] selectBestNodes = stat.selectBestNodes();
-//			} else {
-//			}
-//			int[] selectedbestNodesIndexes = selectEsbNodes(nodeList.length, 0.5);
+			/////////////////////////////////
 
 
-			////////////////////////////
-			int[] selectedNodesIndexes = selectEsbNodes(nodeList.length, 0.5);
+			//////////////////////////
+			//int[] selectedNodesIndexes = selectEsbNodes( 0.5);
 
 
-			ESBNode[] selectedNodes = new ESBNode[selectedNodesIndexes.length];
-//			
+			//	ESBNode[] selectedNodes = new ESBNode[selectedNodesIndexes.length];
+			ESBNode[] selectedNodes = selectEsbNodes(0.5);
 			ProxyServiceAdminStub proxyServiceAdminStub;
 
 			org.esbhive.hp.mgt.types.carbon.ProxyData changedProxyData = changeProxyDataType(pd);
-			for (int j = 0; j < selectedNodesIndexes.length; j++) {
-				selectedNodes[j] = nodeList[selectedNodesIndexes[j]];
-			}
+//			for (int j = 0; j < selectedNodesIndexes.length; j++) {
+//				selectedNodes[j] = nodeList[selectedNodesIndexes[j]];
+//			}
 
 			for (ESBNode esbNode : selectedNodes) {
 				proxyServiceAdminStub = createProxyServiceAdminStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
@@ -890,7 +927,7 @@ public class HiveProxyServiceAdmin {
 
 			org.esbhive.node.mgt.xsd.ESBNode[] newEsbNodeList = new org.esbhive.node.mgt.xsd.ESBNode[selectedNodes.length];
 			for (int k = 0; k < selectedNodes.length; k++) {
-				newEsbNodeList[k] = setNewEsbNode(selectedNodes[k]);
+				newEsbNodeList[k] = setNewXsdEsbNode(selectedNodes[k]);
 			}
 
 			for (ESBNode tempNode : nodeList) {
@@ -907,11 +944,25 @@ public class HiveProxyServiceAdmin {
 		return SUCCESSFUL;
 	}
 
-	private org.esbhive.node.mgt.xsd.ESBNode setNewEsbNode(ESBNode node) {
+	private org.esbhive.node.mgt.xsd.ESBNode setNewXsdEsbNode(ESBNode node) {
 		org.esbhive.node.mgt.xsd.ESBNode newesbnode = new org.esbhive.node.mgt.xsd.ESBNode();
 		newesbnode.setIpAndPort(node.getIpAndPort());
 		newesbnode.setPassword(node.getPassword());
 		newesbnode.setUsername(node.getUsername());
+		newesbnode.setHttpsPort(node.getHttpsPort());
+		newesbnode.setSynapsePort(node.getSynapsePort());
+		newesbnode.setIp(node.getIp());
+		return newesbnode;
+	}
+
+	private ESBNode setNewEsbNode(org.esbhive.node.mgt.ESBNode node) {
+		ESBNode newesbnode = new ESBNode();
+		newesbnode.setIpAndPort(node.getIpAndPort());
+		newesbnode.setPassword(node.getPassword());
+		newesbnode.setUsername(node.getUsername());
+		newesbnode.setHttpsPort(node.getHttpsPort());
+		newesbnode.setSynapsePort(node.getSynapsePort());
+		newesbnode.setIp(node.getIp());
 		return newesbnode;
 	}
 
@@ -1421,11 +1472,26 @@ public class HiveProxyServiceAdmin {
 		}
 		ArrayList<ESBNode> notSelectedNodes = new ArrayList<ESBNode>();
 		notSelectedNodes.addAll(Arrays.asList(nodeList));
-
-
-		for (ESBNode tempNode : selectedEsbs) {
-			notSelectedNodes.remove(tempNode);
-		}
+		ArrayList<ESBNode> selectedNodes = new ArrayList<ESBNode>();
+		selectedNodes.addAll(Arrays.asList(selectedEsbs));
+		boolean removeAll = notSelectedNodes.removeAll(selectedNodes);
+		//Iterator iterator = notSelectedNodes.iterator();
+//		ESBNode next = null;
+//		for (ESBNode tempNode : selectedEsbs) {
+////			while (iterator.hasNext()) {
+////				next = (ESBNode) iterator.next();
+////				if (tempNode.getIpAndPort().equals(next.getIpAndPort())) {
+////					notSelectedNodes.remove(next);
+////				}
+////			}
+//			for (int k=0;k<nodeList.length;k++)  {
+//				next = nodeList[k];
+//				if (tempNode.getIpAndPort().equals(next.getIpAndPort())) {
+//					notSelectedNodes.remove(k);
+//				}
+//			}
+//
+//		}
 
 
 

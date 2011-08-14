@@ -1,4 +1,3 @@
-
 <wsdl:definitions xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:ax214="http://mgt.proxyconf.esbhive.org/xsd" xmlns:ax215="http://proxyadmin.carbon.wso2.org/xsd" xmlns:ns1="http://org.apache.axis2/xsd" xmlns:ns="http://mgt.proxyconf.esbhive.org" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:http1="http://schemas.xmlsoap.org/wsdl/http/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ax218="http://mgt.node.esbhive.org/xsd" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://mgt.proxyconf.esbhive.org">
     <wsdl:documentation>ProxyConfManager</wsdl:documentation>
     <wsdl:types>
@@ -7,14 +6,12 @@
             <xs:import namespace="http://mgt.node.esbhive.org/xsd" />
             <xs:complexType name="ProxyDataList">
                 <xs:sequence>
-                    <xs:element minOccurs="0" name="proxyDataArrayList" nillable="true" type="xs:anyType" />
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="proxyDataList" nillable="true" type="ax215:ProxyData" />
                 </xs:sequence>
             </xs:complexType>
             <xs:complexType name="ProEsb">
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" minOccurs="0" name="ESBNodes" nillable="true" type="ax219:ESBNode" />
-                    <xs:element minOccurs="0" name="ESBNodesArrayList" nillable="true" type="xs:anyType" />
                     <xs:element minOccurs="0" name="proxyData" nillable="true" type="ax215:ProxyData" />
                 </xs:sequence>
             </xs:complexType>
@@ -290,13 +287,13 @@
     </wsdl:binding>
     <wsdl:service name="ProxyConfManager">
         <wsdl:port name="ProxyConfManagerHttpsSoap11Endpoint" binding="ns:ProxyConfManagerSoap11Binding">
-            <soap:address location="https://localhost:8243/services/ProxyConfManager.ProxyConfManagerHttpsSoap11Endpoint" />
+            <soap:address location="https://localhost:8244/services/ProxyConfManager.ProxyConfManagerHttpsSoap11Endpoint" />
         </wsdl:port>
         <wsdl:port name="ProxyConfManagerHttpsSoap12Endpoint" binding="ns:ProxyConfManagerSoap12Binding">
-            <soap12:address location="https://localhost:8243/services/ProxyConfManager.ProxyConfManagerHttpsSoap12Endpoint" />
+            <soap12:address location="https://localhost:8244/services/ProxyConfManager.ProxyConfManagerHttpsSoap12Endpoint" />
         </wsdl:port>
         <wsdl:port name="ProxyConfManagerHttpsEndpoint" binding="ns:ProxyConfManagerHttpBinding">
-            <http1:address location="https://localhost:8243/services/ProxyConfManager.ProxyConfManagerHttpsEndpoint" />
+            <http1:address location="https://localhost:8244/services/ProxyConfManager.ProxyConfManagerHttpsEndpoint" />
         </wsdl:port>
     </wsdl:service>
 </wsdl:definitions>
