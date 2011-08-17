@@ -72,6 +72,16 @@
 			<artifactId>remote-login</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.esbhive</groupId>
+			<artifactId>HiveStat</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+<!--		<dependency>
+			<groupId>org.esbhive</groupId>
+			<artifactId>org.esbhive.statistics</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>-->
 <!--		<dependency>
 			<groupId>org.wso2.carbon</groupId>
 			<artifactId>org.wso2.carbon.service.mgt</artifactId>
@@ -108,7 +118,7 @@
                             org.wso2.carbon.proxyadmin.*,org.esbhive.hp.mgt.*
                            
 						</Export-Package>
-						<Private-Package>org.esbhive.proxyconf.mgt.*,org.esbhive.node.mgt.xsd.*</Private-Package>
+						<Private-Package>org.esbhive.proxyconf.mgt.*,org.esbhive.node.mgt.xsd.*,org.esbhive.proxyconf.mgt.xsd</Private-Package>
 
 						<Import-Package>
                   !javax.xml.namespace,
@@ -134,15 +144,7 @@
 						</goals>
 						<configuration>
 							<tasks>
-								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
-									<arg
-										line="-uri src/main/resources/AuthenticationAdmin.wsdl
-                                    -u -uw -o target/generated-code
-                                    -ns2p http://common.core.carbon.wso2.org/xsd=org.esbhive.hp.mgt.authentication,http://authentication.services.core.carbon.wso2.org=org.esbhive.hp.mgt.authenticator.proxy,http://authentication.services.core.carbon.wso2.org/xsd=org.esbhive.hp.mgt.authenticator.proxy" /> />
-									<classpath refid="maven.dependency.classpath" />
-									<classpath refid="maven.compile.classpath" />
-									<classpath refid="maven.runtime.classpath" />
-								</java>
+								
 
 								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
 									<arg line="-uri src/main/resources/ProxyServiceAdmin.wsdl -u -uw -o target/generated-code
@@ -159,7 +161,7 @@
 									<classpath refid="maven.compile.classpath"/>
 									<classpath refid="maven.runtime.classpath"/>
 								</java>
-								<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+						<java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
 									<arg line="-uri src/main/resources/ServiceAdmin.wsdl -u -uw
                                     -o target/generated-code -p org.wso2.carbon.service.mgt.ui
                                     -ns2p http://utils.carbon.wso2.org/xsd=org.esbhive.hp.mgt.carbon.utils,http://util.java/xsd=org.esbhive.hp.mgt.carbon.util.java,http://mgt.service.carbon.wso2.org/xsd=org.esbhive.hp.mgt.carbon.service,http://org.apache.axis2/xsd=org.esbhive.hp.mgt.carbon.axis2,http://neethi.apache.org/xsd=org.esbhive.hp.mgt.carbon.neethi"/>

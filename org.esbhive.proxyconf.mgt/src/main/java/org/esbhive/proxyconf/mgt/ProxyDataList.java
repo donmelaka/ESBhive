@@ -17,7 +17,7 @@ public class ProxyDataList {
 public ProxyDataList(){
 }
 
-ArrayList<ProxyData> PDArr = new ArrayList<ProxyData>();
+private ArrayList<ProxyData> PDArr = new ArrayList<ProxyData>();
 
 public void addToList(ProxyData pd){
     PDArr.add(pd);
@@ -31,7 +31,7 @@ public void addToList(ProxyData pd){
     }
     
     
-    public ArrayList<ProxyData> getProxyDataArrayList(){
+    protected ArrayList<ProxyData> getProxyDataArrayList(){
     return PDArr;
     }
 

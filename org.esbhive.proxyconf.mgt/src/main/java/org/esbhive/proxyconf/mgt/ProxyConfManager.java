@@ -50,7 +50,7 @@ public class ProxyConfManager implements ProxyConfManagerInterface{
 
         for(int i=0;i<esbarray.length;i++){
             String ipandport=esbarray[i].getIpAndPort();
-            if(PDlist.containsValue(ipandport)){
+            if(PDlist.containsKey(ipandport)){
                 ProxyDataList proxydatalist= PDlist.get(ipandport);
                 proxydatalist.addToList(prodata);//can have duplicate entries
             }
