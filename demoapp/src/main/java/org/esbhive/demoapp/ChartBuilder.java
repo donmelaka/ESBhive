@@ -138,7 +138,7 @@ public class ChartBuilder {
 
 		LineChart chart = GCharts.newLineChart(lines);
 		chart.setSize(600, 450);
-		chart.setTitle("Throughput with " + requestPerClient + " requests per client.", Color.WHITE, 14);
+		chart.setTitle("Throughput with " + requestPerClient + " requests per client per second.", Color.WHITE, 14);
 
 		AxisStyle axisStyle = AxisStyle.newAxisStyle(Color.WHITE, 12, AxisTextAlignment.CENTER);
 		AxisLabels xAxis = AxisLabelsFactory.newAxisLabels(xAxisValues);
@@ -207,7 +207,7 @@ public class ChartBuilder {
 
 		LineChart chart = GCharts.newLineChart(lines);
 		chart.setSize(600, 450);
-		chart.setTitle("Response Time with " + requestPerClient + " requests per client.", Color.WHITE, 14);
+		chart.setTitle("Response Time (in milliseconds) with " + requestPerClient + " requests per client.", Color.WHITE, 14);
 
 		AxisStyle axisStyle = AxisStyle.newAxisStyle(Color.WHITE, 12, AxisTextAlignment.CENTER);
 		AxisLabels xAxis = AxisLabelsFactory.newAxisLabels(xAxisValues);
