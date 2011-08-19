@@ -94,11 +94,18 @@
                         <Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${pom.artifactId}</Bundle-Name>
                         <Export-Package>
-              org.esbhive.node.consumer
+              org.esbhive.node.addition.*
                         </Export-Package>
                         <Import-Package>
               org.esbhive.node.mgt.*,org.esbhive.login.*,
-              org.eclipse.osgi.framework.console
+              org.eclipse.osgi.framework.console,
+             org.esbhive.proxyconf.mgt.*,org.apache.axis2.*,org.apache.commons.logging,org.apache.axis2.context,
+               org.apache.axis2.description,
+               org.apache.axis2.engine,
+<!--             javax.xml.namespace, javax.xml.stream, org.apache.axiom.om, org.apache.axiom.om.impl.llom-->
+ !javax.xml.namespace,
+                  javax.xml.namespace;version="0.0.0",
+                  *;resolution:=optional
                         </Import-Package>
                     </instructions>
                 </configuration>
