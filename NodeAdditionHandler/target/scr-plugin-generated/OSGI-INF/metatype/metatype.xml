@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
+    <OCD id="Node_Addition_Handler" name="%Node_Addition_Handler.name" description="%Node_Addition_Handler.description"/>
+    <Designate pid="Node_Addition_Handler">
+        <Object ocdref="Node_Addition_Handler"/>
+    </Designate>
+</metatype:MetaData>
