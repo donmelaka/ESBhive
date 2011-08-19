@@ -72,6 +72,7 @@ import org.esbhive.login.RemoteLogin;
 import org.esbhive.hivestat.HiveStatInterface;
 
 import org.wso2.carbon.service.mgt.ui.ServiceAdminStub;
+
 /**
  * @scr.component name="hp.manager" immediate="true"
  * @scr.reference name="esbhive.node.service" interface="org.esbhive.node.mgt.NodeManagerInterface"
@@ -496,7 +497,8 @@ public class HiveProxyServiceAdmin {
 	 * @return <code>successful</code> on success or <code>failed</code> otherwise
 	 */
 	public String deleteProxyService(String proxyName) throws ProxyAdminException {
- 	String[] serviceNames = new String[1];
+
+		String[] serviceNames = new String[1];
 		serviceNames[0] = proxyName;
 		ESBNode[] nodes = null;
 		if (nodeManager != null) {
@@ -876,12 +878,18 @@ public class HiveProxyServiceAdmin {
 		} else {
 			log2.error("HiveStat not set ");
 		}
-		count = (int) Math.floor(sortedNodes.length * percentage);
-		ESBNode[] selectedNodes = new ESBNode[count];
-		for (int i = 0; i < count; i++) {
-			selectedNodes[i] = sortedNodes[i];
+
+		if (sortedNodes.length == 1) {
+			return sortedNodes;
+		} else {
+			count = (int) Math.floor(sortedNodes.length * percentage);
+			ESBNode[] selectedNodes = new ESBNode[count];
+			for (int i = 0; i < count; i++) {
+				selectedNodes[i] = sortedNodes[i];
+			}
+
+			return selectedNodes;
 		}
-		return selectedNodes;
 	}
 
 	public String addProxy(ProxyData pd) throws ProxyAdminException {
@@ -936,12 +944,62 @@ public class HiveProxyServiceAdmin {
 			}
 
 			deployDummyProxies(pd, selectedNodes);
+			//this.addProxyInNewNode(true, pd, nodeList[0].getIpAndPort());
 
 		} catch (Exception ex) {
 			log2.error("error while adding a proxy in  HiveProxyServiceAdmin", ex);
 		}
 
 		return SUCCESSFUL;
+	}
+
+	public String addProxyInNewNode(boolean isDummy, ProxyData pd, String ipAndPort2) {
+		ESBNode[] nodeList = null;
+		ESBNode newNode=null;
+		String result="";
+		if (nodeManager != null) {
+			nodeList = nodeManager.getNodes();
+		} else {
+			if (log2.isDebugEnabled()) {
+				log2.debug("Error:: NodeManager is not set ");
+			}
+		}
+		for (ESBNode node:nodeList)  {
+		if(node.getIpAndPort().equals(ipAndPort2)){
+		newNode=node;
+		break;
+		}	
+		}
+
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub(newNode.getUsername(), newNode.getPassword(), newNode.getIpAndPort());	
+		if (isDummy) {
+			//ESBNode realNode=null;
+		ProxyConfManagerStub poxyConfManagerStub = createProxyConfManagerStub(newNode.getUsername(), newNode.getPassword(), ipAndPort2);	
+		org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = null;
+		try {
+				 eSBNodes = poxyConfManagerStub.getProEsb(pd.getName()).getESBNodes();
+			} catch (RemoteException ex) {
+				log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+			}
+			org.esbhive.hp.mgt.types.carbon.ProxyData dummyProxy = this.createDummyProxy(setNewEsbNode(eSBNodes[0]), pd);
+			try {
+				proxyServiceAdminStub.addProxy(dummyProxy);
+			} catch (RemoteException ex) {
+				log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+			} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+				log2.error("ProxyAdminException in HiveProxyServiceAdmin", ex);
+			}
+		} else {
+			try {
+			result=proxyServiceAdminStub.addProxy(changeProxyDataType(pd));
+		} catch (RemoteException ex) {
+			log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("ProxyAdminException in HiveProxyServiceAdmin", ex);
+		}
+		}
+
+		return result;
 	}
 
 	private org.esbhive.node.mgt.xsd.ESBNode setNewXsdEsbNode(ESBNode node) {
@@ -955,7 +1013,7 @@ public class HiveProxyServiceAdmin {
 		return newesbnode;
 	}
 
-	private ESBNode setNewEsbNode(org.esbhive.node.mgt.ESBNode node) {
+	private ESBNode setNewEsbNode(org.esbhive.node.mgt.xsd.ESBNode node) {
 		ESBNode newesbnode = new ESBNode();
 		newesbnode.setIpAndPort(node.getIpAndPort());
 		newesbnode.setPassword(node.getPassword());
@@ -1526,18 +1584,18 @@ public class HiveProxyServiceAdmin {
 
 			int count = 0;
 			for (ESBNode tempNode : notSeletedNodesArray) {
+				if (tempNode != null) {
+					stub4 = createProxyServiceAdminStub(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
 
-				stub4 = createProxyServiceAdminStub(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
+					stub4.addProxy(createDummyProxy(selectedEsbs[count], pd));
 
-				stub4.addProxy(createDummyProxy(selectedEsbs[count], pd));
-
-				if (count == selectedEsbs.length - 1) {
-					count = 0;
-				} else {
-					count++;
+					if (count == selectedEsbs.length - 1) {
+						count = 0;
+					} else {
+						count++;
+					}
 				}
 			}
-
 		} catch (Exception ex) {
 			log2.error("Error in HiveProxyServiceAdmin", ex);
 		}
