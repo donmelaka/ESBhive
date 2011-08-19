@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
-    <OCD id="mgt.ServerAdminClient" name="%mgt.ServerAdminClient.name" description="%mgt.ServerAdminClient.description"/>
-    <Designate pid="mgt.ServerAdminClient">
-        <Object ocdref="mgt.ServerAdminClient"/>
-    </Designate>
-</metatype:MetaData>
