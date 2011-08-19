@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metatype:MetaData xmlns:metatype="http://www.osgi.org/xmlns/metatype/v1.0.0" localization="OSGI-INF/metatype/metatype">
+    <OCD id="Fault_Handler" name="%Fault_Handler.name" description="%Fault_Handler.description"/>
+    <Designate pid="Fault_Handler">
+        <Object ocdref="Fault_Handler"/>
+    </Designate>
+</metatype:MetaData>

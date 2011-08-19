@@ -36,10 +36,6 @@ import org.apache.synapse.config.xml.SequenceMediatorSerializer;
 import org.apache.synapse.config.xml.XMLConfigConstants;
 import org.apache.synapse.config.xml.endpoints.EndpointSerializer;
 import org.apache.synapse.core.axis2.ProxyService;
-import org.apache.synapse.endpoints.Endpoint;
-import org.esbhive.hp.mgt.authenticator.proxy.AuthenticationExceptionException;
-import org.esbhive.proxyconf.mgt.xsd.ProEsb;
-import org.esbhive.proxyconf.mgt.xsd.ProxyDataList;
 
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.mediation.initializer.persistence.MediationPersistenceManager;
@@ -57,12 +53,12 @@ import javax.xml.namespace.QName;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.client.ServiceClient;
 import org.apache.axis2.context.ConfigurationContextFactory;
-import org.esbhive.hp.mgt.authenticator.proxy.AuthenticationAdminStub;
-import org.apache.axis2.transport.http.HTTPConstants;
 
 import org.esbhive.node.mgt.ESBNode;
 import org.esbhive.node.mgt.NodeManagerInterface;
@@ -73,14 +69,17 @@ import org.apache.commons.logging.LogFactory;
 import org.esbhive.login.LoginData;
 import org.esbhive.proxyconf.mgt.ProxyConfManagerStub;
 import org.esbhive.login.RemoteLogin;
+import org.esbhive.hivestat.HiveStatInterface;
 
-
+import org.wso2.carbon.service.mgt.ui.ServiceAdminStub;
 /**
  * @scr.component name="hp.manager" immediate="true"
  * @scr.reference name="esbhive.node.service" interface="org.esbhive.node.mgt.NodeManagerInterface"
  * cardinality="1..1" policy="dynamic" bind="setNodeManager"  unbind="unsetNodeManager"
  * @scr.reference name="esbhive.login.service" interface="org.esbhive.login.RemoteLogin"
  * cardinality="1..1" policy="dynamic" bind="setRemoteLogin"  unbind="unSetRemoteLogin"
+ * @scr.reference name="HiveStat" interface="org.esbhive.hivestat.HiveStatInterface"
+ * cardinality="1..1" policy="dynamic" bind="setHiveStat"  unbind="unSetHiveStat"
  */
 @SuppressWarnings({"UnusedDeclaration"})
 public class HiveProxyServiceAdmin {
@@ -88,12 +87,12 @@ public class HiveProxyServiceAdmin {
 	private static String SUCCESSFUL = "successful";
 	private static String FAILED = "failed";
 	private static NodeManagerInterface nodeManager;
+	private static HiveStatInterface stat;
 	private static final Log log2 = LogFactory.getLog("org.wso2.carbon.HiveProxyServiceAdmin");
 	private static RemoteLogin remoteLogin;
-	
 	private static String ipAddress = System.getProperty(ServerConstants.LOCAL_IP_ADDRESS);
 
-
+	//private static HiveStatisticsServiceInterface stat;
 	public synchronized void setNodeManager(NodeManagerInterface r) {
 		nodeManager = r;
 
@@ -111,7 +110,13 @@ public class HiveProxyServiceAdmin {
 		remoteLogin = null;
 	}
 
-	
+	protected void setHiveStat(HiveStatInterface hl) {
+		stat = hl;
+	}
+
+	protected void unSetHiveStat(HiveStatInterface hl) {
+		stat = null;
+	}
 
 	/**
 	 * Enables statistics for the specified proxy service
@@ -122,8 +127,9 @@ public class HiveProxyServiceAdmin {
 	 */
 	public String enableStatistics(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
+		//(ipAddress + port);
 		String enableStatics = "";
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			enableStatics = proxyServiceAdminStub.enableStatistics(proxyName);
 		} catch (RemoteException ex) {
@@ -145,7 +151,7 @@ public class HiveProxyServiceAdmin {
 	public String disableStatistics(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String disableStatics = "";
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			disableStatics = proxyServiceAdminStub.disableStatistics(proxyName);
 		} catch (RemoteException ex) {
@@ -167,7 +173,7 @@ public class HiveProxyServiceAdmin {
 	public String enableTracing(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String enableTracing = "";
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			enableTracing = proxyServiceAdminStub.enableTracing(proxyName);
 		} catch (RemoteException ex) {
@@ -188,7 +194,7 @@ public class HiveProxyServiceAdmin {
 	public String disableTracing(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String disableTracing = "";
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			disableTracing = proxyServiceAdminStub.disableTracing(proxyName);
 		} catch (RemoteException ex) {
@@ -204,10 +210,10 @@ public class HiveProxyServiceAdmin {
 	 *
 	 * @param proxyServiceElement configuraiton of the proxy service which needs to be added
 	 * @param fileName Name of the file in which this configuration should be saved or null
-	 * @throws ProxyAdminException if the element is not an proxy service or if a proxy service with the
+	 * @throws ProxyAdminException if the element is   an proxy service or if a proxy service with the
 	 *                   same name exists
 	 */
-	private ProxyServiceAdminStub CreateProxyServiceAdminStub(String username, String password, String ipAndPort) {
+	private ProxyServiceAdminStub createProxyServiceAdminStub(String username, String password, String ipAndPort) {
 
 		LoginData otherNode = new LoginData();
 		otherNode.setUserName(username);
@@ -232,43 +238,77 @@ public class HiveProxyServiceAdmin {
 			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-
-		String serviceEPR = "https://" + ipAndPort + "/services/" + "AuthenticationAdmin";
-		// String serviceEPR = "https://" + "localhost:9443" + "/services/" + "AuthenticationAdmin";
-		AuthenticationAdminStub stub = null;
-		try {
-			stub = new AuthenticationAdminStub(ctx, serviceEPR);
-		} catch (AxisFault ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		ServiceClient client = stub._getServiceClient();
-		Options options = client.getOptions();
-		options.setManageSession(true);
-		try {
-			boolean isLogged = stub.login(username, password, ipAndPort);
-		} catch (RemoteException ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (AuthenticationExceptionException ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-		}
-
-		String cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-			HTTPConstants.COOKIE_STRING);
-
 		String serviceEPR4 = "https://" + ipAndPort + "/services/" + "ProxyServiceAdmin";
 
 		ProxyServiceAdminStub stub4 = null;
 		try {
 			stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
 		} catch (AxisFault ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+			log2.error("AxisFault in HiveProxyServiceAdmin", ex);
 		}
 		ServiceClient client4 = stub4._getServiceClient();
 		Options option = client4.getOptions();
 		option.setManageSession(true);
 		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
 		return stub4;
+	}
+
+	private ProxyConfManagerStub createProxyConfManagerStub(String username, String password, String ipAndPort) {
+
+		LoginData otherNode = new LoginData();
+		otherNode.setUserName(username);
+		otherNode.setPassWord(password);
+		otherNode.setHostNameAndPort(ipAndPort);
+		LoginData loginData = null;
+		try {
+			loginData = remoteLogin.logIn(otherNode);
+		} catch (AxisFault ex) {
+			log2.error("AxisFault in HiveProxyServiceAdmin when login ", ex);
+		} catch (RemoteException ex) {
+			log2.error("Remote exception in HiveProxyServiceAdmin when login ", ex);
+		} catch (org.esbhive.login.client.AuthenticationExceptionException ex) {
+			log2.error("AuthenticationExceptionException in HiveProxyServiceAdmin when login ", ex);
+		}
+
+
+		ConfigurationContext ctx = null;
+		try {
+			ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
+		} catch (AxisFault ex) {
+			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		String serviceEPR4 = "https://" + ipAndPort + "/services/" + "ProxyConfManager";
+
+		ProxyConfManagerStub stub4 = null;
+		try {
+			stub4 = new ProxyConfManagerStub(ctx, serviceEPR4);
+		} catch (AxisFault ex) {
+			log2.error("AxisFault in HiveProxyServiceAdmin", ex);
+		}
+		ServiceClient client4 = stub4._getServiceClient();
+		Options option = client4.getOptions();
+		option.setManageSession(true);
+		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
+		return stub4;
+	}
+
+	private String[] getCredentials(String ipAndPort) {
+		ESBNode[] nodes = null;
+		String[] credentials = new String[2];
+		if (nodeManager != null) {
+			nodes = nodeManager.getNodes();
+		}
+		for (ESBNode tempNode : nodes) {
+			if (tempNode.getIpAndPort().equals(ipAndPort)) {
+				credentials[0] = tempNode.getUsername();
+				credentials[1] = tempNode.getPassword();
+				break;
+			}
+		}
+
+		return credentials;
+
 	}
 
 	private void addProxyService(OMElement proxyServiceElement,
@@ -456,74 +496,35 @@ public class HiveProxyServiceAdmin {
 	 * @return <code>successful</code> on success or <code>failed</code> otherwise
 	 */
 	public String deleteProxyService(String proxyName) throws ProxyAdminException {
-		ConfigurationContext ctx = null;
-		try {
-			ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-		} catch (AxisFault ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-		}
-		String serviceEPR = "";
-		AuthenticationAdminStub stub = null;
-		ServiceClient client = null;
-		Options options = null;
-		boolean isLogged = false;
-		String cookie = null;
-		String serviceEPR4 = "";
-		ProxyServiceAdminStub stub4 = null;
-		ServiceClient client4 = null;
-		Options option = null;
-		ESBNode[] nodeList = null;
+ 	String[] serviceNames = new String[1];
+		serviceNames[0] = proxyName;
+		ESBNode[] nodes = null;
 		if (nodeManager != null) {
-			nodeList = nodeManager.getNodes();
-		} else {
-			if (log2.isDebugEnabled()) {
-				log2.debug("Error:: NodeManager is not set ");
+			nodes = nodeManager.getNodes();
+		}
+
+		for (ESBNode esbNode : nodes) {
+			ServiceAdminStub serviceAdminStub = this.createServiceAdminStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
+			try {
+				serviceAdminStub.deleteServiceGroups(serviceNames);
+			} catch (RemoteException ex) {
+				log2.error("HiveProxyServiceAdmin RemoteException while deleting service groups", ex);
 			}
 		}
-		for (ESBNode tempNode : nodeList) {
+		/////////////////////
 
-			serviceEPR = "https://" + tempNode.getIpAndPort() + "/services/" + "AuthenticationAdmin";
+		for (ESBNode esbNode : nodes) {
+			ProxyConfManagerStub proxyConftub = this.createProxyConfManagerStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
 			try {
-				stub = new AuthenticationAdminStub(ctx, serviceEPR);
-			} catch (AxisFault ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			}
-
-			client = stub._getServiceClient();
-			options = client.getOptions();
-			options.setManageSession(true);
-			try {
-				isLogged = stub.login(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
+				proxyConftub.deleteProxy(proxyName);
 			} catch (RemoteException ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			} catch (AuthenticationExceptionException ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			}
-
-			cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-				HTTPConstants.COOKIE_STRING);
-
-			serviceEPR4 = "https://" + tempNode.getIpAndPort() + "/services/" + "ProxyServiceAdmin";
-			try {
-				stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
-			} catch (AxisFault ex) {
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-			}
-			client4 = stub4._getServiceClient();
-			option = client4.getOptions();
-			option.setManageSession(true);
-			option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-			try {
-				stub4.deleteProxyService(proxyName);
-			} catch (RemoteException ex) {
-
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-
-			} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
-
-				Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+				log2.error("HiveProxyServiceAdmin RemoteException while deleting service groups", ex);
 			}
 		}
+
+
+
+
 
 		return FAILED;
 	}
@@ -561,7 +562,7 @@ public class HiveProxyServiceAdmin {
 	public String[] getAvailableTransports() throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String[] availableTransports = null;
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			availableTransports = proxyServiceAdminStub.getAvailableTransports();
 		} catch (RemoteException ex) {
@@ -583,7 +584,7 @@ public class HiveProxyServiceAdmin {
 	public String[] getAvailableSequences() throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String[] availableSequences = null;
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			availableSequences = proxyServiceAdminStub.getAvailableSequences();
 		} catch (RemoteException ex) {
@@ -601,39 +602,19 @@ public class HiveProxyServiceAdmin {
 	 * @throws ProxyAdminException if there is an error
 	 */
 	public String[] getAvailableEndpoints() throws ProxyAdminException {
+
 		String port = System.getProperty("carbon.https.port");
+		String[] getAvailableEndPoints = null;
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
-			// todo - at the moment I get the OMElement from the pd and asks the private method to build the proxy service
-			// todo - but I could improve this by creating a proxy service from the pd itself. Not for this release :)
-			ConfigurationContext ctx =
-				ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-
-			String serviceEPR = "https://" + ipAddress + ":" + port + "/services/" + "AuthenticationAdmin";
-			AuthenticationAdminStub stub = new AuthenticationAdminStub(ctx, serviceEPR);
-
-			ServiceClient client = stub._getServiceClient();
-			Options options = client.getOptions();
-			options.setManageSession(true);
-
-			boolean isLogged = stub.login("admin", "admin", ipAddress + ":" + port);
-
-			String cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-				HTTPConstants.COOKIE_STRING);
-
-			String serviceEPR4 = "https://" + ipAddress + ":" + port + "/services/" + "ProxyServiceAdmin";
-
-			ProxyServiceAdminStub stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
-			ServiceClient client4 = stub4._getServiceClient();
-			Options option = client4.getOptions();
-			option.setManageSession(true);
-			option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-
-			return stub4.getAvailableEndpoints();
-
-		} catch (Exception ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+			getAvailableEndPoints = proxyServiceAdminStub.getAvailableEndpoints();
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while getAvailableEndpoints", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while getAvailableEndpoints", ex);
 		}
-		return null;
+		return getAvailableEndPoints;
+
 	}
 
 	/**
@@ -644,14 +625,17 @@ public class HiveProxyServiceAdmin {
 	 * @throws ProxyAdminException if the endpoint is not found for the given name
 	 */
 	public String getEndpoint(String name) throws ProxyAdminException {
-		String epXML = null;
+		String port = System.getProperty("carbon.https.port");
+		String getEndpoint = null;
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
-			Endpoint ep = ConfigHolder.getInstance().getSynapseConfiguration().getDefinedEndpoints().get(name);
-			epXML = EndpointSerializer.getElementFromEndpoint(ep).toString();
-		} catch (Exception axisFault) {
-			handleException(log2, "No endpoint defined by the name: " + name, axisFault);
+			getEndpoint = proxyServiceAdminStub.getEndpoint(name);
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while getEndpoint", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while getEndpoint", ex);
 		}
-		return epXML;
+		return getEndpoint;
 	}
 
 	/**
@@ -662,51 +646,23 @@ public class HiveProxyServiceAdmin {
 	 */
 	public MetaData getMetaData() throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
-
-
-
-
-		//   org.wso2.carbon.proxyadmin.service.ProxyServiceAdmin proxyAdmin = new  org.wso2.carbon.proxyadmin.service.ProxyServiceAdmin();
-		// MetaData metaData = new MetaData();
+		//String[] credentials = getCredentials(ipAddress + port);
+		org.esbhive.hp.mgt.types.carbon.MetaData metaData1 = null;
 		MetaData metaData = new MetaData();
-		ProxyServiceAdminStub stub4 = null;
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
-			// todo - at the moment I get the OMElement from the pd and asks the private method to build the proxy service
-			// todo - but I could improve this by creating a proxy service from the pd itself. Not for this release :)
-			ConfigurationContext ctx =
-				ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-
-			String serviceEPR = "https://" + ipAddress + ":" + port + "/services/" + "AuthenticationAdmin";
-			AuthenticationAdminStub stub = new AuthenticationAdminStub(ctx, serviceEPR);
-
-			ServiceClient client = stub._getServiceClient();
-			Options options = client.getOptions();
-			options.setManageSession(true);
-
-			boolean isLogged = stub.login("admin", "admin", ipAddress + ":" + port);
-
-			String cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-				HTTPConstants.COOKIE_STRING);
-
-			String serviceEPR4 = "https://" + ipAddress + ":" + port + "/services/" + "ProxyServiceAdmin";
-
-			stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
-			ServiceClient client4 = stub4._getServiceClient();
-			Options option = client4.getOptions();
-			option.setManageSession(true);
-			option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-			org.esbhive.hp.mgt.types.carbon.MetaData metaData1 = stub4.getMetaData();
-			metaData.setEndpoints(metaData1.getEndpoints());
-			metaData.setEndpointsAvailable(metaData1.getEndpointsAvailable());
-			metaData.setSequences(metaData1.getSequences());
-			metaData.setSequencesAvailable(metaData1.getSequencesAvailable());
-			metaData.setTransports(metaData1.getTransports());
-			metaData.setTransportsAvailable(metaData1.getTransportsAvailable());
-
-		} catch (Exception ex) {
-			log2.error("HiveProxyService admin getMetaData", ex);
+			metaData1 = proxyServiceAdminStub.getMetaData();
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while getEndpoint", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while getEndpoint", ex);
 		}
-
+		metaData.setEndpoints(metaData1.getEndpoints());
+		metaData.setEndpointsAvailable(metaData1.getEndpointsAvailable());
+		metaData.setSequences(metaData1.getSequences());
+		metaData.setSequencesAvailable(metaData1.getSequencesAvailable());
+		metaData.setTransports(metaData1.getTransports());
+		metaData.setTransportsAvailable(metaData1.getTransportsAvailable());
 		return metaData;
 
 	}
@@ -721,7 +677,7 @@ public class HiveProxyServiceAdmin {
 	public String startProxyService(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String startProxyService = null;
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			startProxyService = proxyServiceAdminStub.startProxyService(proxyName);
 		} catch (RemoteException ex) {
@@ -743,7 +699,7 @@ public class HiveProxyServiceAdmin {
 	public String stopProxyService(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		String stopProxyService = null;
-		ProxyServiceAdminStub proxyServiceAdminStub = CreateProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
 			stopProxyService = proxyServiceAdminStub.stopProxyService(proxyName);
 		} catch (RemoteException ex) {
@@ -764,63 +720,48 @@ public class HiveProxyServiceAdmin {
 	 * @return <code>successful</code> on success or <code>failed</code> otherwise
 	 */
 	public String redeployProxyService(String proxyName) throws ProxyAdminException {
+		String port = System.getProperty("carbon.https.port");
+		String redeployProxyService = null;
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
-			ProxyService currentProxy = ConfigHolder.getInstance().getSynapseConfiguration().getProxyService(proxyName);
-			if (currentProxy != null) {
-				if (log2.isDebugEnabled()) {
-					log2.debug("Redeploying proxy service : " + proxyName);
-				}
-				OMElement proxyElement = ProxyServiceSerializer.serializeProxy(null, currentProxy);
-				modifyProxyService(proxyElement);
-				if (log2.isDebugEnabled()) {
-					log2.debug("Redeployed proxy service : " + proxyName);
-				}
-				return SUCCESSFUL;
-			}
-		} catch (Exception af) {
-			handleException(log2, "Unable to redeploy proxy service : " + proxyName, af);
+			redeployProxyService = proxyServiceAdminStub.redeployProxyService(proxyName);
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while redeployProxyService", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while redeployProxyService", ex);
 		}
-		return FAILED;
+		return redeployProxyService;
 	}
 
 	public String getSourceView(ProxyData pd) throws ProxyAdminException {
-		return pd.retrieveOM().toString();
+		String port = System.getProperty("carbon.https.port");
+		String getSourceView = null;
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		try {
+			getSourceView = proxyServiceAdminStub.getSourceView(changeProxyDataType(pd));
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while stopProxyService", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while stopProxyService", ex);
+		}
+		return getSourceView;
 	}
 
 	public ProxyData getProxy(String proxyName) throws ProxyAdminException {
 		String port = System.getProperty("carbon.https.port");
 		org.wso2.carbon.proxyadmin.ProxyData cproxy = new org.wso2.carbon.proxyadmin.ProxyData();
 		org.esbhive.hp.mgt.types.carbon.ProxyData proxy = null;
+
+
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
 		try {
-			// todo - at the moment I get the OMElement from the pd and asks the private method to build the proxy service
-			// todo - but I could improve this by creating a proxy service from the pd itself. Not for this release :)
-			ConfigurationContext ctx =
-				ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-
-			String serviceEPR = "https://" + ipAddress + ":" + port + "/services/" + "AuthenticationAdmin";
-			AuthenticationAdminStub stub = new AuthenticationAdminStub(ctx, serviceEPR);
-
-			ServiceClient client = stub._getServiceClient();
-			Options options = client.getOptions();
-			options.setManageSession(true);
-
-			boolean isLogged = stub.login("admin", "admin", ipAddress + ":" + port);// this was 9443
-
-			String cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-				HTTPConstants.COOKIE_STRING);
-
-			String serviceEPR4 = "https://" + ipAddress + ":" + port + "/services/" + "ProxyServiceAdmin";
-
-			ProxyServiceAdminStub stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
-			ServiceClient client4 = stub4._getServiceClient();
-			Options option = client4.getOptions();
-			option.setManageSession(true);
-			option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-			proxy = stub4.getProxy(proxyName);
-
-		} catch (Exception ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+			proxy = proxyServiceAdminStub.getProxy(proxyName);
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while stopProxyService", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while stopProxyService", ex);
 		}
+
 		cproxy.setEnableSecurity(proxy.getEnableSecurity());
 		cproxy.setEnableStatistics(proxy.getEnableStatistics());
 		cproxy.setEnableTracing(proxy.getEnableTracing());
@@ -898,31 +839,49 @@ public class HiveProxyServiceAdmin {
 		return cproxy;
 	}
 
-	private static int[] selectEsbNodes(int length, double percentage) {
-		if (length != 1) {
-			double realProxyCount = length * percentage;
-			int count = (int) Math.floor(realProxyCount);
-
-			List<Integer> list = new ArrayList<Integer>();
-			int[] temArray = new int[count];
-			for (int a = 0; a < length; a++) {
-				list.add(a);
+//	private  int[] selectEsbNodes(int length, double percentage) {
+//		if (length != 1) {
+//			double realProxyCount = length * percentage;
+//			int count = (int) Math.floor(realProxyCount);
+//
+//			List<Integer> list = new ArrayList<Integer>();
+//			int[] temArray = new int[count];
+//			for (int a = 0; a < length; a++) {
+//				list.add(a);
+//			}
+//
+//			for (int j = 0; j < count; j++) {
+//				Collections.shuffle(list);
+//				temArray[j] = list.get(0);
+//				list.remove(new Integer(temArray[j]));
+//
+//			}
+//
+//
+//			return temArray;
+//		} else {
+//			int[] array = {0};
+//			return array;
+//		}
+//
+//	}
+	private ESBNode[] selectEsbNodes(double percentage) {
+		org.esbhive.node.mgt.ESBNode[] sortedNodes = null;
+		int count = 0;
+		if (stat != null) {
+			sortedNodes = stat.selectBestNodes();
+			for (org.esbhive.node.mgt.ESBNode node : sortedNodes) {
+				System.out.println(node.toString());
 			}
-
-			for (int j = 0; j < count; j++) {
-				Collections.shuffle(list);
-				temArray[j] = list.get(0);
-				list.remove(new Integer(temArray[j]));
-
-			}
-
-
-			return temArray;
 		} else {
-			int [] array={0};
-			return array;
+			log2.error("HiveStat not set ");
 		}
-
+		count = (int) Math.floor(sortedNodes.length * percentage);
+		ESBNode[] selectedNodes = new ESBNode[count];
+		for (int i = 0; i < count; i++) {
+			selectedNodes[i] = sortedNodes[i];
+		}
+		return selectedNodes;
 	}
 
 	public String addProxy(ProxyData pd) throws ProxyAdminException {
@@ -940,73 +899,42 @@ public class HiveProxyServiceAdmin {
 					log2.debug("Error:: NodeManager is not set ");
 				}
 			}
-			int[] selectedNodesIndexes = selectEsbNodes(nodeList.length, 0.5);
+			/////////////////////////////////
 
 
-			 ESBNode[] selectedNodes = new ESBNode[selectedNodesIndexes.length];
-//			ESBNode[] selectedNodes=stat.selectBestNodes();
+			//////////////////////////
+			//int[] selectedNodesIndexes = selectEsbNodes( 0.5);
 
-			//	ESBNode[] notselectedNodes = new ESBNode[notSelectedNodesIndexes.size()];
 
+			//	ESBNode[] selectedNodes = new ESBNode[selectedNodesIndexes.length];
+			ESBNode[] selectedNodes = selectEsbNodes(0.5);
 			ProxyServiceAdminStub proxyServiceAdminStub;
-			//ESBNode tempEsbNode = nodeList[selectedNodesIndexes[0]];
+
 			org.esbhive.hp.mgt.types.carbon.ProxyData changedProxyData = changeProxyDataType(pd);
-			for (int j = 0; j < selectedNodesIndexes.length; j++) {
-				selectedNodes[j] = nodeList[selectedNodesIndexes[j]];
-			}
-
-
+//			for (int j = 0; j < selectedNodesIndexes.length; j++) {
+//				selectedNodes[j] = nodeList[selectedNodesIndexes[j]];
+//			}
 
 			for (ESBNode esbNode : selectedNodes) {
-				proxyServiceAdminStub = this.CreateProxyServiceAdminStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
+				proxyServiceAdminStub = createProxyServiceAdminStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
 				proxyServiceAdminStub.addProxy(changedProxyData);
 			}
 
-			String serviceEPRAuthentication = "";
-			AuthenticationAdminStub authenticationStub2 = null;
-			ServiceClient authenticatoinClient = null;
-			Options authenticationOptions = null;
-			boolean isLogged2 = false;
-			String cookie2 = null;
-			String serviceEPRProxyConf = "";
 			ProxyConfManagerStub proxyConfstub = null;
-			ServiceClient proxyConfClient = null;
-			Options proxyConfOption = null;
+
 			org.wso2.carbon.proxyadmin.xsd.ProxyData newProxyData = setNewProxyData(pd);
-			//	org.esbhive.node.mgt.xsd.ESBNode newEsbNode = setNewEsbNode(tempEsbNode);
+
 
 			org.esbhive.node.mgt.xsd.ESBNode[] newEsbNodeList = new org.esbhive.node.mgt.xsd.ESBNode[selectedNodes.length];
 			for (int k = 0; k < selectedNodes.length; k++) {
-				newEsbNodeList[k] = setNewEsbNode(selectedNodes[k]);
+				newEsbNodeList[k] = setNewXsdEsbNode(selectedNodes[k]);
 			}
 
 			for (ESBNode tempNode : nodeList) {
-				serviceEPRAuthentication = "https://" + tempNode.getIpAndPort() + "/services/" + "AuthenticationAdmin";
-				authenticationStub2 = new AuthenticationAdminStub(ctx, serviceEPRAuthentication);
-
-				authenticatoinClient = authenticationStub2._getServiceClient();
-				authenticationOptions = authenticatoinClient.getOptions();
-				authenticationOptions.setManageSession(true);
-
-				isLogged2 = authenticationStub2.login(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
-
-				cookie2 = (String) authenticationStub2._getServiceClient().getServiceContext().getProperty(
-					HTTPConstants.COOKIE_STRING);
-
-				serviceEPRProxyConf = "https://" + tempNode.getIpAndPort() + "/services/" + "ProxyConfManager";
-
-				proxyConfstub = new org.esbhive.proxyconf.mgt.ProxyConfManagerStub(ctx, serviceEPRProxyConf);
-				proxyConfClient = proxyConfstub._getServiceClient();
-				proxyConfOption = proxyConfClient.getOptions();
-				proxyConfOption.setManageSession(true);
-				proxyConfOption.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie2);
-				//proxyConfstub.addNodeToMap(newProxyData, selectedNodes);
-
-
+				proxyConfstub = this.createProxyConfManagerStub(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
 				proxyConfstub.addProxyConf(newProxyData, newEsbNodeList);
-				
 			}
-			
+
 			deployDummyProxies(pd, selectedNodes);
 
 		} catch (Exception ex) {
@@ -1016,11 +944,25 @@ public class HiveProxyServiceAdmin {
 		return SUCCESSFUL;
 	}
 
-	private org.esbhive.node.mgt.xsd.ESBNode setNewEsbNode(ESBNode node) {
+	private org.esbhive.node.mgt.xsd.ESBNode setNewXsdEsbNode(ESBNode node) {
 		org.esbhive.node.mgt.xsd.ESBNode newesbnode = new org.esbhive.node.mgt.xsd.ESBNode();
 		newesbnode.setIpAndPort(node.getIpAndPort());
 		newesbnode.setPassword(node.getPassword());
 		newesbnode.setUsername(node.getUsername());
+		newesbnode.setHttpsPort(node.getHttpsPort());
+		newesbnode.setSynapsePort(node.getSynapsePort());
+		newesbnode.setIp(node.getIp());
+		return newesbnode;
+	}
+
+	private ESBNode setNewEsbNode(org.esbhive.node.mgt.ESBNode node) {
+		ESBNode newesbnode = new ESBNode();
+		newesbnode.setIpAndPort(node.getIpAndPort());
+		newesbnode.setPassword(node.getPassword());
+		newesbnode.setUsername(node.getUsername());
+		newesbnode.setHttpsPort(node.getHttpsPort());
+		newesbnode.setSynapsePort(node.getSynapsePort());
+		newesbnode.setIp(node.getIp());
 		return newesbnode;
 	}
 
@@ -1201,16 +1143,23 @@ public class HiveProxyServiceAdmin {
 	}
 
 	private int getRandomNumber(int min, int max) {
-
 		int randomNumber;
 		randomNumber = (int) (Math.random() * (max - min)) + min;
 		return randomNumber;
 	}
 
 	public String modifyProxy(ProxyData pd) throws ProxyAdminException {
-		int number;
-		int randomNumber = this.getRandomNumber(4, 12);
-		return SUCCESSFUL;
+		String port = System.getProperty("carbon.https.port");
+		String modifyProxy = null;
+		ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+		try {
+			modifyProxy = proxyServiceAdminStub.modifyProxy(changeProxyDataType(pd));
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException while modifyProxy", ex);
+		} catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+			log2.error("HiveProxyServiceAdmin ProxyAdminException while modifyProxy", ex);
+		}
+		return modifyProxy;
 	}
 
 	private ProxyService proxyForName(String proxyName) throws ProxyAdminException {
@@ -1422,9 +1371,6 @@ public class HiveProxyServiceAdmin {
 			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		dummyProxy.setEndpointXML("<endpoint xmlns=\"http://ws.apache.org/ns/synapse\"><address uri=\"" + url.toString() + "\"/></endpoint>");
-//        dummyProxy.setOutSeqXML(pd.getOutSeqXML());
-		// log.debug(pd.getOutSeqXML());
-		// dummyProxy.setOutSeqKey(pd.getOutSeqKey());
 
 		org.esbhive.hp.mgt.types.carbon.ProxyData a = new org.esbhive.hp.mgt.types.carbon.ProxyData();
 
@@ -1525,24 +1471,48 @@ public class HiveProxyServiceAdmin {
 			}
 		}
 		ArrayList<ESBNode> notSelectedNodes = new ArrayList<ESBNode>();
-		boolean isAvailable = false;
-		for (int i = 0; i < nodeList.length; i++) {
-			isAvailable = false;
-			for (int k = 0; k < selectedEsbs.length; k++) {
-				if (nodeList[i] == selectedEsbs[k]) {
-					isAvailable = true;
-				}
-				if (isAvailable == false) {
-					notSelectedNodes.add(nodeList[i]);
-				}
-			}
-		}
+		notSelectedNodes.addAll(Arrays.asList(nodeList));
+		ArrayList<ESBNode> selectedNodes = new ArrayList<ESBNode>();
+		selectedNodes.addAll(Arrays.asList(selectedEsbs));
+		boolean removeAll = notSelectedNodes.removeAll(selectedNodes);
+		//Iterator iterator = notSelectedNodes.iterator();
+//		ESBNode next = null;
+//		for (ESBNode tempNode : selectedEsbs) {
+////			while (iterator.hasNext()) {
+////				next = (ESBNode) iterator.next();
+////				if (tempNode.getIpAndPort().equals(next.getIpAndPort())) {
+////					notSelectedNodes.remove(next);
+////				}
+////			}
+//			for (int k=0;k<nodeList.length;k++)  {
+//				next = nodeList[k];
+//				if (tempNode.getIpAndPort().equals(next.getIpAndPort())) {
+//					notSelectedNodes.remove(k);
+//				}
+//			}
+//
+//		}
+
+
+
+//		boolean isAvailable = false;
+//		for (int i = 0; i < nodeList.length; i++) {
+//			isAvailable = false;
+//			for (int k = 0; k < selectedEsbs.length; k++) {
+//				if (nodeList[i]==selectedEsbs[k]) {
+//					isAvailable = true;
+//				}
+//				if (isAvailable == false) {
+//					notSelectedNodes.add(nodeList[i]);
+//				}
+//			}
+//		}
 
 		try {
 			// todo - at the moment I get the OMElement from the dummyProxy and asks the private method to build the proxy service
 			// todo - but I could improve this by creating a proxy service from the dummyProxy itself. Not for this release :)
-
-			ESBNode[] notSeletedNodesArray = notSelectedNodes.toArray(nodeList);
+			ESBNode[] tempNodes = new ESBNode[0];
+			ESBNode[] notSeletedNodesArray = notSelectedNodes.toArray(tempNodes);
 			if (nodeManager != null) {
 				nodeList = nodeManager.getNodes();
 			} else {
@@ -1551,44 +1521,15 @@ public class HiveProxyServiceAdmin {
 				}
 
 			}
-			ConfigurationContext ctx =
-				ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-			String serviceEPR = "";
-			AuthenticationAdminStub stub = null;
-			ServiceClient client = null;
-			Options options = null;
-			boolean isLogged = false;
-			String cookie = null;
-			String serviceEPR4 = "";
+
 			ProxyServiceAdminStub stub4 = null;
-			ServiceClient client4 = null;
-			Options option = null;
+
 			int count = 0;
 			for (ESBNode tempNode : notSeletedNodesArray) {
 
+				stub4 = createProxyServiceAdminStub(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
 
-				serviceEPR = "https://" + tempNode.getIpAndPort() + "/services/" + "AuthenticationAdmin";
-				stub = new AuthenticationAdminStub(ctx, serviceEPR);
-
-				client = stub._getServiceClient();
-				options = client.getOptions();
-				options.setManageSession(true);
-
-				isLogged = stub.login(tempNode.getUsername(), tempNode.getPassword(), tempNode.getIpAndPort());
-
-				cookie = (String) stub._getServiceClient().getServiceContext().getProperty(
-					HTTPConstants.COOKIE_STRING);
-
-				serviceEPR4 = "https://" + tempNode.getIpAndPort() + "/services/" + "ProxyServiceAdmin";
-
-				stub4 = new ProxyServiceAdminStub(ctx, serviceEPR4);
-				client4 = stub4._getServiceClient();
-				option = client4.getOptions();
-				option.setManageSession(true);
-				option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, cookie);
-
-
-				stub4.addProxy(this.createDummyProxy(selectedEsbs[count], pd));
+				stub4.addProxy(createDummyProxy(selectedEsbs[count], pd));
 
 				if (count == selectedEsbs.length - 1) {
 					count = 0;
@@ -1598,9 +1539,46 @@ public class HiveProxyServiceAdmin {
 			}
 
 		} catch (Exception ex) {
-			Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+			log2.error("Error in HiveProxyServiceAdmin", ex);
 		}
 
 
+	}
+
+	private ServiceAdminStub createServiceAdminStub(String username, String password, String ipAndPort) {
+
+		LoginData otherNode = new LoginData();
+		otherNode.setUserName(username);
+		otherNode.setPassWord(password);
+		otherNode.setHostNameAndPort(ipAndPort);
+		LoginData loginData = null;
+		try {
+			loginData = remoteLogin.logIn(otherNode);
+		} catch (AxisFault ex) {
+			log2.error("HiveProxyServiceAdmin AxisFault when trying to login ", ex);
+		} catch (RemoteException ex) {
+			log2.error("HiveProxyServiceAdmin RemoteException when trying to login ", ex);
+		} catch (org.esbhive.login.client.AuthenticationExceptionException ex) {
+			log2.error("HiveProxyServiceAdmin AuthenticationExceptionException when trying to login ", ex);
+		}
+		ConfigurationContext ctx = null;
+		try {
+			ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
+		} catch (AxisFault ex) {
+			log2.error("AxisFault in ServiceAdminClient when login ", ex);
+		}
+		String serviceEPR4 = "https://" + ipAndPort + "/services/" + "ServiceAdmin";
+
+		ServiceAdminStub stub4 = null;
+		try {
+			stub4 = new ServiceAdminStub(ctx, serviceEPR4);
+		} catch (AxisFault ex2) {
+			log2.error("AxisFault in ServiceAdminClient", ex2);
+		}
+		ServiceClient client4 = stub4._getServiceClient();
+		Options option = client4.getOptions();
+		option.setManageSession(true);
+		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
+		return stub4;
 	}
 }

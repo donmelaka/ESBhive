@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<components xmlns:scr="http://www.osgi.org/xmlns/scr/v1.0.0">
+    <scr:component enabled="true" immediate="true" name="Node_Addition_Handler">
+        <implementation class="org.esbhive.node.addition.AdditionHandler"/>
+        <service servicefactory="false">
+            <provide interface="org.esbhive.node.addition.NodeAdditionInterface"/>
+        </service>
+        <property name="service.pid" value="Node_Addition_Handler" private="false"/>
+    </scr:component>
+</components>
