@@ -31,5 +31,9 @@
     <module>FaultHandler</module>
     <module>org.esbhive.proxyconf.mgt</module>
     <module>zookeeper</module>
+    <module>HiveStat</module>
+    <module>Serviceadmin ui</module>
+    <module>demoapp</module>
+    <module>proxyadmin 3.0.1</module>
   </modules>
   </project>
