@@ -1,0 +1,8 @@
+<serviceGroup>
+    <service name="NodeListService" scope="application">
+        <transports>
+            <transport>https</transport>
+        </transports>
+        <parameter name="ServiceClass">org.esbhive.nodeListService.NodeListService</parameter>
+    </service>
+</serviceGroup>

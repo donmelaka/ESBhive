@@ -106,50 +106,6 @@
                              
 
                         /**
-                        * field for ESBNodesArrayList
-                        */
-
-                        
-                                    protected java.lang.Object localESBNodesArrayList ;
-                                
-                           /*  This tracker boolean wil be used to detect whether the user called the set method
-                          *   for this attribute. It will be used to determine whether to include this field
-                           *   in the serialized XML
-                           */
-                           protected boolean localESBNodesArrayListTracker = false ;
-                           
-
-                           /**
-                           * Auto generated getter method
-                           * @return java.lang.Object
-                           */
-                           public  java.lang.Object getESBNodesArrayList(){
-                               return localESBNodesArrayList;
-                           }
-
-                           
-                        
-                            /**
-                               * Auto generated setter method
-                               * @param param ESBNodesArrayList
-                               */
-                               public void setESBNodesArrayList(java.lang.Object param){
-                            
-                                       if (param != null){
-                                          //update the setting tracker
-                                          localESBNodesArrayListTracker = true;
-                                       } else {
-                                          localESBNodesArrayListTracker = true;
-                                              
-                                       }
-                                   
-                                            this.localESBNodesArrayList=param;
-                                    
-
-                               }
-                            
-
-                        /**
                         * field for ProxyData
                         */
 
@@ -278,31 +234,7 @@
                                                xmlWriter.writeEndElement();
                                         
                                     }
-                                 } if (localESBNodesArrayListTracker){
-                            
-                            if (localESBNodesArrayList!=null){
-                                if (localESBNodesArrayList instanceof org.apache.axis2.databinding.ADBBean){
-                                    ((org.apache.axis2.databinding.ADBBean)localESBNodesArrayList).serialize(
-                                               new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd","ESBNodesArrayList"),
-                                               xmlWriter,true);
-                                 } else {
-                                    writeStartElement(null, "http://mgt.proxyconf.esbhive.org/xsd", "ESBNodesArrayList", xmlWriter);
-                                    org.apache.axis2.databinding.utils.ConverterUtil.serializeAnyType(localESBNodesArrayList, xmlWriter);
-                                    xmlWriter.writeEndElement();
-                                 }
-                            } else {
-                                
-                                        // write null attribute
-                                           writeStartElement(null, "http://mgt.proxyconf.esbhive.org/xsd", "ESBNodesArrayList", xmlWriter);
-
-                                           // write the nil attribute
-                                           writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","nil","1",xmlWriter);
-                                           xmlWriter.writeEndElement();
-                                    
-                            }
-
-
-                        } if (localProxyDataTracker){
+                                 } if (localProxyDataTracker){
                                     if (localProxyData==null){
 
                                         writeStartElement(null, "http://mgt.proxyconf.esbhive.org/xsd", "proxyData", xmlWriter);
@@ -519,14 +451,7 @@
                                     
                              }
 
-                        } if (localESBNodesArrayListTracker){
-                            elementList.add(new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd",
-                                                                      "ESBNodesArrayList"));
-                            
-                            
-                                    elementList.add(localESBNodesArrayList==null?null:
-                                    localESBNodesArrayList);
-                                } if (localProxyDataTracker){
+                        } if (localProxyDataTracker){
                             elementList.add(new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd",
                                                                       "proxyData"));
                             
@@ -663,22 +588,6 @@
                                                                 org.esbhive.node.mgt.xsd.ESBNode.class,
                                                                 list1));
                                                             
-                              }  // End of if for expected property start element
-                                
-                                    else {
-                                        
-                                    }
-                                
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
-                                
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd","ESBNodesArrayList").equals(reader.getName())){
-                                
-                                     object.setESBNodesArrayList(org.apache.axis2.databinding.utils.ConverterUtil.getAnyTypeObject(reader,
-                                                org.esbhive.proxyconf.mgt.xsd.ExtensionMapper.class));
-                                       
-                                         reader.next();
-                                     
                               }  // End of if for expected property start element
                                 
                                     else {

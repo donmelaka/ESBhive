@@ -10,7 +10,7 @@ package org.wso2.carbon.service.mgt.ui;
 
 public class Exception extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1312981539854L;
+    private static final long serialVersionUID = 1313775696796L;
     
     private org.esbhive.hp.mgt.carbon.axis2.ExceptionE faultMessage;
 

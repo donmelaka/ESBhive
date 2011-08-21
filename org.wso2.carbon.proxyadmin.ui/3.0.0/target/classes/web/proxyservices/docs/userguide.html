@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"/>
+    <title>Proxy Services - User Guide</title>
+    <link href="../../admin/css/documentation.css" rel="stylesheet" type="text/css" media="all"/>
+</head>
+
+<body>
+<h1>Proxy Services</h1>
+
+<p>A proxy service acts as a service hosted in WSO2 ESB, and typically
+    fronts an existing service endpoint. A proxy service can be created and
+    exposed on a different transport, schema, WSDL, or QoS (such as WS-Security,
+    WS-Reliable Messaging) other than the real service. It can mediate the
+    messages before they are delivered to the actual endpoint, and the responses
+    before they reach the client.</p>
+
+<p>Clients can send requests for proxy services directly to the ESB, as the
+    client sees it as a service hosted on WSO2 ESB. For example it can perform the
+    <code>?wsdl</code> function and view the WSDL of the virtual proxy service.
+    In the ESB configuration, such requests can be handled anyway you like. You
+    can process the message and send it to the actual service, probably running
+    on a different computer, but it is not necessary to always send the message
+    to the actual service. You can list a combination of tasks to be performed on
+    the messages received for the proxy service, and terminate the flow or send a
+    message back to the client even without sending it to the actual service. </p>
+
+
+<h2>Adding a Proxy Service</h2>
+<p>
+    From the left navigation menu, select <strong>Proxy Service</strong> under
+    Manage > Services > Add. This will take you to the <strong>Create Proxy
+    Service from Template</strong> page.
+</p>
+<div class="image">
+    <img  alt="add proxy image" src="images/templates.png"/>
+
+    <p>Figure 1: Select Proxy Service Template</p>
+</div>
+<p>
+    Select a template that suits your mediation requirements. If you are looking
+    to create an advanced proxy service or if none of the available templates
+    matches your requirements, select the <strong><a href="custom-proxy.html">Custom Proxy</a>
+    </strong> option at the end of the templates list. This will launch the proxy
+    service creation wizard which enables you to customize all aspects of the proxy
+    service including the sequences, endpoints, transport settings, WSDL options and
+    other QoS settings.
+</p>
+<p>
+    The <strong>Create Proxy Service from Template</strong> page provides you the
+    following set of built-in templates for creating and setting up proxy services
+    easily and quickly.
+</p>
+<ul>
+    <li>Pass Through Proxy</li>
+    <li>Secure Proxy</li>
+    <li>WSDL Based Proxy</li>
+    <li>Log and Forward Proxy</li>
+    <li>Transformer Proxy</li>
+</ul>
+<p>
+    For an example if you wish to expose an existing service with WS-Security you can
+    choose the <strong>Secure Proxy</strong> option to create a proxy service with
+    WS-Security enabled with a specified security policy. If you are implementing a
+    scenario where an existing service is exposed over a different schema (message format)
+    you can make use of the <strong>Transformer Proxy</strong> option to easily setup
+    a proxy service which can transform requests and responses based on specified XSLT
+    configurations.
+</p>
+<div class="image">
+    <img  alt="transformer proxy" src="images/transformer.png"/>
+
+    <p>Figure 2: Transformer Proxy Template</p>
+</div>
+<p>
+    Each template will show a limited set of controls which allows the user to easily
+    setup a proxy service. On successfully creating a proxy service the user will be
+    directed to the <strong>Deployed Services</strong> page.
+</p>
+</body>
+</html>

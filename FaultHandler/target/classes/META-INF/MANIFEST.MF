@@ -1,0 +1,31 @@
+Manifest-Version: 1.0
+Export-Package: org.esbhive.fault_handler;uses:="org.apache.axis2,org.
+ esbhive.login.client,org.apache.axis2.client,org.apache.axis2.context
+ ,org.esbhive.login"
+Service-Component: OSGI-INF/serviceComponents.xml
+Private-Package: org.esbhive.hp.mgt,org.esbhive.node.mgt.xsd,org.esbhi
+ ve.proxyconf.mgt,org.esbhive.proxyconf.mgt.xsd,org.wso2.carbon.proxya
+ dmin.xsd,synapse.apache.org.xsd
+Ignore-Package: javax.xml.namespace
+Built-By: melaka
+Tool: Bnd-0.0.238
+Bundle-Name: Fault_Handler
+Created-By: Apache Maven Bundle Plugin
+Build-Jdk: 1.6.0_26
+Bundle-Version: 1.0.0.SNAPSHOT
+Bnd-LastModified: 1313775639524
+Bundle-ManifestVersion: 2
+Bundle-Description: carbon-parent
+Import-Package: javax.xml.namespace;version="0.0.0",javax.xml.stream;r
+ esolution:=optional;version="1.0",org.apache.axiom.om;resolution:=opt
+ ional,org.apache.axiom.om.impl.llom;resolution:=optional,org.apache.a
+ xiom.soap;resolution:=optional,org.apache.axis2,org.apache.axis2.addr
+ essing,org.apache.axis2.client,org.apache.axis2.client.async,org.apac
+ he.axis2.context,org.apache.axis2.databinding,org.apache.axis2.databi
+ nding.utils,org.apache.axis2.databinding.utils.reader,org.apache.axis
+ 2.description,org.apache.axis2.engine,org.apache.axis2.transport,org.
+ apache.axis2.util,org.apache.commons.logging;version="1.1",org.esbhiv
+ e.fault_handler;resolution:=optional,org.esbhive.login;resolution:=op
+ tional,org.esbhive.login.client;resolution:=optional
+Bundle-SymbolicName: Fault_Handler
+

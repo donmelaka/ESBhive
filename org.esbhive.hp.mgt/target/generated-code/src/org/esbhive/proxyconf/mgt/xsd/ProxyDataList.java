@@ -24,50 +24,6 @@
             
 
                         /**
-                        * field for ProxyDataArrayList
-                        */
-
-                        
-                                    protected java.lang.Object localProxyDataArrayList ;
-                                
-                           /*  This tracker boolean wil be used to detect whether the user called the set method
-                          *   for this attribute. It will be used to determine whether to include this field
-                           *   in the serialized XML
-                           */
-                           protected boolean localProxyDataArrayListTracker = false ;
-                           
-
-                           /**
-                           * Auto generated getter method
-                           * @return java.lang.Object
-                           */
-                           public  java.lang.Object getProxyDataArrayList(){
-                               return localProxyDataArrayList;
-                           }
-
-                           
-                        
-                            /**
-                               * Auto generated setter method
-                               * @param param ProxyDataArrayList
-                               */
-                               public void setProxyDataArrayList(java.lang.Object param){
-                            
-                                       if (param != null){
-                                          //update the setting tracker
-                                          localProxyDataArrayListTracker = true;
-                                       } else {
-                                          localProxyDataArrayListTracker = true;
-                                              
-                                       }
-                                   
-                                            this.localProxyDataArrayList=param;
-                                    
-
-                               }
-                            
-
-                        /**
                         * field for ProxyDataList
                         * This was an Array!
                         */
@@ -208,31 +164,7 @@
 
                
                    }
-                if (localProxyDataArrayListTracker){
-                            
-                            if (localProxyDataArrayList!=null){
-                                if (localProxyDataArrayList instanceof org.apache.axis2.databinding.ADBBean){
-                                    ((org.apache.axis2.databinding.ADBBean)localProxyDataArrayList).serialize(
-                                               new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd","proxyDataArrayList"),
-                                               xmlWriter,true);
-                                 } else {
-                                    writeStartElement(null, "http://mgt.proxyconf.esbhive.org/xsd", "proxyDataArrayList", xmlWriter);
-                                    org.apache.axis2.databinding.utils.ConverterUtil.serializeAnyType(localProxyDataArrayList, xmlWriter);
-                                    xmlWriter.writeEndElement();
-                                 }
-                            } else {
-                                
-                                        // write null attribute
-                                           writeStartElement(null, "http://mgt.proxyconf.esbhive.org/xsd", "proxyDataArrayList", xmlWriter);
-
-                                           // write the nil attribute
-                                           writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","nil","1",xmlWriter);
-                                           xmlWriter.writeEndElement();
-                                    
-                            }
-
-
-                        } if (localProxyDataListTracker){
+                if (localProxyDataListTracker){
                                        if (localProxyDataList!=null){
                                             for (int i = 0;i < localProxyDataList.length;i++){
                                                 if (localProxyDataList[i] != null){
@@ -438,14 +370,7 @@
                  java.util.ArrayList elementList = new java.util.ArrayList();
                  java.util.ArrayList attribList = new java.util.ArrayList();
 
-                 if (localProxyDataArrayListTracker){
-                            elementList.add(new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd",
-                                                                      "proxyDataArrayList"));
-                            
-                            
-                                    elementList.add(localProxyDataArrayList==null?null:
-                                    localProxyDataArrayList);
-                                } if (localProxyDataListTracker){
+                 if (localProxyDataListTracker){
                              if (localProxyDataList!=null) {
                                  for (int i = 0;i < localProxyDataList.length;i++){
 
@@ -546,24 +471,8 @@
                     
                     reader.next();
                 
-                        java.util.ArrayList list2 = new java.util.ArrayList();
+                        java.util.ArrayList list1 = new java.util.ArrayList();
                     
-                                    
-                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
-                                
-                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd","proxyDataArrayList").equals(reader.getName())){
-                                
-                                     object.setProxyDataArrayList(org.apache.axis2.databinding.utils.ConverterUtil.getAnyTypeObject(reader,
-                                                org.esbhive.proxyconf.mgt.xsd.ExtensionMapper.class));
-                                       
-                                         reader.next();
-                                     
-                              }  // End of if for expected property start element
-                                
-                                    else {
-                                        
-                                    }
-                                
                                     
                                     while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
                                 
@@ -575,14 +484,14 @@
                                     
                                                           nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","nil");
                                                           if ("true".equals(nillableValue) || "1".equals(nillableValue)){
-                                                              list2.add(null);
+                                                              list1.add(null);
                                                               reader.next();
                                                           } else {
-                                                        list2.add(org.wso2.carbon.proxyadmin.xsd.ProxyData.Factory.parse(reader));
+                                                        list1.add(org.wso2.carbon.proxyadmin.xsd.ProxyData.Factory.parse(reader));
                                                                 }
                                                         //loop until we find a start element that is not part of this array
-                                                        boolean loopDone2 = false;
-                                                        while(!loopDone2){
+                                                        boolean loopDone1 = false;
+                                                        while(!loopDone1){
                                                             // We should be at the end element, but make sure
                                                             while (!reader.isEndElement())
                                                                 reader.next();
@@ -593,19 +502,19 @@
                                                                 reader.next();
                                                             if (reader.isEndElement()){
                                                                 //two continuous end elements means we are exiting the xml structure
-                                                                loopDone2 = true;
+                                                                loopDone1 = true;
                                                             } else {
                                                                 if (new javax.xml.namespace.QName("http://mgt.proxyconf.esbhive.org/xsd","proxyDataList").equals(reader.getName())){
                                                                     
                                                                       nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","nil");
                                                                       if ("true".equals(nillableValue) || "1".equals(nillableValue)){
-                                                                          list2.add(null);
+                                                                          list1.add(null);
                                                                           reader.next();
                                                                       } else {
-                                                                    list2.add(org.wso2.carbon.proxyadmin.xsd.ProxyData.Factory.parse(reader));
+                                                                    list1.add(org.wso2.carbon.proxyadmin.xsd.ProxyData.Factory.parse(reader));
                                                                         }
                                                                 }else{
-                                                                    loopDone2 = true;
+                                                                    loopDone1 = true;
                                                                 }
                                                             }
                                                         }
@@ -614,7 +523,7 @@
                                                         object.setProxyDataList((org.wso2.carbon.proxyadmin.xsd.ProxyData[])
                                                             org.apache.axis2.databinding.utils.ConverterUtil.convertToArray(
                                                                 org.wso2.carbon.proxyadmin.xsd.ProxyData.class,
-                                                                list2));
+                                                                list1));
                                                             
                               }  // End of if for expected property start element
                                 

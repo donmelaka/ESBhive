@@ -10,7 +10,7 @@ package org.esbhive.hp.mgt;
 
 public class ProxyAdminException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1312981531463L;
+    private static final long serialVersionUID = 1313775686065L;
     
     private org.esbhive.hp.mgt.types.synapse.ProxyAdminExceptionE faultMessage;
 

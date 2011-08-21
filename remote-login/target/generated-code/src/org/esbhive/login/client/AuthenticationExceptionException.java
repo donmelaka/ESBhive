@@ -10,7 +10,7 @@ package org.esbhive.login.client;
 
 public class AuthenticationExceptionException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1312367072453L;
+    private static final long serialVersionUID = 1313775564603L;
     
     private org.esbhive.login.client.AuthenticationExceptionE faultMessage;
 

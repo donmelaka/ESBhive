@@ -3,14 +3,14 @@
  * ProxyAdminException.java
  *
  * This file was auto-generated from WSDL
- * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 03, 2010 (02:59:42 IST)
+ * by the Apache Axis2 version: 1.6-wso2v1  Built on : May 05, 2010 (06:40:41 UTC)
  */
 
 package org.esbhive.hp.mgt;
 
 public class ProxyAdminException extends java.lang.Exception{
 
-    private static final long serialVersionUID = 1313732955202L;
+    private static final long serialVersionUID = 1313775521744L;
     
     private synapse.apache.org.xsd.ProxyAdminExceptionE faultMessage;
 

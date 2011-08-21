@@ -13,13 +13,13 @@ Export-Package: org.esbhive.login.client;uses:="org.apache.axis2.addre
 Service-Component: OSGI-INF/serviceComponents.xml
 Private-Package: org.esbhive.login.internal
 Ignore-Package: javax.xml.namespace
-Built-By: Melaka
+Built-By: melaka
 Tool: Bnd-0.0.238
 Bundle-Name: remote-login
 Created-By: Apache Maven Bundle Plugin
-Build-Jdk: 1.6.0_11
+Build-Jdk: 1.6.0_26
 Bundle-Version: 1.0.0.SNAPSHOT
-Bnd-LastModified: 1312367078318
+Bnd-LastModified: 1313775571428
 Bundle-ManifestVersion: 2
 Bundle-Description: carbon-parent
 Import-Package: javax.xml.namespace;version="0.0.0",javax.xml.stream;r
