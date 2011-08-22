@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +32,8 @@ import org.esbhive.fault_handler.FaultHandlerInterface;
  * cardinality="1..1" policy="dynamic" bind="setServerConfiguration" unbind="unsetServerConfiguration
  * @scr.reference name="Fault_Handler" interface="org.esbhive.fault_handler.FaultHandlerInterface"
  * cardinality="1..1" policy="dynamic" bind="setFaultHandler" unbind="unSetFaultHandler"
+ * @scr.reference name="org.esbhive.startup.handler" interface="org.esbhive.node.addition.NodeAdditionInterface"
+ * cardinality="1..1" policy="dynamic" bind="setNodeAdditionHandler" unbind="unSetNodeAdditionHandler"
  *
  */
 //Test the code
@@ -46,6 +49,7 @@ import org.apache.zookeeper.ZooDefs.Ids;
 
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
+import org.esbhive.node.addition.NodeAdditionInterface;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.utils.ServerConstants;
 
@@ -59,12 +63,14 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveNodeManager");
   private ServerConfiguration serverConfig;
   private FaultHandlerInterface fh;
+  private NodeAdditionInterface ah;
 
   public NodeManager() {
   }
 
   protected void activate(ComponentContext context) {
 
+      ESBNode thisNode = thisNode();
     String connectionString = serverConfig.getFirstProperty("ESBhive.ZookeeperConnectionString");
     List<String> children = null;
     try {
@@ -79,7 +85,6 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         zk.create(FAILURES, new byte[0], Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
       }
 
-      ESBNode thisNode = thisNode();
       zk.create(NODES + "/" + thisNode.getIpAndPort(),
               toByteArray(thisNode), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
       children = zk.getChildren(NODES, this);
@@ -101,9 +106,13 @@ public class NodeManager implements NodeManagerInterface, Watcher {
       }
 
       nodeMap.put(node.getIp(), node);
+	Map<String, ESBNode> nodeMapWithoutMe = new HashMap<String, ESBNode>(nodeMap);
+	nodeMapWithoutMe.remove(thisNode().getIpAndPort());
+	ah.setNode(thisNode.getIp(),thisNode.getHttpsPort(),nodeMapWithoutMe.values().toArray(new ESBNode[0]));
     }
     log.info("Node " + System.getProperty(ServerConstants.LOCAL_IP_ADDRESS)
             + ":" + " I'm added. Current Nodes = " + nodeMap.keySet());
+
   }
 
   public void process(WatchedEvent event) {
@@ -272,4 +281,13 @@ public class NodeManager implements NodeManagerInterface, Watcher {
   protected void unSetFaultHandler(FaultHandlerInterface fh) {
     this.fh = null;
   }
+  protected void setNodeAdditionHandler(NodeAdditionInterface ah) {
+    this.ah = ah;
+  }
+
+  protected void unSetNodeAdditionHandler(NodeAdditionInterface ah) {
+    this.ah = null;
+  }
+
+
 }
