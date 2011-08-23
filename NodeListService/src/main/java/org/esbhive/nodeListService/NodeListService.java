@@ -17,7 +17,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class NodeListService {
 
-    private NodeManagerInterface nodeManager;
+    private static NodeManagerInterface nodeManager;
     private static final Log log = LogFactory.getLog("org.wso2.carbon.NodeListService");
     
     public synchronized void setNodeManager(NodeManagerInterface r) {
