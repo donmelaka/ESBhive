@@ -2,11 +2,12 @@ package org.esbhive.demoSample;
 
 import java.io.File;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.client.Options;
-import org.apache.axis2.client.ServiceClient;
-import org.apache.axis2.context.ConfigurationContext;
-import org.apache.axis2.context.ConfigurationContextFactory;
+import org.esbhive.node.mgt.xsd.ESBNode;
 import org.esbhive.nodelistservice.NodeListServiceStub;
 
 /**
@@ -16,34 +17,25 @@ import org.esbhive.nodelistservice.NodeListServiceStub;
  */
 public class DemoSample {
 
+	List<ESBNode> nodeList = Collections.synchronizedList(new ArrayList());
 	static NodeListServiceStub stub;
 
 	public static void main(String[] args) throws RemoteException {
+	}
+
+	public void doWork() throws AxisFault, RemoteException {
 		String esb_home = "/home/guest/Desktop/wso2esb-3.0.1";
 		System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
 			+ "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");
 		System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
-
-
-		stub = createProxyNodeListServiceStub("localhost:9444");
-		org.esbhive.node.mgt.xsd.ESBNode[] nodes = stub.getNodes();
-		System.out.println(nodes.length);
-		System.out.println(nodes[nodes.length-1]);
-		
-	}
-
-	private static NodeListServiceStub createProxyNodeListServiceStub(String ipAndPort) throws AxisFault {
-		ConfigurationContext ctx = null;
-		ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-
-		String serviceEPR4 = "https://" + ipAndPort + "/services/" + "NodeListService";
-
-		NodeListServiceStub stub4 = null;
-		stub4 = new NodeListServiceStub(ctx, serviceEPR4);
-		ServiceClient client4 = stub4._getServiceClient();
-		Options option = client4.getOptions();
-		option.setManageSession(true);
-		//option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
-		return stub4;
+		Scanner in = new Scanner(System.in);
+		String input = System.console().readLine("How often should the list be feteched(in seconds)?");
+		String input2 = System.console().readLine("What is the ip:port to first fetch the list?");
+		ListFetcher lf = new ListFetcher(Integer.parseInt(input), nodeList);
+		lf.fetchList(input2);
+		lf.start();
+		for(int i=0;i<nodeList.size();i++){
+			System.out.println(nodeList.get(i).getIp());
+		}
 	}
 }
