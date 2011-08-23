@@ -4,9 +4,14 @@
  */
 package org.esbhive.demoSample;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.esbhive.node.mgt.xsd.ESBNode;
 import samples.services.SimpleStockQuoteServiceStub;
+import samples.services.xsd.GetQuote;
+import samples.services.xsd.GetQuoteResponse;
 
 /**
  *
@@ -16,17 +21,31 @@ public class Client {
 
 	List<ESBNode> esbNodes;
 	ListFetcher lf;
+	UIInterface ui;
 
-	public Client(List<ESBNode> esbNodes, ListFetcher lf) {
+	public Client(List<ESBNode> esbNodes, ListFetcher lf, UIInterface ui) {
 		this.esbNodes = esbNodes;
 		this.lf = lf;
+		this.ui = ui;
 	}
 
 	public void doWork() {
 		ESBNode chosen = null;
 		while (true) {
 			chosen = esbNodes.get((int) Math.floor(Math.random() * (esbNodes.size() - 1)));
-			SimpleStockQuoteServiceStub ssqss = new 
+			try {
+				SimpleStockQuoteServiceStub ssqss = new SimpleStockQuoteServiceStub(
+					"http://" + chosen.getIpAndPort() + "/services/StockQuoteProxy.StockQuoteProxyHttpSoap12Endpoint");
+				GetQuote gq = new GetQuote();
+				gq.setSymbol("IBM");
+				GetQuoteResponse response = ssqss.getQuote(gq);
+				ui.responseRecieved(chosen, ""+response.getLast());
+			} catch (Exception ex) {
+				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+				List old = new ArrayList(esbNodes);
+				esbNodes.remove(chosen);
+				ui.nodeRemoved(old, esbNodes);
+			}
 
 		}
 	}

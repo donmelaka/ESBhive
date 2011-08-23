@@ -5,6 +5,7 @@
 package org.esbhive.demoSample;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -25,10 +26,12 @@ public class ListFetcher extends Thread {
 
 	int howOftenSeconds;
 	List<ESBNode> esbNodes;
+	UIInterface ui;
 
-	public ListFetcher(int howOftenSeconds, List<ESBNode> esbNodes) {
+	public ListFetcher(int howOftenSeconds, List<ESBNode> esbNodes, UIInterface ui) {
 		this.howOftenSeconds = howOftenSeconds;
 		this.esbNodes = esbNodes;
+		this.ui = ui;
 	}
 
 	@Override
@@ -40,8 +43,10 @@ public class ListFetcher extends Thread {
 				Thread.sleep(howOftenSeconds*1000);
 				fetchList(chosen.getIpAndPort());
 			} catch (Exception ex) {
+				List old = new ArrayList(esbNodes);
 				Logger.getLogger(ListFetcher.class.getName()).log(Level.SEVERE, null, ex);
 				esbNodes.remove(chosen);
+				ui.nodeRemoved(old, esbNodes);
 			}
 		}
 	}
@@ -60,5 +65,6 @@ public class ListFetcher extends Thread {
 		org.esbhive.node.mgt.xsd.ESBNode[] nodes = stub.getNodes();
 		esbNodes.clear();
 		esbNodes.addAll(Arrays.asList(nodes));
+		ui.nodesFetched(esbNodes);
 	}
 }
