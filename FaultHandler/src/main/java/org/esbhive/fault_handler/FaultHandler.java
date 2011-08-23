@@ -52,6 +52,7 @@ public class FaultHandler implements FaultHandlerInterface {
     }
 
     public String fixNode(String ipAddress, String port) {
+        long startTime = System.currentTimeMillis();
         this.createStub();
         this.setFailedNode(ipAddress, port);
         ProxyData[] proxyDataList = this.getProxyList();
@@ -59,8 +60,11 @@ public class FaultHandler implements FaultHandlerInterface {
             this.deleteProxyServices(proxyDataList);
             this.redeployProxyServices(proxyDataList);
         }
-        String result = this.getResult();
+        long stopTime = System.currentTimeMillis();
+        long elapsedTime = (stopTime - startTime);
+        String result = this.getResult(elapsedTime);
         this.reset();
+
         return result;
     }
 
@@ -162,10 +166,10 @@ public class FaultHandler implements FaultHandlerInterface {
 
     }
 
-    private String getResult() {
+    private String getResult(long elapsedTime ) {
         String result = this.failedIp + ":" + this.failedPort;
         if (isFixed) {
-            result = result + " was fixed sucessfully";
+            result = result + " was fixed sucessfully in "+elapsedTime+" miliseconds" ;
         } else {
             result = result + " could not be fixed";
         }

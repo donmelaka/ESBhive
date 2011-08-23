@@ -171,7 +171,8 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         String ip = iter.next();
         //TODO failure correction code
         String[] params = ip.split(":");
-        fh.fixNode(params[0], params[1]);
+        String outputResult=fh.fixNode(params[0], params[1]);
+        log.info(outputResult);
         zk.delete(FAILURES + "/" + ip, -1);
         log.info("Deleted znode " + FAILURES + "/" + ip);
       }
