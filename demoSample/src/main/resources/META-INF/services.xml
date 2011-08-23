@@ -1,0 +1,8 @@
+<serviceGroup>
+    <service name="DemoSample" scope="application">
+        <transports>
+            <transport>https</transport>
+        </transports>
+        <parameter name="ServiceClass">org.esbhive.demoSample.DemoSample</parameter>
+    </service>
+</serviceGroup>
