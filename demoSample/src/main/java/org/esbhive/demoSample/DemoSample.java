@@ -19,9 +19,10 @@ public class DemoSample {
 	UIInterface ui = new ConsoleInterface();
 
 	public static void main(String[] args) throws RemoteException {
+		new DemoSample().doWork();
 	}
 
-	public void doWork() throws AxisFault, RemoteException {
+	public void doWork() throws RemoteException {
 		String esb_home = "/home/guest/Desktop/wso2esb-3.0.1";
 		System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
 			+ "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");

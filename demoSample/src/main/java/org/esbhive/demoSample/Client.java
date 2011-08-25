@@ -32,16 +32,17 @@ public class Client {
 	public void doWork() {
 		ESBNode chosen = null;
 		while (true) {
-			chosen = esbNodes.get((int) Math.floor(Math.random() * (esbNodes.size() - 1)));
+			chosen = esbNodes.get((int) Math.floor(Math.random() * (esbNodes.size())));
 			try {
-				SimpleStockQuoteServiceStub ssqss = new SimpleStockQuoteServiceStub(
-					"http://" + chosen.getIpAndPort() + "/services/StockQuoteProxy.StockQuoteProxyHttpSoap12Endpoint");
+				Thread.sleep(500);
+				String url = "http://" + chosen.getIpAndPort().split(":")[0] + ":" + chosen.getSynapsePort() + "/services/StockQuoteProxy.StockQuoteProxyHttpSoap12Endpoint";
+				SimpleStockQuoteServiceStub ssqss = new SimpleStockQuoteServiceStub(url);
 				GetQuote gq = new GetQuote();
 				gq.setSymbol("IBM");
 				GetQuoteResponse response = ssqss.getQuote(gq);
-				ui.responseRecieved(chosen, ""+response.getLast());
+				ui.responseRecieved(chosen, "" + response.getLast());
 			} catch (Exception ex) {
-				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+//				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 				List old = new ArrayList(esbNodes);
 				esbNodes.remove(chosen);
 				ui.nodeRemoved(old, esbNodes);

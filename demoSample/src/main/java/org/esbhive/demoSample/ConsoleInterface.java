@@ -15,7 +15,7 @@ public class ConsoleInterface extends UIInterface{
 
 	@Override
 	public void nodesFetched(List<ESBNode> esbNodes) {
-		System.out.println("Node list feteched. New nodes are : "+esbNodes);
+		System.out.println("Node list feteched. Nodes are : "+this.ipPortPairs(esbNodes));
 	}
 
 	@Override
@@ -25,8 +25,8 @@ public class ConsoleInterface extends UIInterface{
 
 	@Override
 	public void nodeRemoved(List<ESBNode> oldEsbNodes, List<ESBNode> newEsbNodes) {
-		System.out.println("Node removed from list. Old nodes: "+ oldEsbNodes+"\n"
-			+ "New nodes: "+newEsbNodes);
+		System.out.println("Node removed from list. Old nodes: "+ this.ipPortPairs(oldEsbNodes)+"\n"
+			+ "New nodes: "+this.ipPortPairs(newEsbNodes));
 	}
 
 	@Override

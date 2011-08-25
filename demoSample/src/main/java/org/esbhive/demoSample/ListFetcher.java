@@ -39,12 +39,12 @@ public class ListFetcher extends Thread {
 		ESBNode chosen = null;
 		while(true){
 			try {
-				chosen = esbNodes.get((int)Math.floor(Math.random()*(esbNodes.size()-1)));
 				Thread.sleep(howOftenSeconds*1000);
+				chosen = esbNodes.get((int)Math.floor(Math.random()*(esbNodes.size()-1)));
 				fetchList(chosen.getIpAndPort());
 			} catch (Exception ex) {
 				List old = new ArrayList(esbNodes);
-				Logger.getLogger(ListFetcher.class.getName()).log(Level.SEVERE, null, ex);
+//				Logger.getLogger(ListFetcher.class.getName()).log(Level.SEVERE, null, ex);
 				esbNodes.remove(chosen);
 				ui.nodeRemoved(old, esbNodes);
 			}
