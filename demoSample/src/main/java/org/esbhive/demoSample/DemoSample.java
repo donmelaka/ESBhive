@@ -1,17 +1,12 @@
-
 package org.esbhive.demoSample;
 
+import java.io.File;
 import java.rmi.RemoteException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.client.Options;
-import org.apache.axis2.client.ServiceClient;
-import org.apache.axis2.context.ConfigurationContext;
-import org.apache.axis2.context.ConfigurationContextFactory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.esbhive.nodelistservice.NodeListServiceStub;
+import org.esbhive.node.mgt.xsd.ESBNode;
 
 /**
  * @scr.component name="demo.sample" immediate="true"
@@ -19,46 +14,25 @@ import org.esbhive.nodelistservice.NodeListServiceStub;
  * 
  */
 public class DemoSample {
-   
-    private static final Log log = LogFactory.getLog("org.wso2.carbon.DemoSample");
- 
-    static NodeListServiceStub stub;
-    public static void main(String[] args) {
-        stub = createProxyNodeListServiceStub("localhost:9443");
-        try {
-            org.esbhive.node.mgt.xsd.ESBNode[] nodes = stub.getNodes();
-            for(org.esbhive.node.mgt.xsd.ESBNode node:nodes){
-                log.info("#####################"+node.getIpAndPort());
-                System.out.println(node.getIpAndPort());
-            }
-        } catch (RemoteException ex) {
-            Logger.getLogger(DemoSample.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
 
+	List<ESBNode> nodeList = Collections.synchronizedList(new ArrayList());
+	UIInterface ui = new ConsoleInterface();
 
-private static NodeListServiceStub createProxyNodeListServiceStub(String ipAndPort) {
-		ConfigurationContext ctx = null;
-		try {
-			ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
-		} catch (AxisFault ex) {
-			log.error("Error in DemoSample", ex);
-		}
-
-		String serviceEPR4 = "https://" + ipAndPort + "/services/" + "NodeListService";
-
-		NodeListServiceStub stub4 = null;
-		try {
-			stub4 = new NodeListServiceStub(ctx, serviceEPR4);
-		} catch (AxisFault ex) {
-			log.error("Error in DemoSample", ex);
-		}
-		ServiceClient client4 = stub4._getServiceClient();
-		Options option = client4.getOptions();
-		option.setManageSession(true);
-		//option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
-		return stub4;
+	public static void main(String[] args) throws RemoteException {
+		new DemoSample().doWork();
 	}
-   
+
+	public void doWork() throws RemoteException {
+		String esb_home = "/home/guest/Desktop/wso2esb-3.0.1";
+		System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
+			+ "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
+		String input = System.console().readLine("How often should the list be feteched(in seconds)?");
+		String input2 = System.console().readLine("What is the ip:port to first fetch the list?");
+		ListFetcher lf = new ListFetcher(Integer.parseInt(input), nodeList, ui);
+		Client client = new Client(nodeList, lf, ui);
+		lf.fetchList(input2);
+		lf.start();
+		client.doWork();
+	}
 }
