@@ -111,6 +111,15 @@
 									<classpath refid="maven.compile.classpath"/>
 									<classpath refid="maven.runtime.classpath"/>
 								</java>
+                                                                
+                                                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+									<arg line="-uri src/main/resources/ProxyConfManager.wsdl -u -uw -o target/generated-code
+                                   "/>
+									<classpath refid="maven.dependency.classpath"/>
+									<classpath refid="maven.compile.classpath"/>
+									<classpath refid="maven.runtime.classpath"/>
+								</java>
+                                                                
 							</tasks>
 						</configuration>
 					</execution>
@@ -159,7 +168,7 @@
                             javax.servlet.jsp.jstl.sql,
                             javax.servlet.jsp.jstl.tlv,
 			    org.esbhive.login.*,
-			    org.esbhive.node.mgt.*,
+			    org.esbhive.node.mgt,
                             javax.servlet.jsp.resources;version="2.0.0",
                             javax.servlet.jsp.tagext;version="2.0.0",
                             javax.servlet.resources;version="2.4.0",
@@ -192,6 +201,9 @@
                             org.wso2.carbon.ajaxtags.*; version=1.0.0,
                             *;resolution:=optional
 						</Import-Package>
+                                                <Private-Package>
+                                                    org.esbhive.proxyconf.mgt,org.esbhive.proxyconf.mgt.xsd,org.wso2.carbon.proxyadmin.xsd,org.esbhive.node.mgt.xsd
+                                                </Private-Package>
 						<DynamicImport-Package>*</DynamicImport-Package>
 					</instructions>
 				</configuration>

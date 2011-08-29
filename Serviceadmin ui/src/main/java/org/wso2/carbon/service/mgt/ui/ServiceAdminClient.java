@@ -49,6 +49,7 @@ import org.esbhive.login.RemoteLogin;
 import org.esbhive.login.LoginData;
 import org.esbhive.node.mgt.ESBNode;
 import org.esbhive.node.mgt.NodeManagerInterface;
+import org.esbhive.proxyconf.mgt.ProxyConfManagerStub;
 
 /**
  * @scr.component name="mgt.ServerAdminClient" immediate="true"
@@ -176,6 +177,7 @@ public class ServiceAdminClient {
 
 	public void deleteServiceGroups(String[] serviceGroups) throws java.lang.Exception {
 		ESBNode[] nodes = null;
+                ProxyConfManagerStub proxyConfManagerStub;
 		if (nodeManager!=null) {
 		 nodes = nodeManager.getNodes();
 		}
@@ -184,7 +186,11 @@ public class ServiceAdminClient {
 			for (ESBNode esbNode :nodes ) {
 				ServiceAdminStub serviceAdminStub = this.createServiceAdminStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
 				serviceAdminStub.deleteServiceGroups(serviceGroups);
-			}
+                 proxyConfManagerStub = this.createProxyConfManagerStub(esbNode.getUsername(),esbNode.getPassword(), esbNode.getIpAndPort());
+         	 for(String name:serviceGroups){
+                 proxyConfManagerStub.deleteProxy(name);
+                 }
+                        }
 			//stub.deleteServiceGroups(serviceGroups);
 		} catch (RemoteException e) {
 			handleException(bundle.getString("cannot.delete.service.groups"), e);
@@ -233,6 +239,66 @@ public class ServiceAdminClient {
 		option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
 		return stub4;
 	}
+        
+        public void deleteProxyConf(String proxyName) {
+
+        String[] serviceNames = new String[1];
+        serviceNames[0] = proxyName;
+        ESBNode[] nodes = null;
+        if (nodeManager != null) {
+            nodes = nodeManager.getNodes();
+        }
+
+        for (ESBNode esbNode : nodes) {
+            ProxyConfManagerStub proxyConftub = this.createProxyConfManagerStub(esbNode.getUsername(), esbNode.getPassword(), esbNode.getIpAndPort());
+            try {
+                proxyConftub.deleteProxy(proxyName);
+            } catch (RemoteException ex) {
+                log2.error("HiveProxyServiceAdmin RemoteException while deleting service groups", ex);
+            }
+        }
+
+    }
+        
+        private ProxyConfManagerStub createProxyConfManagerStub(String username, String password, String ipAndPort) {
+
+        LoginData otherNode = new LoginData();
+        otherNode.setUserName(username);
+        otherNode.setPassWord(password);
+        otherNode.setHostNameAndPort(ipAndPort);
+        LoginData loginData = null;
+        try {
+            loginData = remoteLogin.logIn(otherNode);
+        } catch (AxisFault ex) {
+            log2.error("AxisFault in ServiceAdminUI when login ", ex);
+        } catch (RemoteException ex) {
+            log2.error("Remote exception in ServiceAdminUI when login ", ex);
+        } catch (org.esbhive.login.client.AuthenticationExceptionException ex) {
+            log2.error("AuthenticationExceptionException in ServiceAdminUI when login ", ex);
+        }
+
+
+        ConfigurationContext ctx = null;
+        try {
+            ctx = ConfigurationContextFactory.createConfigurationContextFromFileSystem(null, null);
+        } catch (AxisFault ex) {
+            log.error("AxisFault in ServiceAdminUi", ex);
+        }
+
+        String serviceEPR4 = "https://" + ipAndPort + "/services/" + "ProxyConfManager";
+
+        ProxyConfManagerStub stub4 = null;
+        try {
+            stub4 = new ProxyConfManagerStub(ctx, serviceEPR4);
+        } catch (AxisFault ex) {
+            log2.error("AxisFault in ServiceAdminUI", ex);
+        }
+        ServiceClient client4 = stub4._getServiceClient();
+        Options option = client4.getOptions();
+        option.setManageSession(true);
+        option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING, loginData.getCookie());
+        return stub4;
+    }
 
 	public void deleteAllNonAdminServiceGroups() throws RemoteException {
 		try {
