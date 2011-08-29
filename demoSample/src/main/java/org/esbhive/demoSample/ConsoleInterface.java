@@ -4,6 +4,8 @@
  */
 package org.esbhive.demoSample;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.esbhive.node.mgt.xsd.ESBNode;
 
@@ -11,7 +13,7 @@ import org.esbhive.node.mgt.xsd.ESBNode;
  *
  * @author guest
  */
-public class ConsoleInterface extends UIInterface{
+public class ConsoleInterface implements UIInterface{
 
 	@Override
 	public void nodesFetched(List<ESBNode> esbNodes) {
@@ -32,5 +34,13 @@ public class ConsoleInterface extends UIInterface{
 	@Override
 	public void responseRecieved(ESBNode node, String value) {
 		System.out.println("Response recieved from  node: "+ node.getIpAndPort()+ ". Value is : "+ value);
+	}
+        
+        public List<String> ipPortPairs(List<ESBNode> esbNodes){
+		List ipPortPairs = new ArrayList();
+		for(Iterator<ESBNode> i = esbNodes.iterator();i.hasNext();){
+			ipPortPairs.add(i.next().getIpAndPort());
+		}
+		return ipPortPairs;
 	}
 }
