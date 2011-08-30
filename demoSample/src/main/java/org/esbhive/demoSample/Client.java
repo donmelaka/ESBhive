@@ -34,7 +34,8 @@ public class Client {
 		while (true) {
 			chosen = esbNodes.get((int) Math.floor(Math.random() * (esbNodes.size())));
 			try {
-				Thread.sleep(500);
+				Thread.sleep(2000);
+				ui.sendingRequest(chosen.getIpAndPort());
 				String url = "http://" + chosen.getIpAndPort().split(":")[0] + ":" + chosen.getSynapsePort() + "/services/StockQuoteProxy.StockQuoteProxyHttpSoap12Endpoint";
 				SimpleStockQuoteServiceStub ssqss = new SimpleStockQuoteServiceStub(url);
 				GetQuote gq = new GetQuote();
@@ -42,7 +43,7 @@ public class Client {
 				GetQuoteResponse response = ssqss.getQuote(gq);
 				ui.responseRecieved(chosen, "" + response.getLast());
 			} catch (Exception ex) {
-//				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
 				List old = new ArrayList(esbNodes);
 				esbNodes.remove(chosen);
 				ui.nodeRemoved(old, esbNodes);

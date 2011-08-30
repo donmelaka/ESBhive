@@ -43,4 +43,15 @@ public class ConsoleInterface implements UIInterface{
 		}
 		return ipPortPairs;
 	}
+
+	
+
+	public void currentLeader(String ipAndPort) {
+		System.out.println("Nodes changed. Current leader is "+ipAndPort+".");
+	}
+
+	public void sendingRequest(String ipAndPort) {
+		System.out.println("Sending request to "+ipAndPort+".");
+		
+	}
 }
