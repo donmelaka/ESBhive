@@ -19,6 +19,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import org.esbhive.node.mgt.xsd.ESBNode;
 
 /**
@@ -42,6 +43,10 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
 
             iterator.next().setVisible(false);
         }
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
 
     }
 
@@ -199,7 +204,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
 //            }
 //            j++;
 //        }
-        
+
 
 
         boolean available = false;
@@ -223,9 +228,9 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
             }
 
         }
-        
-        
-        
+
+
+
         iterator = buttonList.iterator();
         JButton next1 = null;
         boolean isAlive = false;
@@ -243,8 +248,8 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                 next1.setBackground(Color.red);
             }
         }
-       
-        
+
+
         this.nodesArea.setText(nodes);
 
     }
@@ -320,5 +325,13 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
             ipPortPairs.add(i.next().getIpAndPort());
         }
         return ipPortPairs;
+    }
+
+    public void currentLeader(String ipAndPort) {
+        System.out.println("he  ");
+    }
+
+    public void sendingRequest(String ipAndPort) {
+        System.out.println("he  ");
     }
 }

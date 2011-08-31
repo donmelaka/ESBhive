@@ -105,11 +105,12 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         log.error("Error in initializing NodeManager " + NODES, ex);
       }
 
-      nodeMap.put(node.getIp(), node);
+        nodeMap.put(node.getIp(), node);
+  }
 	Map<String, ESBNode> nodeMapWithoutMe = new HashMap<String, ESBNode>(nodeMap);
 	nodeMapWithoutMe.remove(thisNode().getIpAndPort());
 	ah.setNode(thisNode.getIp(),thisNode.getHttpsPort(),nodeMapWithoutMe.values().toArray(new ESBNode[0]));
-    }
+
     log.info("Node " + System.getProperty(ServerConstants.LOCAL_IP_ADDRESS)
             + ":" + " I'm added. Current Nodes = " + nodeMap.keySet());
 

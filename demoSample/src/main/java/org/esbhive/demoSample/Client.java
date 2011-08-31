@@ -30,6 +30,7 @@ public class Client {
         this.ui = ui;
     }
 
+
     public void doWork() {
         ESBNode chosen = null;
         while (true) {
@@ -53,6 +54,7 @@ public class Client {
                 esbNodes.remove(chosen);
                 ui.nodeRemoved(old, esbNodes);
             }
+
 
         }
     }

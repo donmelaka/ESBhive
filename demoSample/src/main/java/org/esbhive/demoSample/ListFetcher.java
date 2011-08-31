@@ -44,7 +44,7 @@ public class ListFetcher extends Thread {
 				fetchList(chosen.getIpAndPort());
 			} catch (Exception ex) {
 				List old = new ArrayList(esbNodes);
-//				Logger.getLogger(ListFetcher.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(ListFetcher.class.getName()).log(Level.SEVERE, null, ex);
 				esbNodes.remove(chosen);
 				ui.nodeRemoved(old, esbNodes);
 			}
