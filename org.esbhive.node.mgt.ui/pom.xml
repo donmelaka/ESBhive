@@ -68,6 +68,15 @@
 									<classpath refid="maven.compile.classpath"/>
 									<classpath refid="maven.runtime.classpath"/>
 								</java>
+                                                                <java classname="org.apache.axis2.wsdl.WSDL2Java" fork="true">
+									<arg
+										line="-uri src/main/resources/ProxyConfManager.wsdl
+                                    -u -uw -o target/generated-code
+                                    -ns2p http://mgt.proxyconf.esbhive.org/xsd=org.esbhive.proxyconf.mgt.client,http://mgt.proxyconf.esbhive.org=org.esbhive.proxyconf.mgt.client" />
+									<classpath refid="maven.dependency.classpath" />
+									<classpath refid="maven.compile.classpath" />
+									<classpath refid="maven.runtime.classpath" />
+								</java>
 							</tasks>
 						</configuration>
 					</execution>
@@ -101,7 +110,11 @@
 						<Bundle-SymbolicName>${pom.artifactId}</Bundle-SymbolicName>
 						<Export-Package>
                   org.esbhive.node.mgt.ui.*,
-                  org.esbhive.node.mgt.client
+                  org.esbhive.node.mgt.client.*,
+                  org.esbhive.node.mgt.xsd.*,
+                  org.esbhive.proxyconf.mgt.ui.*,
+                  org.esbhive.proxyconf.mgt.client.*,
+                  org.wso2.carbon.proxyadmin.*,
 						</Export-Package>
 						<Import-Package>
                   !javax.xml.namespace,
