@@ -69,6 +69,12 @@ public class ProxyConfManager implements ProxyConfManagerInterface{
         return proesb;
    }
 
+   public String[] getKeySet(){
+       String [] array=new String[0];
+       array=ProESBs.keySet().toArray(array);
+       return array;
+   }
+
    public ProxyDataList getProxyDataList(String ipandport){
         ProxyDataList prodatalist=PDlist.get(ipandport);
         return prodatalist;
@@ -108,75 +114,26 @@ public class ProxyConfManager implements ProxyConfManagerInterface{
         }
    }
 
+   public void updataProxy(ProxyData pd){
+        ProEsb proesb=ProESBs.get(pd.getName());
+        ProESBs.remove(pd.getName());
+        proesb.setProxyData(pd);
+        ProESBs.put(pd.getName(), proesb);
 
-/*    public ProEsb[] getlist() {
-	   
-	   ProEsb temProEsb=new ProEsb();
-                ProxyData[] prodata = new ProxyData[nodes.size()];
-                ESBNode[] esbnodes = new ESBNode[nodes.size()];
-
-		prodata=nodes.keySet().toArray(prodata);
-                esbnodes=nodes.values().toArray(esbnodes);
-
-                for(int i=0;i<proesb.length;i++){
-                    temProEsb.setProxyData(prodata[i]);
-                   String keys[] temProEsb.setESBNode(esbnodes[i]);
-		    proesb[i]=temProEsb;
-                }
-
-            return proesb;
-    }
- *
- * 
- */
-/*
-        ProEsb[] proesb = new ProEsb[nodes.size()];
-        ProxyData[] prodata = new ProxyData[nodes.size()];
-        ESBNode[] esbnodes = new ESBNode[nodes.size()];
- *
- */
-
-     //   prodata = nodes.keySet().toArray(prodata);
-       // esbnodes = nodes.values().toArray(esbnodes);
-
-
-    /*    for (int i = 0; i < proesb.length; i++) {
-            proesb[i].setProxyData(prodata[i]);
-            proesb[i].setESBNode(esbnodes[i]);
-        }
-     
-         return new ProEsb[2];
-
-
-
-    }
-
-    public void deleteNode(String proxyname) {
-     ProxyData proxydata = null;
-            ProxyData [] proxyarray= new ProxyData[nodes.size()];
-                    nodes.keySet().toArray(proxyarray);
-            for(int i=0;i<nodes.size();i++){
-                if(proxyarray[i].getName().equals(proxyname)){
-                    proxydata=proxyarray[i];
-                    break;
+        ProxyDataList[] pdatalist= new ProxyDataList[PDlist.size()];
+        pdatalist=PDlist.values().toArray(pdatalist);
+        for(int i=0;i<pdatalist.length;i++){
+            ArrayList<ProxyData> arraylist=pdatalist[i].getProxyDataArrayList();
+            ProxyData[] proxydatas= new ProxyData[arraylist.size()];
+            proxydatas=arraylist.toArray(proxydatas);
+            for(int j=0;j<proxydatas.length;j++){
+                if(proxydatas[j].getName().equals(pd.getName())){
+                    arraylist.remove(j);
+                    arraylist.add(j, pd);
                 }
             }
-                    nodes.remove(proxydata);
+        }
+   }
 
-    }
 
-    public ESBNode[] getEsbNodeList() {
-        ESBNode[] esbnodes = new ESBNode[1];
-        esbnodes[0] = new ESBNode();
-        return esbnodes;
-    }
-
-   public ProxyData[] getProxyDataList() {
-        ProxyData[] prodata = new ProxyData[nodes.size()];
-       // prodata = nodes.keySet().toArray(prodata);
-        return  prodata;
-    }
-
-    *
-     */
 }
