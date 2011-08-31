@@ -14,6 +14,10 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Vector;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import org.esbhive.node.mgt.xsd.ESBNode;
 
@@ -114,8 +118,8 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                             .addComponent(jLabel1))
                         .addGap(97, 97, 97)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 552, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -138,7 +142,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(42, 42, 42)
                         .addComponent(jLabel1)))
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         pack();
@@ -171,21 +175,78 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
     private javax.swing.JTextArea nodesArea;
     private javax.swing.JTextArea responseArea;
     // End of variables declaration//GEN-END:variables
-    private ArrayList<JButton> buttonList = new ArrayList<JButton>();
+    private CopyOnWriteArrayList<JButton> buttonList = new CopyOnWriteArrayList<JButton>();
 
     public void nodesFetched(List<ESBNode> esbNodes) {
 
-        Iterator<JButton> iterator = this.buttonList.iterator();
+        Iterator<JButton> iterator = null;
         JButton next;
         String nodes = "";
+        JButton[] buttonArry = new JButton[0];
+        buttonArry = buttonList.toArray(buttonArry);
+        int j = 0;
+//        for (ESBNode node : esbNodes) {
+//            nodes += node.getIpAndPort() + "\n";
+//            iterator = buttonList.iterator();
+//            for (int i = j; i < buttonArry.length; i++) {
+//                next = buttonArry[i];
+//                if (next.getBackground() != Color.red) {
+//                  //  next.setBackground(null);
+//                    next.setText(node.getIpAndPort());
+//                    next.setVisible(true);
+//                    break;
+//                }        
+//            }
+//            j++;
+//        }
+        
+
+
+        boolean available = false;
         for (ESBNode node : esbNodes) {
             nodes += node.getIpAndPort() + "\n";
-            next = iterator.next();
-            next.setText(node.getIpAndPort());
-            next.setVisible(true);
+            iterator = buttonList.iterator();
+            available = false;
+            while (iterator.hasNext() && !available) {
+                next = iterator.next();
+                if (node.getIpAndPort().equals(next.getText())) {
+                    available = true;
+                    next.setBackground(null);
+                }
+                if ("".equals(next.getText())) {
+                    next.setText(node.getIpAndPort());
+                    next.setVisible(true);
+                    next.setBackground(null);
+                    available = true;
+                }
+
+            }
 
         }
+        
+        
+        
+        iterator = buttonList.iterator();
+        JButton next1 = null;
+        boolean isAlive = false;
+        while (iterator.hasNext()) {
+            next1 = iterator.next();
+            for (ESBNode node : esbNodes) {
+                if (next1.getText().equals(node.getIpAndPort())) {
+                    isAlive = true;
+                    break;
+                } else {
+                    isAlive = false;
+                }
+            }
+            if (!isAlive) {
+                next1.setBackground(Color.red);
+            }
+        }
+       
+        
         this.nodesArea.setText(nodes);
+
     }
 
     public void requestFailed(ESBNode esbNode) {
@@ -193,9 +254,10 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
     }
 
     public synchronized void nodeRemoved(List<ESBNode> oldEsbNodes, List<ESBNode> newEsbNodes) {
+
         List<ESBNode> removed = oldEsbNodes;
         ESBNode next = null;
-       // JButton next1 = null;
+        JButton next1 = null;
         String old = "";
         String newNodes = "";
         for (ESBNode node1 : oldEsbNodes) {
@@ -208,20 +270,26 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         this.responseArea.setText("Old node list: " + old + "\n" + "New node list: " + newNodes);
         removed.removeAll(newEsbNodes);
         Iterator<ESBNode> iterator = removed.iterator();
-       // Iterator<JButton> iterator1 = this.buttonList.iterator();
+        Iterator<JButton> iterator1 = this.buttonList.iterator();
         JButton[] buttonArry = new JButton[0];
         buttonArry = buttonList.toArray(buttonArry);
+        int i = 0;
 
         while (iterator.hasNext()) {
             next = iterator.next();
-            
-            for(JButton button:buttonArry){
-              //  next1 = iterator1.next();
-                if (next.getIpAndPort().equals(button.getText())) {
-                    this.buttonList.remove(button);
-                }
-            }
 
+            while (iterator1.hasNext()) {
+
+                next1 = iterator1.next();
+                if (next.getIpAndPort().equals(next1.getText())) {
+                    next1.setBackground(Color.orange);
+                    // next1.setText("FAILED");
+
+                    // next1.setVisible(false);
+                }
+                i++;
+            }
+            i = 0;
         }
 
     }
@@ -232,11 +300,15 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         JButton next = null;
         Iterator<JButton> iterator = this.buttonList.iterator();
         while (iterator.hasNext()) {
+
             next = iterator.next();
-            next.setBackground(null);
-            if (ip.equals(next.getText())) {
-                next.setBackground(Color.GREEN);
+            if (next.getBackground() != Color.red) {
+                next.setBackground(null);
+                if (ip.equals(next.getText())) {
+                    next.setBackground(Color.GREEN);
+                }
             }
+
         }
         this.responseArea.setText("Response from " + node.getIpAndPort() + " is" + value);
 
