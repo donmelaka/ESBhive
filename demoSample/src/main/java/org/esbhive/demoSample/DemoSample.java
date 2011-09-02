@@ -17,7 +17,7 @@ import org.esbhive.node.mgt.xsd.ESBNode;
 public class DemoSample {
 
     List<ESBNode> nodeList = Collections.synchronizedList(new ArrayList());
-    UIInterface ui = new DemoUI();
+    UIInterface ui = new ConsoleInterface();
 
     public static void main(String[] args) throws RemoteException {
 
@@ -26,7 +26,7 @@ public class DemoSample {
 
     public void doWork() throws RemoteException {
        
-        String esb_home = "/home/melaka/Desktop/wso2esb-9445copy";
+        String esb_home = "/home/guest/Desktop/wso2esb-3.0.1.2";
         System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
                 + "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");
