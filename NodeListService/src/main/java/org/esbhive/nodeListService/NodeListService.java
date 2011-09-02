@@ -21,7 +21,7 @@ public class NodeListService {
     private static final Log log = LogFactory.getLog("org.wso2.carbon.NodeListService");
     
     public synchronized void setNodeManager(NodeManagerInterface r) {
-        nodeManager = r;
+            nodeManager = r;
     }
 
     public synchronized void unsetNodeManager(NodeManagerInterface r) {

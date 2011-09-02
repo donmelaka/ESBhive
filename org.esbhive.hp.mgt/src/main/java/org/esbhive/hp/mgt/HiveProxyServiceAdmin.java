@@ -35,6 +35,8 @@ import org.apache.synapse.config.xml.SequenceMediatorSerializer;
 import org.apache.synapse.config.xml.XMLConfigConstants;
 import org.apache.synapse.config.xml.endpoints.EndpointSerializer;
 import org.apache.synapse.core.axis2.ProxyService;
+import org.esbhive.proxyconf.mgt.xsd.ProEsb;
+import org.wso2.carbon.utils.ServerConfiguration;
 
 import org.wso2.carbon.CarbonConstants;
 import org.wso2.carbon.mediation.initializer.persistence.MediationPersistenceManager;
@@ -78,6 +80,8 @@ import org.wso2.carbon.service.mgt.ui.ServiceAdminStub;
  * cardinality="1..1" policy="dynamic" bind="setRemoteLogin"  unbind="unSetRemoteLogin"
  * @scr.reference name="HiveStat" interface="org.esbhive.hivestat.HiveStatInterface"
  * cardinality="1..1" policy="dynamic" bind="setHiveStat"  unbind="unSetHiveStat"
+ * @scr.reference name="org.wso2.carbon.serverConfig" interface="org.wso2.carbon.utils.ServerConfiguration"
+ * cardinality="1..1" policy="dynamic" bind="setServerConfiguration" unbind="unsetServerConfiguration"
  */
 @SuppressWarnings({"UnusedDeclaration"})
 public class HiveProxyServiceAdmin {
@@ -89,6 +93,7 @@ public class HiveProxyServiceAdmin {
     private static final Log log2 = LogFactory.getLog("org.wso2.carbon.HiveProxyServiceAdmin");
     private static RemoteLogin remoteLogin;
     private static String ipAddress = System.getProperty(ServerConstants.LOCAL_IP_ADDRESS);
+    private static ServerConfiguration serverConfig;
 
     //private static HiveStatisticsServiceInterface stat;
     public synchronized void setNodeManager(NodeManagerInterface r) {
@@ -114,6 +119,14 @@ public class HiveProxyServiceAdmin {
 
     protected void unSetHiveStat(HiveStatInterface hl) {
         stat = null;
+    }
+
+    protected void setServerConfiguration(ServerConfiguration serverConfig) {
+        this.serverConfig = serverConfig;
+    }
+
+    protected void unsetServerConfiguration(ServerConfiguration serverConfig) {
+        this.serverConfig = null;
     }
 
     /**
@@ -291,21 +304,13 @@ public class HiveProxyServiceAdmin {
         return stub4;
     }
 
-    private String[] getCredentials(String ipAndPort) {
-        ESBNode[] nodes = null;
-        String[] credentials = new String[2];
-        if (nodeManager != null) {
-            nodes = nodeManager.getNodes();
-        }
-        for (ESBNode tempNode : nodes) {
-            if (tempNode.getIpAndPort().equals(ipAndPort)) {
-                credentials[0] = tempNode.getUsername();
-                credentials[1] = tempNode.getPassword();
-                break;
-            }
-        }
-
-        return credentials;
+    private String[] getCredentials() {
+        String[] credintials = new String[2];
+        String userName = serverConfig.getFirstProperty("ESBhive.UserName");
+        String pswd = serverConfig.getFirstProperty("ESBhive.PassWord");
+        credintials[0] = userName;
+        credintials[1] = pswd;
+        return credintials;
 
     }
 
@@ -645,10 +650,11 @@ public class HiveProxyServiceAdmin {
      */
     public MetaData getMetaData() throws ProxyAdminException {
         String port = System.getProperty("carbon.https.port");
+        String[] credentials = getCredentials();
         //String[] credentials = getCredentials(ipAddress + port);
         org.esbhive.hp.mgt.types.carbon.MetaData metaData1 = null;
         MetaData metaData = new MetaData();
-        ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+        ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub(credentials[0], credentials[1], ipAddress + ":" + port);
         try {
             metaData1 = proxyServiceAdminStub.getMetaData();
         } catch (RemoteException ex) {
@@ -735,7 +741,22 @@ public class HiveProxyServiceAdmin {
     public String getSourceView(ProxyData pd) throws ProxyAdminException {
         String port = System.getProperty("carbon.https.port");
         String getSourceView = null;
-        ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+        String[] credentials = this.getCredentials();
+        ProEsb proEsb = null;
+        ProxyServiceAdminStub proxyServiceAdminStub;
+        ProxyConfManagerStub stub1 = this.createProxyConfManagerStub(credentials[0], credentials[1], ipAddress + ":" + port);
+        try {
+            proEsb = stub1.getProEsb(pd.getName());
+        } catch (RemoteException ex) {
+            this.log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+        }
+        if (proEsb != null) {
+            org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = proEsb.getESBNodes();
+            proxyServiceAdminStub = createProxyServiceAdminStub(eSBNodes[0].getUsername(), eSBNodes[0].getPassword(), eSBNodes[0].getIpAndPort());
+        } else {
+
+            proxyServiceAdminStub = createProxyServiceAdminStub(credentials[0], credentials[1], ipAddress + ":" + port);
+        }
         try {
             getSourceView = proxyServiceAdminStub.getSourceView(changeProxyDataType(pd));
         } catch (RemoteException ex) {
@@ -748,11 +769,29 @@ public class HiveProxyServiceAdmin {
 
     public ProxyData getProxy(String proxyName) throws ProxyAdminException {
         String port = System.getProperty("carbon.https.port");
+        String[] credentials = this.getCredentials();
+        ProEsb proEsb = null;
         org.wso2.carbon.proxyadmin.ProxyData cproxy = new org.wso2.carbon.proxyadmin.ProxyData();
         org.esbhive.hp.mgt.types.carbon.ProxyData proxy = null;
+        ProxyConfManagerStub stub1 = this.createProxyConfManagerStub(credentials[0], credentials[1], ipAddress + ":" + port);
+
+        try {
+            proEsb = stub1.getProEsb(proxyName);
+        } catch (RemoteException ex) {
+            this.log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+        }
+        org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = null;
+        ProxyServiceAdminStub proxyServiceAdminStub = null;
 
 
-        ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+        if (proEsb != null) {
+            eSBNodes = proEsb.getESBNodes();
+            proxyServiceAdminStub = createProxyServiceAdminStub(eSBNodes[0].getUsername(), eSBNodes[0].getPassword(), eSBNodes[0].getIpAndPort());
+        } else {
+
+            proxyServiceAdminStub = createProxyServiceAdminStub(credentials[0], credentials[1], ipAddress + ":" + port);
+        }
+
         try {
             proxy = proxyServiceAdminStub.getProxy(proxyName);
         } catch (RemoteException ex) {
@@ -950,9 +989,11 @@ public class HiveProxyServiceAdmin {
         return SUCCESSFUL;
     }
 
-    public String addProxyInNewNode(boolean isDummy, ProxyData pd, String ipAndPort2) {
+    public String addProxyInNewNode(boolean isDummy, ProxyData pd, String newIp, String oldIp) {
         ESBNode[] nodeList = null;
         ESBNode newNode = null;
+        ESBNode oldNode = null;
+        org.esbhive.node.mgt.xsd.ESBNode[] newList= new org.esbhive.node.mgt.xsd.ESBNode[1];
         String result = "";
         if (nodeManager != null) {
             nodeList = nodeManager.getNodes();
@@ -962,8 +1003,16 @@ public class HiveProxyServiceAdmin {
             }
         }
         for (ESBNode node : nodeList) {
-            if (node.getIpAndPort().equals(ipAndPort2)) {
+            if (node.getIpAndPort().equals(newIp)) {
                 newNode = node;
+                break;
+            }
+        }
+        newList[0]=this.setNewXsdEsbNode(newNode);
+
+        for (ESBNode node : nodeList) {
+            if (node.getIpAndPort().equals(oldIp)) {
+                oldNode = node;
                 break;
             }
         }
@@ -971,17 +1020,23 @@ public class HiveProxyServiceAdmin {
         ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub(newNode.getUsername(), newNode.getPassword(), newNode.getIpAndPort());
         if (isDummy) {
             //ESBNode realNode=null;
-            ProxyConfManagerStub poxyConfManagerStub = createProxyConfManagerStub(newNode.getUsername(), newNode.getPassword(), ipAndPort2);
+            ProxyConfManagerStub poxyConfManagerStub = createProxyConfManagerStub(oldNode.getUsername(), oldNode.getPassword(), oldNode.getIpAndPort());
             org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = null;
+
             try {
                 eSBNodes = poxyConfManagerStub.getProEsb(pd.getName()).getESBNodes();
             } catch (RemoteException ex) {
                 log2.error("RemoteException in HiveProxyServiceAdmin", ex);
             }
-            org.esbhive.hp.mgt.types.carbon.ProxyData dummyProxy =null;
-                    //= this.createDummyProxy(setNewEsbNode(eSBNodes[0]), pd);
+            ESBNode[] esbNodes = new ESBNode[eSBNodes.length];
+
+            for (int i = 0; i < eSBNodes.length; i++) {
+                esbNodes[i] = this.setNewEsbNode(eSBNodes[i]);
+
+            }
+            org.esbhive.hp.mgt.types.carbon.ProxyData dummyProxy = this.createDummyProxy(esbNodes, pd);
             try {
-                proxyServiceAdminStub.addProxy(dummyProxy);
+                result = proxyServiceAdminStub.addProxy(dummyProxy);
             } catch (RemoteException ex) {
                 log2.error("RemoteException in HiveProxyServiceAdmin", ex);
             } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
@@ -990,6 +1045,12 @@ public class HiveProxyServiceAdmin {
         } else {
             try {
                 result = proxyServiceAdminStub.addProxy(changeProxyDataType(pd));
+                ProxyConfManagerStub stub=null;
+                for (ESBNode node : nodeList) {
+                    stub=this.createProxyConfManagerStub(node.getUsername(), node.getPassword(),node.getIpAndPort());
+                    stub.addProxyConf(this.setNewProxyData(pd), newList);
+                }
+
             } catch (RemoteException ex) {
                 log2.error("RemoteException in HiveProxyServiceAdmin", ex);
             } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
@@ -1206,15 +1267,72 @@ public class HiveProxyServiceAdmin {
 
     public String modifyProxy(ProxyData pd) throws ProxyAdminException {
         String port = System.getProperty("carbon.https.port");
-        String modifyProxy = null;
-        ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+        String modifyProxy = "";
+        String[] credentials = this.getCredentials();
+        ProEsb proEsb = null;
+        ProxyServiceAdminStub proxyServiceAdminStub = null;
+        ProxyConfManagerStub stub1 = this.createProxyConfManagerStub(credentials[0], credentials[1], ipAddress + ":" + port);
         try {
-            modifyProxy = proxyServiceAdminStub.modifyProxy(changeProxyDataType(pd));
+            proEsb = stub1.getProEsb(pd.getName());
         } catch (RemoteException ex) {
-            log2.error("HiveProxyServiceAdmin RemoteException while modifyProxy", ex);
-        } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
-            log2.error("HiveProxyServiceAdmin ProxyAdminException while modifyProxy", ex);
+            this.log2.error("RemoteException in HiveProxyServiceAdmin", ex);
         }
+        if (proEsb != null) {
+            org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = proEsb.getESBNodes();
+            for (org.esbhive.node.mgt.xsd.ESBNode node : eSBNodes) {
+                proxyServiceAdminStub = this.createProxyServiceAdminStub(node.getUsername(), node.getPassword(), node.getIpAndPort());
+                try {
+                    modifyProxy = proxyServiceAdminStub.modifyProxy(changeProxyDataType(pd));
+                } catch (RemoteException ex) {
+                    log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+                } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+                    log2.error("ProxyAdminException in HiveProxyServiceAdmin", ex);
+                }
+            }
+
+
+            ESBNode[] nodeList = null;
+            //  ESBNode newNode = null;
+            String result = "";
+            if (nodeManager != null) {
+                nodeList = nodeManager.getNodes();
+                ProxyConfManagerStub stub2 = null;
+                for (ESBNode node : nodeList) {
+                    stub2 = this.createProxyConfManagerStub(node.getUsername(), node.getPassword(), node.getIpAndPort());
+                    try {
+                        stub2.updataProxy(this.setNewProxyData(pd));
+                    } catch (RemoteException ex) {
+                        log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+                    }
+                }
+            } else {
+                if (log2.isDebugEnabled()) {
+                    log2.debug("Error:: NodeManager is not set ");
+                }
+            }
+
+
+
+
+        } else {
+            proxyServiceAdminStub = createProxyServiceAdminStub(credentials[0], credentials[1], ipAddress + ":" + port);
+            try {
+                proxyServiceAdminStub.modifyProxy(changeProxyDataType(pd));
+            } catch (RemoteException ex) {
+                log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+            } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+                log2.error("ProxyAdminException in HiveProxyServiceAdmin", ex);
+            }
+        }
+
+
+
+
+        //  String port = System.getProperty("carbon.https.port");
+
+        // ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub("admin", "admin", ipAddress + ":" + port);
+
+
         return modifyProxy;
     }
 
@@ -1515,29 +1633,27 @@ public class HiveProxyServiceAdmin {
 //        return a;
 //
 //    }
-
 //    private String generateInSeqXml() {
 //    }
-
     private org.esbhive.hp.mgt.types.carbon.ProxyData createDummyProxy(ESBNode[] esbNodes, ProxyData pd) {
 
         ProxyData dummyProxy = new ProxyData();
         dummyProxy.setStartOnLoad(true);
         dummyProxy.setName(pd.getName());
-        String endPoints="";
-        for(ESBNode esbNode:esbNodes){
-          URL url = null;
-        try {
-            String targetURL = "http://" + esbNode.getIpAndPort().substring(0, esbNode.getIpAndPort().indexOf(':')) + ":" + esbNode.getSynapsePort() + "/services/" + pd.getName();
-            url = new URL(targetURL);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        endPoints+="<endpoint>"
-                + "<address uri=\"" + url.toString() + "\">"+ 
-                "<enableAddressing/>"
-                + "</address>"
-                + "</endpoint>";
+        String endPoints = "";
+        for (ESBNode esbNode : esbNodes) {
+            URL url = null;
+            try {
+                String targetURL = "http://" + esbNode.getIpAndPort().substring(0, esbNode.getIpAndPort().indexOf(':')) + ":" + esbNode.getSynapsePort() + "/services/" + pd.getName();
+                url = new URL(targetURL);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            endPoints += "<endpoint>"
+                    + "<address uri=\"" + url.toString() + "\">"
+                    + "<enableAddressing/>"
+                    + "</address>"
+                    + "</endpoint>";
         }
 
         String as = "<inSequence xmlns=\"http://ws.apache.org/ns/synapse\">"
@@ -1545,12 +1661,12 @@ public class HiveProxyServiceAdmin {
                 + "<endpoint>"
                 + "<session type=\"simpleClientSession\"/>"
                 + "<loadbalance>"
-//                + "<endpoint>"
-//                + "<address uri=\"http://localhost:9000/services/SimpleStockQuoteService\">"
-//                + "<enableAddressing/>"
-//                + "</address>"
-//                + "</endpoint>"
-                +endPoints
+                //                + "<endpoint>"
+                //                + "<address uri=\"http://localhost:9000/services/SimpleStockQuoteService\">"
+                //                + "<enableAddressing/>"
+                //                + "</address>"
+                //                + "</endpoint>"
+                + endPoints
                 + "</loadbalance>"
                 + "</endpoint>"
                 + "</send>"
@@ -1558,7 +1674,7 @@ public class HiveProxyServiceAdmin {
 
         dummyProxy.setInSeqXML(as);
         dummyProxy.setOutSeqXML("<outSequence xmlns=\"http://ws.apache.org/ns/synapse\"><send/></outSequence>");
-        
+
 //        URL url = null;
 //        try {
 //            String targetURL = "http://" + esbNode.getIpAndPort().substring(0, esbNode.getIpAndPort().indexOf(':')) + ":" + esbNode.getSynapsePort() + "/services/" + pd.getName();
@@ -1566,7 +1682,7 @@ public class HiveProxyServiceAdmin {
 //        } catch (MalformedURLException ex) {
 //            Logger.getLogger(HiveProxyServiceAdmin.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
+
         dummyProxy.setEndpointXML(dummyProxy.getEndpointXML());
 
         org.esbhive.hp.mgt.types.carbon.ProxyData a = new org.esbhive.hp.mgt.types.carbon.ProxyData();
