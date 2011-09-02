@@ -32,12 +32,11 @@ public class ResponseDataCalculator {
         ResponseData responseData = new ResponseData(files[i]);
         responseTimeSum += responseData.getResponseTimeSum();
         totalRequests += responseData.getTotalRequests();
-        totalTime += responseData.getTotalTime();
+	throughput += responseData.getTotalRequests()/(responseData.getTotalTime()/1000000000);
         if (responseData.getRequestsServed() != responseData.getTotalRequests()) {
           throw new InvalidDataException("Some requests have not been served.");
         }
       }
-      throughput = totalRequests / (totalTime / 1000000000);
       responseTime = (responseTimeSum / 1000000) / totalRequests;
 
     }
