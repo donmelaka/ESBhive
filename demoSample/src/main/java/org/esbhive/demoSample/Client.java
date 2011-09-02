@@ -38,7 +38,7 @@ public class Client {
 				Thread.sleep(500);
 				String url = "http://" + chosen.getIpAndPort().split(":")[0] + ":" + chosen.getSynapsePort() + "/services/StockQuoteProxy.StockQuoteProxyHttpSoap12Endpoint";
 				SimpleStockQuoteServiceStub ssqss = new SimpleStockQuoteServiceStub(url);
-				int timeOutInMilliSeconds = 1000 * 5;
+				int timeOutInMilliSeconds = 1000 * 10;
 				ssqss._getServiceClient().getOptions().setTimeOutInMilliSeconds(timeOutInMilliSeconds);
 				GetQuote gq = new GetQuote();
 				gq.setSymbol("IBM");
