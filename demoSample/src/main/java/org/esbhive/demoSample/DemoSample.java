@@ -26,7 +26,7 @@ public class DemoSample {
 
     public void doWork() throws RemoteException {
        
-        String esb_home = "/home/melaka/Desktop/wso2esb-9445";
+        String esb_home = "/home/melaka/Desktop/wso2esb-9445copy";
         System.setProperty("javax.net.ssl.trustStore", esb_home + File.separator
                 + "resources" + File.separator + "security" + File.separator + "wso2carbon.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "wso2carbon");

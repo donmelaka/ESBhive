@@ -18,8 +18,10 @@ import java.util.Vector;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import org.esbhive.node.mgt.xsd.ESBNode;
 
 /**
@@ -32,17 +34,44 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
     public DemoUI() {
 
         initComponents();
-        buttonList.add(jButton7);
-        buttonList.add(jButton8);
-        buttonList.add(jButton9);
-        buttonList.add(this.jButton10);
-        buttonList.add(this.jButton11);
-        buttonList.add(this.jButton12);
+        buttonList.add(esb1);
+        buttonList.add(esb2);
+        buttonList.add(esb3);
+        buttonList.add(this.esb4);
+        buttonList.add(this.esb5);
+//        buttonList.add(this.esb6);
         Iterator<JButton> iterator = this.buttonList.iterator();
         while (iterator.hasNext()) {
 
             iterator.next().setVisible(false);
         }
+        arrowLableList.add(arrow1);
+        arrowLableList.add(arrow2);
+        arrowLableList.add(arrow3);
+        arrowLableList.add(arrow4);
+        arrowLableList.add(arrow5);
+
+        Iterator<JLabel> iterator2 = this.arrowLableList.iterator();
+
+        while (iterator2.hasNext()) {
+
+            iterator2.next().setVisible(false);
+        }
+
+        this.serverLableList.add(machine1);
+        this.serverLableList.add(machine2);
+        this.serverLableList.add(machine3);
+        this.serverLableList.add(machine4);
+        this.serverLableList.add(machine5);
+        Iterator<JLabel> iterator3 = this.serverLableList.iterator();
+
+        while (iterator3.hasNext()) {
+
+            iterator3.next().setVisible(false);
+        }
+
+        this.jButton1.setVisible(false);
+        this.jLabel4.setVisible(false);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
@@ -67,12 +96,24 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLayeredPane1 = new javax.swing.JLayeredPane();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        esb1 = new javax.swing.JButton();
+        esb2 = new javax.swing.JButton();
+        esb3 = new javax.swing.JButton();
+        esb4 = new javax.swing.JButton();
+        esb5 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        arrow4 = new javax.swing.JLabel();
+        arrow3 = new javax.swing.JLabel();
+        arrow2 = new javax.swing.JLabel();
+        arrow1 = new javax.swing.JLabel();
+        machine5 = new javax.swing.JLabel();
+        machine2 = new javax.swing.JLabel();
+        machine1 = new javax.swing.JLabel();
+        machine3 = new javax.swing.JLabel();
+        machine4 = new javax.swing.JLabel();
+        arrow5 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -91,40 +132,93 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ESBhive logo icon.png"))); // NOI18N
         jLabel3.setText("jLabel3");
 
-        jButton7.setMaximumSize(new java.awt.Dimension(12, 8));
-        jButton7.setBounds(0, 0, 170, 30);
-        jLayeredPane1.add(jButton7, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jButton8.setBounds(180, 0, 170, 30);
-        jLayeredPane1.add(jButton8, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jButton9.setBounds(360, 0, 170, 30);
-        jLayeredPane1.add(jButton9, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jButton10.setBounds(540, 0, 170, 30);
-        jLayeredPane1.add(jButton10, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jButton11.setBounds(180, 40, 170, 30);
-        jLayeredPane1.add(jButton11, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jButton12.setBounds(360, 40, 170, 30);
-        jLayeredPane1.add(jButton12, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        esb1.setMaximumSize(new java.awt.Dimension(12, 8));
+        esb1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                esb1ActionPerformed(evt);
+            }
+        });
+        esb1.setBounds(60, 340, 170, 30);
+        jLayeredPane1.add(esb1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        esb2.setBounds(60, 160, 170, 30);
+        jLayeredPane1.add(esb2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        esb3.setBounds(630, 150, 170, 30);
+        jLayeredPane1.add(esb3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        esb4.setBounds(640, 330, 170, 30);
+        jLayeredPane1.add(esb4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        esb5.setBounds(360, 460, 170, 30);
+        jLayeredPane1.add(esb5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jButton2.setText("Client");
+        jButton2.setBounds(400, 140, 72, 70);
+        jLayeredPane1.add(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        arrow4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow4.setText("jLabel5");
+        arrow4.setBounds(400, 260, 70, 50);
+        jLayeredPane1.add(arrow4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        arrow3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow3.setText("jLabel5");
+        arrow3.setBounds(510, 60, 70, 50);
+        jLayeredPane1.add(arrow3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        arrow2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow2.setText("jLabel5");
+        arrow2.setBounds(290, 60, 70, 50);
+        jLayeredPane1.add(arrow2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        arrow1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow1.setText("jLabel5");
+        arrow1.setBounds(280, 210, 70, 50);
+        jLayeredPane1.add(arrow1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        machine5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/black mac.png"))); // NOI18N
+        machine5.setBounds(300, 320, 280, 140);
+        jLayeredPane1.add(machine5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        machine2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png"))); // NOI18N
+        machine2.setBounds(30, 10, 260, 140);
+        jLayeredPane1.add(machine2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        machine1.setBounds(20, 200, 250, 140);
+        jLayeredPane1.add(machine1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        machine3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/red_server2.png"))); // NOI18N
+        machine3.setBounds(590, 10, 250, 120);
+        jLayeredPane1.add(machine3, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        machine4.setBounds(600, 190, 260, 140);
+        jLayeredPane1.add(machine4, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        arrow5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow5.setText("jLabel5");
+        arrow5.setBounds(520, 200, 70, 50);
+        jLayeredPane1.add(arrow5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel4.setText("Leader Node");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(60, 60, 60)
+                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 711, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
-                            .addComponent(jLabel1))
-                        .addGap(97, 97, 97)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel4))
+                        .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 579, Short.MAX_VALUE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(730, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -132,26 +226,35 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addGap(29, 29, 29)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addComponent(jLabel2))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jLabel1)))
-                .addContainerGap(105, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(14, 14, 14)
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(28, 28, 28)))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void esb1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_esb1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_esb1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,22 +268,36 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
+    private javax.swing.JLabel arrow1;
+    private javax.swing.JLabel arrow2;
+    private javax.swing.JLabel arrow3;
+    private javax.swing.JLabel arrow4;
+    private javax.swing.JLabel arrow5;
+    private javax.swing.JButton esb1;
+    private javax.swing.JButton esb2;
+    private javax.swing.JButton esb3;
+    private javax.swing.JButton esb4;
+    private javax.swing.JButton esb5;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel machine1;
+    private javax.swing.JLabel machine2;
+    private javax.swing.JLabel machine3;
+    private javax.swing.JLabel machine4;
+    private javax.swing.JLabel machine5;
     private javax.swing.JTextArea nodesArea;
     private javax.swing.JTextArea responseArea;
     // End of variables declaration//GEN-END:variables
     private CopyOnWriteArrayList<JButton> buttonList = new CopyOnWriteArrayList<JButton>();
+    private ArrayList<JLabel> arrowLableList = new ArrayList<JLabel>();
+    private ArrayList<JLabel> serverLableList = new ArrayList<JLabel>();
 
     public void nodesFetched(List<ESBNode> esbNodes) {
 
@@ -190,20 +307,6 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         JButton[] buttonArry = new JButton[0];
         buttonArry = buttonList.toArray(buttonArry);
         int j = 0;
-//        for (ESBNode node : esbNodes) {
-//            nodes += node.getIpAndPort() + "\n";
-//            iterator = buttonList.iterator();
-//            for (int i = j; i < buttonArry.length; i++) {
-//                next = buttonArry[i];
-//                if (next.getBackground() != Color.red) {
-//                  //  next.setBackground(null);
-//                    next.setText(node.getIpAndPort());
-//                    next.setVisible(true);
-//                    break;
-//                }        
-//            }
-//            j++;
-//        }
 
 
 
@@ -217,11 +320,20 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                 if (node.getIpAndPort().equals(next.getText())) {
                     available = true;
                     next.setBackground(null);
+                    int findIndex = this.findIndex(node.getIpAndPort());
+                    JLabel get = this.serverLableList.get(findIndex);
+                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png")));
+
                 }
                 if ("".equals(next.getText())) {
                     next.setText(node.getIpAndPort());
                     next.setVisible(true);
                     next.setBackground(null);
+
+                    int findIndex = this.findIndex(node.getIpAndPort());
+                    JLabel get = this.serverLableList.get(findIndex);
+                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png")));
+                    get.setVisible(true);
                     available = true;
                 }
 
@@ -246,6 +358,10 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
             }
             if (!isAlive) {
                 next1.setBackground(Color.red);
+                int findIndex = this.findIndex(next1.getText());
+                JLabel get = this.serverLableList.get(findIndex);
+                get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/red_server2.png")));
+
             }
         }
 
@@ -256,6 +372,10 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
 
     public void requestFailed(ESBNode esbNode) {
         this.responseArea.setText("Failed the request to " + esbNode.getIpAndPort());
+        int findIndex = this.findIndex(esbNode.getIpAndPort());
+        JLabel get = this.serverLableList.get(findIndex);
+        get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ESBhive logo icon.png")));
+
     }
 
     public synchronized void nodeRemoved(List<ESBNode> oldEsbNodes, List<ESBNode> newEsbNodes) {
@@ -287,10 +407,13 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
 
                 next1 = iterator1.next();
                 if (next.getIpAndPort().equals(next1.getText())) {
-                    next1.setBackground(Color.orange);
+                    next1.setBackground(Color.red);
                     // next1.setText("FAILED");
 
                     // next1.setVisible(false);
+                    int findIndex = this.findIndex(next1.getText());
+                    JLabel get = this.serverLableList.get(findIndex);
+                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/red_server2.png")));
                 }
                 i++;
             }
@@ -300,7 +423,10 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
     }
 
     public void responseRecieved(ESBNode node, String value) {
+        //  String ipAndPort = node.getIpAndPort();
+        //buttonList.indexOf(node);
 
+        ///////////////////
         String ip = node.getIpAndPort();
         JButton next = null;
         Iterator<JButton> iterator = this.buttonList.iterator();
@@ -309,8 +435,16 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
             next = iterator.next();
             if (next.getBackground() != Color.red) {
                 next.setBackground(null);
+                next.setIcon(null);
+                int findIndex = this.findIndex(next.getText());
+                JLabel get = this.serverLableList.get(findIndex);
+                get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png")));
                 if (ip.equals(next.getText())) {
-                    next.setBackground(Color.GREEN);
+                    //next.setBackground(Color.GREEN);
+                    next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ESBhive logo icon.png"))); // NOI18N
+                    int findIndex1 = this.findIndex(next.getText());
+                    JLabel get1 = this.serverLableList.get(findIndex1);
+                    get1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/black mac.png")));
                 }
             }
 
@@ -328,10 +462,49 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
     }
 
     public void currentLeader(String ipAndPort) {
-        System.out.println("he  ");
+        this.jButton1.setText(ipAndPort);
+        this.jButton1.setBackground(Color.yellow);
+        this.jLabel4.setVisible(true);
+        this.jButton1.setVisible(true);
+
+
+    }
+
+    private int findIndex(String ipAndPort) {
+        Iterator<JButton> iterator = buttonList.iterator();
+        JButton next = null;
+        int index = 0;
+        while (iterator.hasNext()) {
+            next = iterator.next();
+            if (ipAndPort.equals(next.getText())) {
+                index = buttonList.indexOf(next);
+
+            }
+        }
+        return index;
     }
 
     public void sendingRequest(String ipAndPort) {
-        System.out.println("he  ");
+        Iterator<JLabel> iterator2 = this.arrowLableList.iterator();
+        JLabel next2 = null;
+        while (iterator2.hasNext()) {
+            next2 = iterator2.next();
+            next2.setVisible(false);
+        }
+
+
+
+        System.out.println("now sending :" + ipAndPort);
+        Iterator<JButton> iterator = buttonList.iterator();
+        JButton next = null;
+        while (iterator.hasNext()) {
+            next = iterator.next();
+            if (ipAndPort.equals(next.getText())) {
+                int index = buttonList.indexOf(next);
+                JLabel seletedLable = this.arrowLableList.get(index);
+                seletedLable.setVisible(true);
+            }
+        }
+
     }
 }

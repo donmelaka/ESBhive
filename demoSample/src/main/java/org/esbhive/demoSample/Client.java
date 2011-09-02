@@ -41,6 +41,9 @@ public class Client {
                 SimpleStockQuoteServiceStub ssqss = new SimpleStockQuoteServiceStub(url);
                 GetQuote gq = new GetQuote();
                 gq.setSymbol("IBM");
+                ///////////////// melaka added
+                ui.sendingRequest(chosen.getIpAndPort());
+                //////////////////////////////
                 GetQuoteResponse response = ssqss.getQuote(gq);
                 int timeOutInMilliSeconds =1000*5; // Two minutes
                 ssqss._getServiceClient().getOptions().setProperty(
