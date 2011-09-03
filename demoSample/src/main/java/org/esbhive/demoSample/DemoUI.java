@@ -112,6 +112,8 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         machine3 = new javax.swing.JLabel();
         machine4 = new javax.swing.JLabel();
         arrow5 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
 
@@ -138,61 +140,73 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                 esb1ActionPerformed(evt);
             }
         });
-        esb1.setBounds(60, 340, 170, 30);
+        esb1.setBounds(30, 450, 170, 30);
         jLayeredPane1.add(esb1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        esb2.setBounds(60, 160, 170, 30);
+        esb2.setBounds(30, 160, 170, 30);
         jLayeredPane1.add(esb2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        esb3.setBounds(630, 150, 170, 30);
+        esb3.setBounds(480, 160, 170, 30);
         jLayeredPane1.add(esb3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        esb4.setBounds(640, 330, 170, 30);
+        esb4.setBounds(480, 440, 170, 30);
         jLayeredPane1.add(esb4, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        esb5.setBounds(360, 460, 170, 30);
+        esb5.setBounds(250, 500, 170, 30);
         jLayeredPane1.add(esb5, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jButton2.setText("Client");
-        jButton2.setBounds(400, 140, 72, 70);
+        jButton2.setBounds(290, 170, 100, 80);
         jLayeredPane1.add(jButton2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        arrow4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SE.png"))); // NOI18N
         arrow4.setText("jLabel5");
-        arrow4.setBounds(400, 260, 70, 50);
+        arrow4.setBounds(390, 220, 90, 110);
         jLayeredPane1.add(arrow4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        arrow3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/NE.png"))); // NOI18N
         arrow3.setText("jLabel5");
-        arrow3.setBounds(510, 60, 70, 50);
+        arrow3.setBounds(390, 100, 90, 105);
         jLayeredPane1.add(arrow3, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        arrow2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/NW.png"))); // NOI18N
         arrow2.setText("jLabel5");
-        arrow2.setBounds(290, 60, 70, 50);
+        arrow2.setBounds(200, 100, 90, 100);
         jLayeredPane1.add(arrow2, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        arrow1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/SW.png"))); // NOI18N
         arrow1.setText("jLabel5");
-        arrow1.setBounds(280, 210, 70, 50);
+        arrow1.setBounds(210, 230, 90, 100);
         jLayeredPane1.add(arrow1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         machine5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/black mac.png"))); // NOI18N
-        machine5.setBounds(300, 320, 280, 140);
+        machine5.setBounds(290, 380, 110, 110);
         jLayeredPane1.add(machine5, javax.swing.JLayeredPane.DEFAULT_LAYER);
-
-        machine2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png"))); // NOI18N
-        machine2.setBounds(30, 10, 260, 140);
+        machine2.setBounds(100, 20, 100, 120);
         jLayeredPane1.add(machine2, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        machine1.setBounds(20, 200, 250, 140);
+
+        machine1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/onlineEsb.png"))); // NOI18N
+        machine1.setBounds(100, 320, 100, 110);
         jLayeredPane1.add(machine1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        machine3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/red_server2.png"))); // NOI18N
-        machine3.setBounds(590, 10, 250, 120);
+        machine3.setIcon(new javax.swing.ImageIcon("/home/melaka/ESBhive/demoSample/src/main/resources/Esb.png")); // NOI18N
+        machine3.setBounds(480, 20, 100, 120);
         jLayeredPane1.add(machine3, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        machine4.setBounds(600, 190, 260, 140);
+
+        machine4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/offlineEsb.png"))); // NOI18N
+        machine4.setBounds(480, 320, 100, 110);
         jLayeredPane1.add(machine4, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        arrow5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/vector.arrows.cs.by.dragonart.png"))); // NOI18N
+        arrow5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/S.png"))); // NOI18N
         arrow5.setText("jLabel5");
-        arrow5.setBounds(520, 200, 70, 50);
+        arrow5.setBounds(330, 250, 30, 130);
         jLayeredPane1.add(arrow5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Esb.png"))); // NOI18N
+        jLabel5.setText("jLabel5");
+        jLabel5.setBounds(480, 480, 30, 40);
+        jLayeredPane1.add(jLabel5, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unavailableESB.png"))); // NOI18N
+        jLabel6.setText("jLabel6");
+        jLabel6.setBounds(540, 490, 20, 30);
+        jLayeredPane1.add(jLabel6, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jLabel4.setText("Leader Node");
 
@@ -200,11 +214,12 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 859, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(521, 521, 521)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 663, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -213,40 +228,36 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                             .addComponent(jLabel4))
                         .addGap(24, 24, 24)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 793, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(730, Short.MAX_VALUE)
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 516, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLayeredPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 495, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLayeredPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 547, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(29, 29, 29)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(jLabel4)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(14, 14, 14)
                         .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(28, 28, 28)))
-                .addContainerGap())
+                .addGap(62, 62, 62))
         );
 
         pack();
@@ -284,6 +295,8 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLayeredPane jLayeredPane1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -322,7 +335,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                     next.setBackground(null);
                     int findIndex = this.findIndex(node.getIpAndPort());
                     JLabel get = this.serverLableList.get(findIndex);
-                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png")));
+                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Esb.png")));
 
                 }
                 if ("".equals(next.getText())) {
@@ -332,7 +345,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
 
                     int findIndex = this.findIndex(node.getIpAndPort());
                     JLabel get = this.serverLableList.get(findIndex);
-                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png")));
+                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Esb.png")));
                     get.setVisible(true);
                     available = true;
                 }
@@ -360,7 +373,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                 next1.setBackground(Color.red);
                 int findIndex = this.findIndex(next1.getText());
                 JLabel get = this.serverLableList.get(findIndex);
-                get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/red_server2.png")));
+                get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/offlineEsb.png")));
 
             }
         }
@@ -374,7 +387,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
         this.responseArea.setText("Failed the request to " + esbNode.getIpAndPort());
         int findIndex = this.findIndex(esbNode.getIpAndPort());
         JLabel get = this.serverLableList.get(findIndex);
-        get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ESBhive logo icon.png")));
+        get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/unavailableESB.png")));
 
     }
 
@@ -413,7 +426,7 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                     // next1.setVisible(false);
                     int findIndex = this.findIndex(next1.getText());
                     JLabel get = this.serverLableList.get(findIndex);
-                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/red_server2.png")));
+                    get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/offlineEsb.png")));
                 }
                 i++;
             }
@@ -438,13 +451,13 @@ public class DemoUI extends javax.swing.JFrame implements UIInterface {
                 next.setIcon(null);
                 int findIndex = this.findIndex(next.getText());
                 JLabel get = this.serverLableList.get(findIndex);
-                get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/white mac.png")));
+                get.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Esb.png")));
                 if (ip.equals(next.getText())) {
                     //next.setBackground(Color.GREEN);
-                    next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ESBhive logo icon.png"))); // NOI18N
+                   // next.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ESBhive logo icon.png"))); // NOI18N
                     int findIndex1 = this.findIndex(next.getText());
                     JLabel get1 = this.serverLableList.get(findIndex1);
-                    get1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/black mac.png")));
+                    get1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/onlineEsb.png")));
                 }
             }
 
