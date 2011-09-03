@@ -993,7 +993,7 @@ public class HiveProxyServiceAdmin {
         ESBNode[] nodeList = null;
         ESBNode newNode = null;
         ESBNode oldNode = null;
-        org.esbhive.node.mgt.xsd.ESBNode[] newList= new org.esbhive.node.mgt.xsd.ESBNode[1];
+        org.esbhive.node.mgt.xsd.ESBNode[] newList = new org.esbhive.node.mgt.xsd.ESBNode[1];
         String result = "";
         if (nodeManager != null) {
             nodeList = nodeManager.getNodes();
@@ -1008,7 +1008,7 @@ public class HiveProxyServiceAdmin {
                 break;
             }
         }
-        newList[0]=this.setNewXsdEsbNode(newNode);
+        newList[0] = this.setNewXsdEsbNode(newNode);
 
         for (ESBNode node : nodeList) {
             if (node.getIpAndPort().equals(oldIp)) {
@@ -1018,6 +1018,26 @@ public class HiveProxyServiceAdmin {
         }
 
         ProxyServiceAdminStub proxyServiceAdminStub = createProxyServiceAdminStub(newNode.getUsername(), newNode.getPassword(), newNode.getIpAndPort());
+        org.esbhive.hp.mgt.types.carbon.ProxyData proxy = null;
+        try {
+            proxy = proxyServiceAdminStub.getProxy(pd.getName());
+        } catch (RemoteException ex) {
+            log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+        } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+            log2.error("ProxyAdminException in HiveProxyServiceAdmin", ex);
+        }
+
+        if (proxy!=null) {
+            try {
+                proxyServiceAdminStub.deleteProxyService(pd.getName());
+            } catch (RemoteException ex) {
+                 log2.error("RemoteException in HiveProxyServiceAdmin", ex);
+            } catch (org.esbhive.hp.mgt.ProxyAdminException ex) {
+                log2.error("ProxyAdminException in HiveProxyServiceAdmin", ex);
+            }
+        }
+
+
         if (isDummy) {
             //ESBNode realNode=null;
             ProxyConfManagerStub poxyConfManagerStub = createProxyConfManagerStub(oldNode.getUsername(), oldNode.getPassword(), oldNode.getIpAndPort());
@@ -1045,9 +1065,9 @@ public class HiveProxyServiceAdmin {
         } else {
             try {
                 result = proxyServiceAdminStub.addProxy(changeProxyDataType(pd));
-                ProxyConfManagerStub stub=null;
+                ProxyConfManagerStub stub = null;
                 for (ESBNode node : nodeList) {
-                    stub=this.createProxyConfManagerStub(node.getUsername(), node.getPassword(),node.getIpAndPort());
+                    stub = this.createProxyConfManagerStub(node.getUsername(), node.getPassword(), node.getIpAndPort());
                     stub.addProxyConf(this.setNewProxyData(pd), newList);
                 }
 
@@ -1293,6 +1313,7 @@ public class HiveProxyServiceAdmin {
 
             ESBNode[] nodeList = null;
             //  ESBNode newNode = null;
+
             String result = "";
             if (nodeManager != null) {
                 nodeList = nodeManager.getNodes();
