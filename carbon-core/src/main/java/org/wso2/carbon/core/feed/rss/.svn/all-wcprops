@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/feed/rss
+END
+RSSElement.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/feed/rss/RSSElement.java
+END
+RSSFeedBuilder.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/feed/rss/RSSFeedBuilder.java
+END
+ServiceElement.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/feed/rss/ServiceElement.java
+END
+RSSFeed.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/feed/rss/RSSFeed.java
+END

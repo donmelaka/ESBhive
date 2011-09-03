@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 135
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/java/org/wso2/carbon/core/test/persistence
+END
+PersistenceManagerTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/java/org/wso2/carbon/core/test/persistence/PersistenceManagerTest.java
+END
+PersistenceUtilsTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/java/org/wso2/carbon/core/test/persistence/PersistenceUtilsTest.java
+END
+BaseTestCase.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/java/org/wso2/carbon/core/test/persistence/BaseTestCase.java
+END
+ParameterUtilTest.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/java/org/wso2/carbon/core/test/persistence/ParameterUtilTest.java
+END

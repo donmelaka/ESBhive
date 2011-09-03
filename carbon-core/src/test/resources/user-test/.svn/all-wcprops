@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/resources/user-test
+END
+user-mgt-registry-test.xml
+K 25
+svn:wc:ra_dav:version-url
+V 139
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/resources/user-test/user-mgt-registry-test.xml
+END

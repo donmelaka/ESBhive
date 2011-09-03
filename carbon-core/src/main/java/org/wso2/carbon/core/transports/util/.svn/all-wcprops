@@ -1,0 +1,101 @@
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util
+END
+PolicyProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/PolicyProcessor.java
+END
+AtomProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/AtomProcessor.java
+END
+TransportDetails.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/TransportDetails.java
+END
+RssProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/RssProcessor.java
+END
+TransportSummary.java
+K 25
+svn:wc:ra_dav:version-url
+V 156
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/TransportSummary.java
+END
+Wsdl20Processor.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/Wsdl20Processor.java
+END
+Wsdl11Processor.java
+K 25
+svn:wc:ra_dav:version-url
+V 155
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/Wsdl11Processor.java
+END
+ServiceHTMLProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/ServiceHTMLProcessor.java
+END
+MockTryItProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/MockTryItProcessor.java
+END
+RequestProcessorUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/RequestProcessorUtil.java
+END
+InfoProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/InfoProcessor.java
+END
+XsdUtil.java
+K 25
+svn:wc:ra_dav:version-url
+V 147
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/XsdUtil.java
+END
+TransportParameter.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/TransportParameter.java
+END
+CertProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 153
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/CertProcessor.java
+END
+AbstractWsdlProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/AbstractWsdlProcessor.java
+END
+XsdProcessor.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/util/XsdProcessor.java
+END

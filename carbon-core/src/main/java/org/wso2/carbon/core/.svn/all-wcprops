@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 118
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core
+END
+ServerShutdownHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 145
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/ServerShutdownHandler.java
+END
+RegistryResources.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/RegistryResources.java
+END
+ServerManagement.java
+K 25
+svn:wc:ra_dav:version-url
+V 140
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/ServerManagement.java
+END
+ServerRestartHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 144
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/ServerRestartHandler.java
+END
+CarbonConfigurationContextFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/CarbonConfigurationContextFactory.java
+END
+ServerInitializer.java
+K 25
+svn:wc:ra_dav:version-url
+V 141
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/ServerInitializer.java
+END
+ServerStatus.java
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/ServerStatus.java
+END
+AbstractAdmin.java
+K 25
+svn:wc:ra_dav:version-url
+V 137
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/AbstractAdmin.java
+END
+CarbonAxisConfigurator.java
+K 25
+svn:wc:ra_dav:version-url
+V 146
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/CarbonAxisConfigurator.java
+END
+RegistryRepoHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 143
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/RegistryRepoHandler.java
+END

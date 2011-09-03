@@ -1,0 +1,17 @@
+K 25
+svn:wc:ra_dav:version-url
+V 102
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/resources
+END
+axis2.xml
+K 25
+svn:wc:ra_dav:version-url
+V 112
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/resources/axis2.xml
+END
+registry.xml
+K 25
+svn:wc:ra_dav:version-url
+V 115
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/test/resources/registry.xml
+END

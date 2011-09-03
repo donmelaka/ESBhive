@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 134
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/http
+END
+HttpTransportListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/http/HttpTransportListener.java
+END
+AbstractGenericTransportListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 172
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/http/AbstractGenericTransportListener.java
+END
+HttpsTransportListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/transports/http/HttpsTransportListener.java
+END

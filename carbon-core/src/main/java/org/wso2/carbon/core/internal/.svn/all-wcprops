@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/internal
+END
+CarbonCoreServiceComponent.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/internal/CarbonCoreServiceComponent.java
+END
+HTTPGetProcessorListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/internal/HTTPGetProcessorListener.java
+END
+CarbonCoreActivator.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/internal/CarbonCoreActivator.java
+END
+StartupFinalizerServiceComponent.java
+K 25
+svn:wc:ra_dav:version-url
+V 165
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/internal/StartupFinalizerServiceComponent.java
+END
+ListenerManagerRetrieverServiceComponent.java
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/internal/ListenerManagerRetrieverServiceComponent.java
+END

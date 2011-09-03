@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 130
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence
+END
+OperationPersistenceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/OperationPersistenceManager.java
+END
+ServicePersistenceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/ServicePersistenceManager.java
+END
+AbstractPersistenceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 162
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/AbstractPersistenceManager.java
+END
+ModulePersistenceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 160
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/ModulePersistenceManager.java
+END
+PersistenceUtils.java
+K 25
+svn:wc:ra_dav:version-url
+V 152
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/PersistenceUtils.java
+END
+PersistenceFactory.java
+K 25
+svn:wc:ra_dav:version-url
+V 154
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/PersistenceFactory.java
+END
+ServiceGroupPersistenceManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 166
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/persistence/ServiceGroupPersistenceManager.java
+END

@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 131
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy
+END
+MultitenantConstants.java
+K 25
+svn:wc:ra_dav:version-url
+V 157
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantConstants.java
+END
+TenantAxisConfigurator.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/TenantAxisConfigurator.java
+END
+MultitenantOperationClient.java
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantOperationClient.java
+END
+MultitenantServerManager.java
+K 25
+svn:wc:ra_dav:version-url
+V 161
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantServerManager.java
+END
+MultitenantRESTServlet.java
+K 25
+svn:wc:ra_dav:version-url
+V 159
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantRESTServlet.java
+END
+MultitenantDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 158
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantDispatcher.java
+END
+MultitenantMeteringHandler.java
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantMeteringHandler.java
+END
+MultitenantAddressingBasedDispatcher.java
+K 25
+svn:wc:ra_dav:version-url
+V 173
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantAddressingBasedDispatcher.java
+END
+MultitenantMessageReceiver.java
+K 25
+svn:wc:ra_dav:version-url
+V 163
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/MultitenantMessageReceiver.java
+END

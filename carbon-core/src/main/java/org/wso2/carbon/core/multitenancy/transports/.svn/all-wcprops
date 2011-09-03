@@ -1,0 +1,11 @@
+K 25
+svn:wc:ra_dav:version-url
+V 142
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/transports
+END
+DummyTransportListener.java
+K 25
+svn:wc:ra_dav:version-url
+V 170
+/repos/wso2/!svn/ver/73754/tags/carbon/3.0.1_chunk1/core/org.wso2.carbon.core/3.0.1/src/main/java/org/wso2/carbon/core/multitenancy/transports/DummyTransportListener.java
+END
