@@ -4,3 +4,13 @@
 /NodeListService/target/
 /demoSample/target/
 /demoapp/target/
+/HiveStat/target/
+/org.esbhive.proxyconf.mgt/target/
+/FaultHandler/target/
+/Serviceadmin ui/target/
+/list-consumer-sample/target/
+/org.esbhive.node.mgt.ui/target/
+/org.wso2.carbon.proxyadmin.ui/3.0.0/target/
+/proxyadmin 3.0.1/target/
+/remote-login/target/
+/zookeeper/target/
