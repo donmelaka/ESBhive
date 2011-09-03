@@ -9,6 +9,7 @@ import org.esbhive.node.mgt.ESBNode;
 
 public interface NodeAdditionInterface {
 
-    public String setNode(String ipAddress,String port,ESBNode[] nodeList);
+    public String setNode(ESBNode newNode,ESBNode[] nodeList);
+    public String DeployProxies();
 
 }
