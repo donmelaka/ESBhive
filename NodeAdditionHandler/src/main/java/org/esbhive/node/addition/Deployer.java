@@ -33,6 +33,34 @@ public class Deployer extends Thread {
     private String otherAddress;
     private double percentage = 0.5;
 
+    /**
+     * @return the myConfStub
+     */
+    public static ProxyConfManagerStub getMyConfStub() {
+        return myConfStub;
+    }
+
+    /**
+     * @param aMyConfStub the myConfStub to set
+     */
+    public static void setMyConfStub(ProxyConfManagerStub aMyConfStub) {
+        myConfStub = aMyConfStub;
+    }
+
+    /**
+     * @return the myHiveStub
+     */
+    public static HiveProxyServiceAdminStub getMyHiveStub() {
+        return myHiveStub;
+    }
+
+    /**
+     * @param aMyHiveStub the myHiveStub to set
+     */
+    public static void setMyHiveStub(HiveProxyServiceAdminStub aMyHiveStub) {
+        myHiveStub = aMyHiveStub;
+    }
+
     public void setRemoteLogin(RemoteLogin remoteLogin1) {
         remoteLogin = remoteLogin1;
     }
@@ -73,6 +101,20 @@ public class Deployer extends Thread {
         return otherConfStub;
     }
 
+        /**
+     * @return the percentage
+     */
+    public double getPercentage() {
+        return percentage;
+    }
+
+    /**
+     * @param percentage the percentage to set
+     */
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
+    }
+
     @Override
     public void run() {
         try {
@@ -80,8 +122,8 @@ public class Deployer extends Thread {
         } catch (InterruptedException ex) {
             log.error("Error while sleeping the deploying thread", ex);
         }
-        createThisNodeStubs(newNodeAddress);
-        getProxies();
+        createThisNodeStubs(this.getNewNodeAddress());
+        deploy();
     }
 
     private void createThisNodeStubs(String newAddress) {
@@ -92,11 +134,11 @@ public class Deployer extends Thread {
             myNode.setHostNameAndPort(newAddress);
             LoginData loginData = null;
             try {
-                loginData = remoteLogin.logIn(myNode);
+                loginData = this.getRemoteLogin().logIn(myNode);
             } catch (RemoteException ex) {
-                log.info("Error while login to own node", ex);
+                log.info("Error while login to  "+newAddress, ex);
             } catch (AuthenticationExceptionException ex) {
-                log.info("Error while login to own node", ex);
+                log.info("Error while login to  "+newAddress, ex);
             }
 
             ConfigurationContext ctx = null;
@@ -109,45 +151,46 @@ public class Deployer extends Thread {
             String myHiveServiceEPR = "https://" + newAddress + "/services/" + "HiveProxyServiceAdmin";
             String myConfServiceEPR = "https://" + newAddress + "/services/" + "ProxyConfManager";
 
-            myHiveStub = new HiveProxyServiceAdminStub(ctx, myHiveServiceEPR);
-            myConfStub = new ProxyConfManagerStub(ctx, myConfServiceEPR);
+            setMyHiveStub(new HiveProxyServiceAdminStub(ctx, myHiveServiceEPR));
+            setMyConfStub(new ProxyConfManagerStub(ctx, myConfServiceEPR));
 
-            ServiceClient myHiveProxyAdminClient = myHiveStub._getServiceClient();
+            ServiceClient myHiveProxyAdminClient = getMyHiveStub()._getServiceClient();
             Options option = myHiveProxyAdminClient.getOptions();
             option.setManageSession(true);
             option.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING,
                     loginData.getCookie());
 
-            ServiceClient otherProConfManagerClient = myConfStub._getServiceClient();
+            ServiceClient otherProConfManagerClient = getMyConfStub()._getServiceClient();
             Options option1 = otherProConfManagerClient.getOptions();
             option1.setManageSession(true);
             option1.setProperty(org.apache.axis2.transport.http.HTTPConstants.COOKIE_STRING,
                     loginData.getCookie());
 
         } catch (AxisFault ex) {
-            log.info("Error while setting cookie to own node", ex);
+            log.info("Error while setting cookie to "+newAddress, ex);
         }
 
     }
 
-    private void getProxies() {
+    private void deploy() {
 
         String[] keySet = null;
         int realProxyCount;
         try {
-            keySet = otherConfStub.getKeySet();
+            keySet = this.getOtherConfStub().getKeySet();
         } catch (RemoteException ex) {
             log.info("Error while getting the deployed proxies", ex);
         }
         ProEsb proEsb = null;
         org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = null;
+        int totalNodeCount = this.getNodeCount() + 1;
         for (int i = 0; i < keySet.length; i++) {
             try {
-                proEsb = otherConfStub.getProEsb(keySet[i]);
+                proEsb = this.getOtherConfStub().getProEsb(keySet[i]);
                 eSBNodes = proEsb.getESBNodes();
                 realProxyCount = eSBNodes.length;
-                boolean isDummy = checkStatus(realProxyCount);
-                myHiveStub.addProxyInNewNode(isDummy, proEsb.getProxyData(), newNodeAddress, otherAddress);
+                boolean isDummy = checkStatus(realProxyCount,totalNodeCount);
+                getMyHiveStub().addProxyInNewNode(isDummy, proEsb.getProxyData(), this.getNewNodeAddress(), this.getOtherAddress());
             } catch (RemoteException ex) {
                 log.info("Error while deploying the proxies", ex);
             }
@@ -160,9 +203,9 @@ public class Deployer extends Thread {
         org.esbhive.node.mgt.xsd.ESBNode[] eSBNodes = null;
         for (int i = 0; i < keySet.length; i++) {
             try {
-                proEsb = otherConfStub.getProEsb(keySet[i]);
+                proEsb = this.getOtherConfStub().getProEsb(keySet[i]);
                 eSBNodes = proEsb.getESBNodes();
-                myConfStub.addProxyConf(this.setNewProxyData(proEsb.getProxyData()), eSBNodes);
+                getMyConfStub().addProxyConf(this.setNewProxyData(proEsb.getProxyData()), eSBNodes);
             } catch (RemoteException ex) {
                 log.info("Error while updating Proxy Conf Manager", ex);
             }
@@ -170,9 +213,8 @@ public class Deployer extends Thread {
 
     }
 
-    private boolean checkStatus(int realCount) {
-        int totalNodeCount = nodeCount + 1;
-        int requiredRealProxyCount = (int) Math.floor(totalNodeCount * percentage);
+    public boolean checkStatus(int realCount,int totalNodeCount) {
+        int requiredRealProxyCount = (int) Math.floor(totalNodeCount * getPercentage());
         if (realCount < requiredRealProxyCount) {
             return false;
         } else {
@@ -276,4 +318,6 @@ public class Deployer extends Thread {
         return xsdProxyData;
 
     }
+
+
 }
