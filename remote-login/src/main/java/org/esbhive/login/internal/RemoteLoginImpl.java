@@ -22,6 +22,8 @@ import org.esbhive.login.client.AuthenticationExceptionException;
 
 
 /**
+ * This class implements the remote login interface and allows one ESB Node
+ * to login to another ESB node
  * @scr.component name="esbhive.login.service" immediate="true"
  * @scr.service interface="org.esbhive.login.RemoteLogin"
  *
@@ -30,7 +32,15 @@ import org.esbhive.login.client.AuthenticationExceptionException;
 public class RemoteLoginImpl implements RemoteLogin{
   //The string passed to getLog should be of the form org.wso2.carbon.NAME
   private static final Log log = LogFactory.getLog("org.wso2.carbon.HiveRemoteLogin");
-  
+
+  /**
+   * This method will attempt to login to another ESB node
+   * @param data - the Loign data object that contains username/password
+   * @return - a LoginData object with the cookie set if the login was successful
+   * @throws AxisFault
+   * @throws RemoteException
+   * @throws AuthenticationExceptionException
+   */
   public LoginData logIn(LoginData data) throws AxisFault,
           RemoteException, AuthenticationExceptionException {
     ConfigurationContext ctx =
@@ -58,6 +68,14 @@ public class RemoteLoginImpl implements RemoteLogin{
     
   }
 
+  /**
+   * This method is used to logOut from another ESB node backend
+   * @param data - Data informing from which ESB node to logout
+   * @return
+   * @throws AxisFault
+   * @throws RemoteException
+   * @throws AuthenticationExceptionException
+   */
   public LoginData logOut(LoginData data) throws AxisFault, RemoteException, AuthenticationExceptionException {
      ConfigurationContext ctx =
             ConfigurationContextFactory

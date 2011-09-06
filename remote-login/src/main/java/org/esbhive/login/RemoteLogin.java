@@ -10,7 +10,7 @@ import org.apache.axis2.AxisFault;
 import org.esbhive.login.client.AuthenticationExceptionException;
 
 /**
- *
+ * This interface will be used by any component that needs to login to another ESB
  * @author pubudu
  */
 public interface RemoteLogin {

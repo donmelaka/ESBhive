@@ -6,7 +6,7 @@
 package org.esbhive.login;
 
 /**
- *
+ * This class represents the data used to login to another ESB.
  * @author pubudu
  */
 public class LoginData {
