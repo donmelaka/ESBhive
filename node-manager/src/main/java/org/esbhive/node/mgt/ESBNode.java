@@ -7,7 +7,7 @@ package org.esbhive.node.mgt;
 import java.io.Serializable;
 
 /**
- *
+ * This class represents an ESBNode
  * @author pubudu
  */
 public class ESBNode implements Serializable {

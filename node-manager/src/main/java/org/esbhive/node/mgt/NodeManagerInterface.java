@@ -6,7 +6,8 @@
 package org.esbhive.node.mgt;
 
 /**
- *
+ * This interface exposes the current nodes in the hive. Any component that consumes
+ * the node list will use this interface.
  * @author pubudu
  */
 public interface NodeManagerInterface {

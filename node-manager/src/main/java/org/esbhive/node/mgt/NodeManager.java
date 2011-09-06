@@ -53,6 +53,13 @@ import org.esbhive.node.addition.NodeAdditionInterface;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.utils.ServerConstants;
 
+
+/**
+ *This component is responsible for adding the node to the hive on startup.
+ * It also handles failure detection, and leader election for failure correction.
+ *
+ * @author pubudu
+ */
 public class NodeManager implements NodeManagerInterface, Watcher {
 
     private static ConfigurationContextService configurationContextService;
@@ -68,6 +75,11 @@ public class NodeManager implements NodeManagerInterface, Watcher {
     public NodeManager() {
     }
 
+    /**
+     * This method is called by the OSGi container on startup. It handles the addition of the
+     * node to the hive.
+     * @param context
+     */
     protected void activate(ComponentContext context) {
 
         ESBNode thisNode = thisNode();
@@ -116,6 +128,10 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
     }
 
+    /**
+     * This method handles the tasks to be done on node addtion/removal
+     * @param event
+     */
     public void process(WatchedEvent event) {
         EventType et = event.getType();
         if (et == EventType.None) {
@@ -165,6 +181,10 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
     }
 
+    /**
+     * This method is only called if this node is the leader. Upon node failure this method
+     * is called and the fault handler is called to repair the failures
+     */
     private void repairFailures() {
         try {
             List<String> failures = zk.getChildren(FAILURES, false);
@@ -182,6 +202,11 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         }
     }
 
+    /**
+     * This method checks if the current node is the leader.
+     * @return true if this node is the leader and false if the current node is
+     * not the leader
+     */
     private boolean amITheLeader() {
         try {
             List<String> childern = zk.getChildren(NODES, false);
@@ -205,6 +230,15 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         return false;
     }
 
+    /**
+     * This method creates an ESBNode object when the zNode name is passed.
+     * @param zNode  the znode name
+     * @return the ESBNode object created from the znode.
+     * @throws IOException
+     * @throws KeeperException
+     * @throws ClassNotFoundException
+     * @throws InterruptedException
+     */
     private ESBNode createESBNodeFromZnode(String zNode) throws IOException, KeeperException,
             ClassNotFoundException, InterruptedException {
         byte[] bytes = zk.getData(this.NODES + "/" + zNode, false, null);
@@ -213,6 +247,10 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         return node;
     }
 
+    /**
+     * Creates an ESBNode object which contains the data about this node.
+     * @return this node's ESBNode object
+     */
     private ESBNode thisNode() {
         String synapsePort = (String) configurationContextService.getServerConfigContext().getAxisConfiguration().getTransportIn("http").getParameter("port").getValue();
 
@@ -235,6 +273,12 @@ public class NodeManager implements NodeManagerInterface, Watcher {
 
     //taken from
     //http://scr4tchp4d.blogspot.com/2008/07/object-to-byte-array-and-byte-array-to.html
+    /**
+     * Converts the ESBNode object to a byte array
+     * @param obj the ESBNode object
+     * @return a byte array which represents the ESBNode
+     * @throws IOException
+     */
     private byte[] toByteArray(ESBNode obj) throws IOException {
         byte[] bytes = null;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -247,6 +291,13 @@ public class NodeManager implements NodeManagerInterface, Watcher {
         return bytes;
     }
 
+    /**
+     * Converts a byte array into an ESBNode object
+     * @param bytes the byte array to convert to an ESBNode
+     * @return the ESBNode object created from the byte array
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private ESBNode toESBNode(byte[] bytes) throws IOException, ClassNotFoundException {
         Object obj = null;
         ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
