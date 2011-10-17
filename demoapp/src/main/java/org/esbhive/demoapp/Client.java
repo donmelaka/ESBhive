@@ -22,6 +22,8 @@ import samples.services.SimpleStockQuoteServiceStub;
 import samples.services.xsd.GetQuote;
 
 /**
+ * This is the class that sends the requests to the StockQouteProxy service and
+ * measures the time taken for the response to arrive.
  *
  * @author pubudu
  */
@@ -34,7 +36,13 @@ public class Client extends Thread {
   File file = null;
   Long totalTime = null;
   private AtomicInteger totalResponded = new java.util.concurrent.atomic.AtomicInteger();
-
+/**
+ *
+ * @param numReqestsPerClient the number of asynchronous requests to send on a per
+ * client basis
+ * @param doneSignal
+ * @param dir the directory in which to save the data file
+ */
   public Client(int numReqestsPerClient, CountDownLatch doneSignal, File dir) {
     this.numReqestsPerClient = numReqestsPerClient;
     this.doneSignal = doneSignal;
